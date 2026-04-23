@@ -1,0 +1,14 @@
+{
+  "total_assets": 4,
+  "total_scans_performed": 1,
+  "total_matches_found": 0,
+  "average_similarity_score": 0.0,
+  "active_alerts_count": 0,
+  "resolved_alerts_count": 0,
+  "critical_alerts_count": 0,
+  "high_alerts_count": 0,
+  "medium_alerts_count": 0,
+  "low_alerts_count": 0,
+  "top_matched_assets": [],
+  "matches_by_severity": {}
+}

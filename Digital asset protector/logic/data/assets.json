@@ -1,0 +1,848 @@
+{
+  "assets": [
+    {
+      "id": "deb97a6f-597a-45a4-ba29-636f761c632a",
+      "public_id": "ASSET-WEOJUALS",
+      "filename": "printer-color-test-page-pdf.jpg",
+      "file_path": "uploads\\deb97a6f-597a-45a4-ba29-636f761c632a_printer-color-test-page-pdf.jpg",
+      "upload_timestamp": "2026-04-23 09:04:02.780447",
+      "type": "image",
+      "ahash": "3f93f3ed8383818b",
+      "phash": "afc51d179292c52d",
+      "dhash": "ee737609273f3b3b",
+      "colorhash": "06000008041",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "9f8191fff2f2f6ff",
+          "phash": "ec3b9a658192c56d",
+          "dhash": "2833330006064406",
+          "position": "0,0"
+        },
+        {
+          "ahash": "ff80f9fff848d8f8",
+          "phash": "d1aeaf50c7ac805b",
+          "dhash": "0055510098989818",
+          "position": "0,1"
+        },
+        {
+          "ahash": "ff3f7f3f1f3f1f1f",
+          "phash": "8fe0e01f1ff0e00f",
+          "dhash": "00e0c16968686868",
+          "position": "0,2"
+        },
+        {
+          "ahash": "fffffefad2d2d2d2",
+          "phash": "f58b463861b15c9e",
+          "dhash": "0002261636262626",
+          "position": "1,0"
+        },
+        {
+          "ahash": "ffefc7cfccc0848c",
+          "phash": "f3a1ccce99a46272",
+          "dhash": "029bdf5c59092859",
+          "position": "1,1"
+        },
+        {
+          "ahash": "ffe7e7e71f1f277f",
+          "phash": "b3f3cc8c8c733207",
+          "dhash": "60084d4de86c4cec",
+          "position": "1,2"
+        },
+        {
+          "ahash": "f2f2f2f2f2f2f2fe",
+          "phash": "c539ba55ba45aa45",
+          "dhash": "0606262626262626",
+          "position": "2,0"
+        },
+        {
+          "ahash": "8c858f8f8f8f8fff",
+          "phash": "bb63c656c519c92a",
+          "dhash": "585d5b5a1c1c191c",
+          "position": "2,1"
+        },
+        {
+          "ahash": "df87271f1f0707ff",
+          "phash": "b67efc9ccc00e107",
+          "dhash": "a82d4da868cd6d68",
+          "position": "2,2"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "9d888078-59f1-4e88-94e1-1c025cf26a4d",
+      "public_id": "ASSET-LU5MPT28",
+      "filename": "WELL-COVID-TESTING1-videoSixteenByNine3000.jpg",
+      "file_path": "uploads\\9d888078-59f1-4e88-94e1-1c025cf26a4d_WELL-COVID-TESTING1-videoSixteenByNine3000.jpg",
+      "upload_timestamp": "2026-04-23 09:04:16.227858",
+      "type": "image",
+      "ahash": "f9f1e0e000000c38",
+      "phash": "cbebcc1919f3c218",
+      "dhash": "93c349491a6dfc70",
+      "colorhash": "07001038000",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "7efeee7f0f0f6f30",
+          "phash": "84974e9b4e916eb1",
+          "dhash": "fcc4cccc9d5cdac5",
+          "position": "0,0"
+        },
+        {
+          "ahash": "fefffef8f0e0e0c0",
+          "phash": "f79db0a748535494",
+          "dhash": "04768c7166870d9d",
+          "position": "0,1"
+        },
+        {
+          "ahash": "ff1f4fcf0fc727c7",
+          "phash": "b0c8eec77dc6e082",
+          "dhash": "30b09018d8996c0c",
+          "position": "0,2"
+        },
+        {
+          "ahash": "fffffff100000060",
+          "phash": "e7e8811f4aec8995",
+          "dhash": "464f4e0348464cc8",
+          "position": "1,0"
+        },
+        {
+          "ahash": "cfc5878e00031f7f",
+          "phash": "befae020d19fa42a",
+          "dhash": "bc293d5459cf78e6",
+          "position": "1,1"
+        },
+        {
+          "ahash": "37f3871bf9818d3d",
+          "phash": "aee4e6ee881e3838",
+          "dhash": "e4461ef293273de1",
+          "position": "1,2"
+        },
+        {
+          "ahash": "01075fccc1c7efef",
+          "phash": "b84ca66f6ad3a069",
+          "dhash": "afbeb69013175a0d",
+          "position": "2,0"
+        },
+        {
+          "ahash": "30010d39ff3f7ef8",
+          "phash": "8e2a6fda4a181f5a",
+          "dhash": "618f39e53d7cf0e3",
+          "position": "2,1"
+        },
+        {
+          "ahash": "c2a3fef8f08080e0",
+          "phash": "e5a43579c88a92b7",
+          "dhash": "122eace18731638a",
+          "position": "2,2"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "c22b6f91-3f82-4a5f-b058-b633f88e5500",
+      "public_id": "ASSET-Y2SVVYI7",
+      "filename": "videoplayback (1).mp4",
+      "file_path": "uploads\\c22b6f91-3f82-4a5f-b058-b633f88e5500_videoplayback (1).mp4",
+      "upload_timestamp": "2026-04-23 09:49:33.663641",
+      "type": "video",
+      "ahash": "000b6f7f7f7f0a00",
+      "phash": "912f7e463e4e9131",
+      "dhash": "3fd6d4d8dcd4d03a",
+      "colorhash": "11000030003",
+      "frame_hashes": [
+        {
+          "second": 0,
+          "ahash": "000b6f7f6b7f0a00",
+          "phash": "812b7e656e569269",
+          "dhash": "3fded1d4d2d4d43a",
+          "colorhash": "11000030002",
+          "tile_hashes": [
+            {
+              "ahash": "00c0c0c0000e0f1f",
+              "phash": "b166991668b5b64e",
+              "dhash": "038b8b83ad7c5a9a",
+              "position": "0,0"
+            },
+            {
+              "ahash": "00000b01010e1e1f",
+              "phash": "9d6a9c926c919367",
+              "dhash": "61795a3329d87436",
+              "position": "0,1"
+            },
+            {
+              "ahash": "000000040dfff6c3",
+              "phash": "e01fe8c53bc6a913",
+              "dhash": "6161447cbba2a4af",
+              "position": "0,2"
+            },
+            {
+              "ahash": "0b0b0b0b0b0b0b0b",
+              "phash": "99fcf878e07c0117",
+              "dhash": "9a1a1a1a9ada1a9a",
+              "position": "1,0"
+            },
+            {
+              "ahash": "1a5a5a1a1a1a1a5a",
+              "phash": "8de0e01f1f1fe0f0",
+              "dhash": "b69696b6b6b6b6b6",
+              "position": "1,1"
+            },
+            {
+              "ahash": "c5f6f0d0121092d0",
+              "phash": "ccf2f21d38f843a1",
+              "dhash": "bdac84a5a6642625",
+              "position": "1,2"
+            },
+            {
+              "ahash": "1f0f0e0040442000",
+              "phash": "91999d69694eb0b3",
+              "dhash": "5a5adccd9d8dc54e",
+              "position": "2,0"
+            },
+            {
+              "ahash": "5a1e0e0001042707",
+              "phash": "919495ed6c62d395",
+              "dhash": "96b4d8a9a7cacace",
+              "position": "2,1"
+            },
+            {
+              "ahash": "d3f27000141c80c6",
+              "phash": "c4e4fc1c3e39c3c2",
+              "dhash": "a6a6c9cd2df1140c",
+              "position": "2,2"
+            }
+          ]
+        },
+        {
+          "second": 1,
+          "ahash": "000b6f7f7f7f0804",
+          "phash": "812f7e563e6d9031",
+          "dhash": "3ddad2d2dcd2d238",
+          "colorhash": "11000030003",
+          "tile_hashes": [
+            {
+              "ahash": "00c0c0c0000e0f1f",
+              "phash": "b166991668b5b64e",
+              "dhash": "038b8b83ad7c5a9a",
+              "position": "0,0"
+            },
+            {
+              "ahash": "00000b01010e1e1f",
+              "phash": "9d6a9c926c919367",
+              "dhash": "61795a3329d87436",
+              "position": "0,1"
+            },
+            {
+              "ahash": "000000040d7f7673",
+              "phash": "863bc4c73896ad71",
+              "dhash": "6161447c7bcac4e7",
+              "position": "0,2"
+            },
+            {
+              "ahash": "0b0b0b0b0b0b0b0b",
+              "phash": "99fcf878e0f80117",
+              "dhash": "9a1a1a1a9ada1a9a",
+              "position": "1,0"
+            },
+            {
+              "ahash": "1a5a5a1a1a1a1a5a",
+              "phash": "8de0e01f1f1fe0f0",
+              "dhash": "b69696b6b6b6b6b6",
+              "position": "1,1"
+            },
+            {
+              "ahash": "755650d09290b2f0",
+              "phash": "c400c33eea3f4bad",
+              "dhash": "ada4a4a5a62426a5",
+              "position": "1,2"
+            },
+            {
+              "ahash": "1f0f0e0040442000",
+              "phash": "91999d69694eb0b3",
+              "dhash": "5a5adccd9d8dc54e",
+              "position": "2,0"
+            },
+            {
+              "ahash": "5a1e0e0001042707",
+              "phash": "919495ed6c63d391",
+              "dhash": "96b4d8a9a7cacace",
+              "position": "2,1"
+            },
+            {
+              "ahash": "f3373000141cc0c6",
+              "phash": "ce8ce5c9f169c8c8",
+              "dhash": "e666652d6d71140c",
+              "position": "2,2"
+            }
+          ]
+        },
+        {
+          "second": 2,
+          "ahash": "000b6f7b6f7f0a00",
+          "phash": "812f7e566e6e9031",
+          "dhash": "3fdad2d2d2d4d43a",
+          "colorhash": "11000030002",
+          "tile_hashes": [
+            {
+              "ahash": "00c0c0c0000e0f1f",
+              "phash": "b166991668b5b64e",
+              "dhash": "038b8b83ad7c5a9a",
+              "position": "0,0"
+            },
+            {
+              "ahash": "00000b01010e1e1f",
+              "phash": "9d6a9c926c919367",
+              "dhash": "61795a3329d87436",
+              "position": "0,1"
+            },
+            {
+              "ahash": "00000004097ff6f3",
+              "phash": "c43bec833cc6a15d",
+              "dhash": "6161446c5bcaa4a7",
+              "position": "0,2"
+            },
+            {
+              "ahash": "0b0b0b0b0b0b0b0b",
+              "phash": "99fcf878e07c0117",
+              "dhash": "9a1a1a1a9ada1a9a",
+              "position": "1,0"
+            },
+            {
+              "ahash": "1a5a5a1a1a1a1a5a",
+              "phash": "8de0f01f1f1fe0b0",
+              "dhash": "b69696b6b6b6b6b6",
+              "position": "1,1"
+            },
+            {
+              "ahash": "95163634331296d4",
+              "phash": "8e82f80ceaf34aec",
+              "dhash": "2564646d66642625",
+              "position": "1,2"
+            },
+            {
+              "ahash": "1f0f0e0040442000",
+              "phash": "91999d69694eb0b3",
+              "dhash": "5a5adccd9d8dc54e",
+              "position": "2,0"
+            },
+            {
+              "ahash": "5a1e0e0001042707",
+              "phash": "919495ed6c62d395",
+              "dhash": "96b4d8a9a7cacace",
+              "position": "2,1"
+            },
+            {
+              "ahash": "d3f27000141c80c6",
+              "phash": "c4e4fc1c3e39c3c2",
+              "dhash": "26a6c9dd2df1140c",
+              "position": "2,2"
+            }
+          ]
+        },
+        {
+          "second": 3,
+          "ahash": "000b6f7f6f7f0a00",
+          "phash": "812f7e4e6e659231",
+          "dhash": "3dd2d4d2d2d4d63a",
+          "colorhash": "11000030002",
+          "tile_hashes": [
+            {
+              "ahash": "00c0c0c0000e0f1f",
+              "phash": "b166991668b5b64e",
+              "dhash": "038b8b83ad7c5a9a",
+              "position": "0,0"
+            },
+            {
+              "ahash": "00000b01010e1e1f",
+              "phash": "9d6a9c926c919367",
+              "dhash": "61795a3329d87436",
+              "position": "0,1"
+            },
+            {
+              "ahash": "00000004097ff6d3",
+              "phash": "c43bccc338c6a15f",
+              "dhash": "6161447c5bcaa4a7",
+              "position": "0,2"
+            },
+            {
+              "ahash": "0b0b0b0b0b0b0b0b",
+              "phash": "99fcf878e07c0117",
+              "dhash": "9a1a1a1a9ada1a9a",
+              "position": "1,0"
+            },
+            {
+              "ahash": "1a5a5a1a1a1a1a5a",
+              "phash": "8df0e01f1f1fe054",
+              "dhash": "b69696b6b6b6b6b6",
+              "position": "1,1"
+            },
+            {
+              "ahash": "d5d6123433226e44",
+              "phash": "c49cf8e76a0b4b25",
+              "dhash": "b5a4a4656e4cde99",
+              "position": "1,2"
+            },
+            {
+              "ahash": "1f0f0e0040442000",
+              "phash": "91999d69694eb0b3",
+              "dhash": "5a5adccd9d8dc54e",
+              "position": "2,0"
+            },
+            {
+              "ahash": "5a1e0e0001042707",
+              "phash": "919495ec6c63d395",
+              "dhash": "96b4d8a9a7cacace",
+              "position": "2,1"
+            },
+            {
+              "ahash": "c3f2f000141c80c6",
+              "phash": "c0e0f1193339dbda",
+              "dhash": "9ea6a5e56d71140c",
+              "position": "2,2"
+            }
+          ]
+        },
+        {
+          "second": 4,
+          "ahash": "00096f7f6f7f2800",
+          "phash": "832f7e4c3c6c9331",
+          "dhash": "355bd8dad8dada3a",
+          "colorhash": "11000030002",
+          "tile_hashes": [
+            {
+              "ahash": "00c0c0c000070f0f",
+              "phash": "b24d9a254ab6b54d",
+              "dhash": "138b8b83a66e6da9",
+              "position": "0,0"
+            },
+            {
+              "ahash": "00000b09000f8f8f",
+              "phash": "bb44bb146897946e",
+              "dhash": "61795a3b24ec7a5b",
+              "position": "0,1"
+            },
+            {
+              "ahash": "000000040d3f7673",
+              "phash": "833cc09f7896af70",
+              "dhash": "6161445c3b6acccb",
+              "position": "0,2"
+            },
+            {
+              "ahash": "0d0d0d0d0d0d0d0d",
+              "phash": "bafaf830c03303cf",
+              "dhash": "99191939b9d939a9",
+              "position": "1,0"
+            },
+            {
+              "ahash": "8929298989898929",
+              "phash": "bbe3c33c383cc330",
+              "dhash": "5b5b5b5b5b5b5b5b",
+              "position": "1,1"
+            },
+            {
+              "ahash": "35363e2423222624",
+              "phash": "87b29aa46abb48ad",
+              "dhash": "cd4c4c4d4e4c4a49",
+              "position": "1,2"
+            },
+            {
+              "ahash": "0f0f070044442000",
+              "phash": "b2b2ba5a5a4fa4a2",
+              "dhash": "395dcede8d8dc54e",
+              "position": "2,0"
+            },
+            {
+              "ahash": "ef0f070001042703",
+              "phash": "b3b3abcb4b434491",
+              "dhash": "5b5aaca4abcacace",
+              "position": "2,1"
+            },
+            {
+              "ahash": "3f3f3000141cc0c6",
+              "phash": "c787e598b869c3c2",
+              "dhash": "4a4e4b4d2d71140c",
+              "position": "2,2"
+            }
+          ]
+        },
+        {
+          "second": 5,
+          "ahash": "000b6f7f7f7f0a00",
+          "phash": "912f7e463e4e9131",
+          "dhash": "3fd6d4d8dcd4d03a",
+          "colorhash": "11000030003",
+          "tile_hashes": [
+            {
+              "ahash": "00c0c0c0000e0f1f",
+              "phash": "b166991668b5b64e",
+              "dhash": "038b8b83ac7c5a9a",
+              "position": "0,0"
+            },
+            {
+              "ahash": "00000b01010e1e1f",
+              "phash": "9d6a9c926c91926f",
+              "dhash": "61795a3b29d87436",
+              "position": "0,1"
+            },
+            {
+              "ahash": "00000004097ff6d3",
+              "phash": "c43bccc33cc6a15d",
+              "dhash": "6161447c5bcaa4a7",
+              "position": "0,2"
+            },
+            {
+              "ahash": "0b0b0b0b0b0b0b0b",
+              "phash": "99f8f878f0f80117",
+              "dhash": "9a121a1a9ada1a92",
+              "position": "1,0"
+            },
+            {
+              "ahash": "1a5a5a1a1a1a1a5a",
+              "phash": "8df0e01f1f1fe070",
+              "dhash": "b69696b6b6f6b6b6",
+              "position": "1,1"
+            },
+            {
+              "ahash": "d5d6d0d0d0d0d2d0",
+              "phash": "dcb292ac6a8b4aad",
+              "dhash": "2524242526242625",
+              "position": "1,2"
+            },
+            {
+              "ahash": "1f0f0e0440442000",
+              "phash": "91999d69696eb093",
+              "dhash": "5a5adccd9d8dc54e",
+              "position": "2,0"
+            },
+            {
+              "ahash": "5a1e0e0001042703",
+              "phash": "919495ed6c63d391",
+              "dhash": "96b4d8aba7cacace",
+              "position": "2,1"
+            },
+            {
+              "ahash": "dbf27000141c80c6",
+              "phash": "c4c4fc1c3e3dc3c2",
+              "dhash": "a6a6c94d2df1140c",
+              "position": "2,2"
+            }
+          ]
+        },
+        {
+          "second": 6,
+          "ahash": "000b6f7f6f7f0800",
+          "phash": "916f7e443e4e9071",
+          "dhash": "2fdbd4dadcd4da3a",
+          "colorhash": "11000030040",
+          "tile_hashes": [
+            {
+              "ahash": "00c0e0c0000e0f0f",
+              "phash": "b16a991668b5b64e",
+              "dhash": "11898b832c6c5a1a",
+              "position": "0,0"
+            },
+            {
+              "ahash": "00000b09010e1e1f",
+              "phash": "9d6a9cd26c91932d",
+              "dhash": "61515a1b2b587436",
+              "position": "0,1"
+            },
+            {
+              "ahash": "000000040d7ff6d3",
+              "phash": "c63bccc31e96a171",
+              "dhash": "6141447c5bcaa4a7",
+              "position": "0,2"
+            },
+            {
+              "ahash": "0b0b0b0b0b0b0b0b",
+              "phash": "99f8f800c0fc0fe7",
+              "dhash": "9a121a9a9a9a1a9a",
+              "position": "1,0"
+            },
+            {
+              "ahash": "1a5a5a1a1a1a1a5a",
+              "phash": "8df0f01f1f1fe050",
+              "dhash": "b69696b6b6f6b6b6",
+              "position": "1,1"
+            },
+            {
+              "ahash": "d5d6d0d0d2d0d2d0",
+              "phash": "dcba9aa42a835aad",
+              "dhash": "2524242526242625",
+              "position": "1,2"
+            },
+            {
+              "ahash": "1f0f0e0440442000",
+              "phash": "91999d69686fb093",
+              "dhash": "1a5adccd8d8dc54e",
+              "position": "2,0"
+            },
+            {
+              "ahash": "5a1e0e0103072707",
+              "phash": "9198d5e46ce35b92",
+              "dhash": "96b4d8afafcacace",
+              "position": "2,1"
+            },
+            {
+              "ahash": "dff27000141cc0c6",
+              "phash": "c4e4f41c3e3dc3c2",
+              "dhash": "a6a6cbc56d71140c",
+              "position": "2,2"
+            }
+          ]
+        },
+        {
+          "second": 7,
+          "ahash": "000b6f7f6f7f0a00",
+          "phash": "912f7e543e4e9131",
+          "dhash": "3fd6d4d8dcd4d03a",
+          "colorhash": "11000038000",
+          "tile_hashes": [
+            {
+              "ahash": "0000c0c0000e0f1f",
+              "phash": "b162991668b5f64e",
+              "dhash": "1b8b0b83ad7c5a9a",
+              "position": "0,0"
+            },
+            {
+              "ahash": "00000301010e1e1f",
+              "phash": "9d6a9d926c91926e",
+              "dhash": "717d5a3329d834b6",
+              "position": "0,1"
+            },
+            {
+              "ahash": "00000004097ff6d3",
+              "phash": "c43becc33cc6a11d",
+              "dhash": "6161447c5bcaa4a7",
+              "position": "0,2"
+            },
+            {
+              "ahash": "0b0b0b0b0b0b0b0b",
+              "phash": "99f8f878e0f80197",
+              "dhash": "9a1a1a9adada1a9a",
+              "position": "1,0"
+            },
+            {
+              "ahash": "1a5a5a1a1a1a1a5a",
+              "phash": "9df0e01f1f1fe050",
+              "dhash": "b69696b6b6b6b6b6",
+              "position": "1,1"
+            },
+            {
+              "ahash": "d5d6d0d0d0d0d2d0",
+              "phash": "dcb292a46acb4aad",
+              "dhash": "2524242526242625",
+              "position": "1,2"
+            },
+            {
+              "ahash": "1f0f0e0040400000",
+              "phash": "91999d69696eb093",
+              "dhash": "5a5adced9d8dc54e",
+              "position": "2,0"
+            },
+            {
+              "ahash": "5a1e0e0000000703",
+              "phash": "919095ed6c63d393",
+              "dhash": "96b4d8aba7cacace",
+              "position": "2,1"
+            },
+            {
+              "ahash": "d3f27000141c80c6",
+              "phash": "c4c4fc1c3e3dc3c2",
+              "dhash": "a6a6c84d2df1140c",
+              "position": "2,2"
+            }
+          ]
+        },
+        {
+          "second": 8,
+          "ahash": "000a6e7f7e7e0800",
+          "phash": "91337e566e4e9071",
+          "dhash": "2cdcd4d8dcd4d02a",
+          "colorhash": "31000000006",
+          "tile_hashes": [
+            {
+              "ahash": "00000000040e0f1f",
+              "phash": "916e99966895b64e",
+              "dhash": "198b0903ac7c5a9a",
+              "position": "0,0"
+            },
+            {
+              "ahash": "00000301051e1e1f",
+              "phash": "9d6a9c926c91932f",
+              "dhash": "61515a1b29783436",
+              "position": "0,1"
+            },
+            {
+              "ahash": "0000000408f3f6f8",
+              "phash": "c43bccc33cc4a177",
+              "dhash": "6141447c5bcaa4a7",
+              "position": "0,2"
+            },
+            {
+              "ahash": "0b0b0b0b0b0b0b0b",
+              "phash": "99f8f801d07e074f",
+              "dhash": "9a1a1a1a9a9a1a9a",
+              "position": "1,0"
+            },
+            {
+              "ahash": "1a5a5a1a1a1a1a5a",
+              "phash": "8df0e01f1f1fe070",
+              "dhash": "b69696b6b6f6b6b6",
+              "position": "1,1"
+            },
+            {
+              "ahash": "d4d6d0d0d0d0d2d0",
+              "phash": "dcb292a26acb4b2d",
+              "dhash": "2524242526242624",
+              "position": "1,2"
+            },
+            {
+              "ahash": "1f0f0f0400000000",
+              "phash": "91998969686eb697",
+              "dhash": "1a5adc8c8d8d454e",
+              "position": "2,0"
+            },
+            {
+              "ahash": "5e1e0e0000002400",
+              "phash": "9190d5ec6c63d395",
+              "dhash": "96b4d8a9aecacace",
+              "position": "2,1"
+            },
+            {
+              "ahash": "fbf27000001000c4",
+              "phash": "c4c4fc1c3e3dc3c2",
+              "dhash": "a6a6c0cd6d70140c",
+              "position": "2,2"
+            }
+          ]
+        },
+        {
+          "second": 9,
+          "ahash": "000b6f7f6f7f0800",
+          "phash": "916f7e443e4e9071",
+          "dhash": "2fdbd4dadcd4da3a",
+          "colorhash": "11000030040",
+          "tile_hashes": [
+            {
+              "ahash": "00c0e0c0000e0f0f",
+              "phash": "b16a991668b5b64e",
+              "dhash": "098b8b832c6c5a9a",
+              "position": "0,0"
+            },
+            {
+              "ahash": "00000b09010e1e1f",
+              "phash": "9d6a9cd26c91932d",
+              "dhash": "61515a1b2b583436",
+              "position": "0,1"
+            },
+            {
+              "ahash": "000000040d7ff6d3",
+              "phash": "c63bccc31ad6a171",
+              "dhash": "6141447c5bcaa4a7",
+              "position": "0,2"
+            },
+            {
+              "ahash": "0b0b0b0b0b0b0b0b",
+              "phash": "99f8f800c0fc0fe7",
+              "dhash": "9a121a9a9a9a1a9a",
+              "position": "1,0"
+            },
+            {
+              "ahash": "1a5a5a1a1a1a1a5a",
+              "phash": "8df0f01f1f1fe050",
+              "dhash": "b69696b6f6f6b6b6",
+              "position": "1,1"
+            },
+            {
+              "ahash": "d5d6d0d0d2d0d2d0",
+              "phash": "dcba9aa42a8b4aad",
+              "dhash": "2524242526242625",
+              "position": "1,2"
+            },
+            {
+              "ahash": "1f0f0e0444442000",
+              "phash": "91999d69686fb093",
+              "dhash": "1a5adccd8d8dc54e",
+              "position": "2,0"
+            },
+            {
+              "ahash": "5a1e0e0103052707",
+              "phash": "919c95e46ce35b92",
+              "dhash": "96b4d8afafcacace",
+              "position": "2,1"
+            },
+            {
+              "ahash": "dff27000141cc0c6",
+              "phash": "c4e4f41c3e3dc3c2",
+              "dhash": "a6a6cbc56df1148c",
+              "position": "2,2"
+            }
+          ]
+        }
+      ],
+      "tile_hashes": [
+        {
+          "ahash": "00c0c0c0000e0f1f",
+          "phash": "b166991668b5b64e",
+          "dhash": "038b8b83ac7c5a9a",
+          "position": "0,0"
+        },
+        {
+          "ahash": "00000b01010e1e1f",
+          "phash": "9d6a9c926c91926f",
+          "dhash": "61795a3b29d87436",
+          "position": "0,1"
+        },
+        {
+          "ahash": "00000004097ff6d3",
+          "phash": "c43bccc33cc6a15d",
+          "dhash": "6161447c5bcaa4a7",
+          "position": "0,2"
+        },
+        {
+          "ahash": "0b0b0b0b0b0b0b0b",
+          "phash": "99f8f878f0f80117",
+          "dhash": "9a121a1a9ada1a92",
+          "position": "1,0"
+        },
+        {
+          "ahash": "1a5a5a1a1a1a1a5a",
+          "phash": "8df0e01f1f1fe070",
+          "dhash": "b69696b6b6f6b6b6",
+          "position": "1,1"
+        },
+        {
+          "ahash": "d5d6d0d0d0d0d2d0",
+          "phash": "dcb292ac6a8b4aad",
+          "dhash": "2524242526242625",
+          "position": "1,2"
+        },
+        {
+          "ahash": "1f0f0e0440442000",
+          "phash": "91999d69696eb093",
+          "dhash": "5a5adccd9d8dc54e",
+          "position": "2,0"
+        },
+        {
+          "ahash": "5a1e0e0001042703",
+          "phash": "919495ed6c63d391",
+          "dhash": "96b4d8aba7cacace",
+          "position": "2,1"
+        },
+        {
+          "ahash": "dbf27000141c80c6",
+          "phash": "c4c4fc1c3e3dc3c2",
+          "dhash": "a6a6c94d2df1140c",
+          "position": "2,2"
+        }
+      ],
+      "frame_count": 10,
+      "duration_seconds": 10
+    }
+  ]
+}
