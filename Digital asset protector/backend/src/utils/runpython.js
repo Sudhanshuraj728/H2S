@@ -1,23 +1,27 @@
-const { spawn } = require("child_process");
-const path = require("path");
+import { spawn } from "child_process";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const runPython = (filePath) => {
   return new Promise((resolve, reject) => {
     const scriptPath = path.join(__dirname, "../../detection_py/main.py");
 
-    const process = spawn("python", [scriptPath, filePath]);
+    const child = spawn("python", [scriptPath, filePath]);
 
     let data = "";
 
-    process.stdout.on("data", (chunk) => {
+    child.stdout.on("data", (chunk) => {
       data += chunk.toString();
     });
 
-    process.stderr.on("data", (err) => {
+    child.stderr.on("data", (err) => {
       console.error("PYTHON ERROR:", err.toString());
     });
 
-    process.on("close", () => {
+    child.on("close", () => {
       try {
         resolve(JSON.parse(data));
       } catch (e) {
@@ -27,4 +31,4 @@ const runPython = (filePath) => {
   });
 };
 
-module.exports = runPython;
+export default runPython;

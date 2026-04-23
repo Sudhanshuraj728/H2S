@@ -1,9 +1,10 @@
-const express = require("express");
+import express from "express";
+import multer from "multer";
+import fs from "fs";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+import runPython from "../utils/runpython.js";
+
 const router = express.Router();
-const multer = require("multer");
-const auth = require("../middleware/auth.middleware.js");
-const runPython = require("../utils/runpython.js");
-const fs = require("fs");
 
 const storage = multer.diskStorage({
   destination: "uploads/",
@@ -14,7 +15,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post("/", auth, upload.single("file"), async (req, res) => {
+router.post("/", verifyJWT, upload.single("file"), async (req, res) => {
   try {
     const filePath = req.file.path;
 
@@ -29,4 +30,4 @@ router.post("/", auth, upload.single("file"), async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
