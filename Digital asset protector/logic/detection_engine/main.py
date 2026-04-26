@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import List, Dict, Any
 
 
+
 import cv2
 from PIL import Image
 from fastapi import FastAPI, File, UploadFile, HTTPException, Query
