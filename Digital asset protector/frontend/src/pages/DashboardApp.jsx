@@ -10,7 +10,7 @@ import {
 } from "lucide-react"
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, PieChart, Pie, Cell
+  ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend
 } from "recharts"
 import {
   authAPI, assetsAPI, detectionsAPI, alertsAPI,
@@ -480,11 +480,37 @@ function AssetLibrary({setPage}) {
 /* ═══════════════════════════════════════════════════════════════════════════
    ALERTS PAGE
    ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Metric chip for alert detail panel */
+function MetricChip({label, value, unit = '', highlight = false}) {
+  const displayVal = typeof value === 'number' ? (Number.isInteger(value) ? value : value.toFixed(4)) : (value ?? '—')
+  const isHigh = typeof value === 'number' && value >= 0.7
+  const isMed = typeof value === 'number' && value >= 0.4 && value < 0.7
+  const chipColor = highlight
+    ? 'var(--c)'
+    : isHigh ? 'var(--g)' : isMed ? 'var(--o)' : 'var(--t2)'
+  return (
+    <div style={{background:'var(--bg2)',border:'1px solid var(--bdr)',borderRadius:9,padding:'10px 12px',minWidth:0}}>
+      <div style={{fontSize:10,fontFamily:'Space Mono',color:'var(--t3)',marginBottom:6,letterSpacing:'.04em',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}} title={label}>{label}</div>
+      <div style={{fontFamily:'Poppins',fontWeight:700,fontSize:16,color:chipColor}}>{displayVal}{unit && <span style={{fontSize:11,fontWeight:500,color:'var(--t3)',marginLeft:2}}>{unit}</span>}</div>
+    </div>
+  )
+}
+
+/* Status badge for match_status */
+function MatchStatusBadge({status}) {
+  const map = {identical:'badge-g',strong:'badge-c',partial:'badge-o',weak:'badge-r',no_match:'badge-r'}
+  return <span className={`badge ${map[status]||'badge-o'}`} style={{fontSize:12,padding:'3px 10px',textTransform:'capitalize'}}>{status?.replace('_',' ')||'—'}</span>
+}
+
 function AlertsPage() {
   const [alerts,setAlerts] = useState([])
   const [loading,setLoading] = useState(true)
   const [filter,setFilter] = useState('all')
   const [alertStats,setAlertStats] = useState(null)
+  const [expandedAlerts,setExpandedAlerts] = useState({})
+
+  const toggleExpand = (id) => setExpandedAlerts(prev => ({...prev, [id]: !prev[id]}))
 
   const fetchAlerts = async () => {
     setLoading(true)
@@ -529,25 +555,74 @@ function AlertsPage() {
         <div className="card" style={{textAlign:'center',padding:40}}><CheckCircle size={32} color="var(--g)" style={{margin:'0 auto 12px'}}/><p style={{color:'var(--t2)'}}>No alerts — all clear!</p></div>
       ):(
         <div className="fu3" style={{display:'flex',flexDirection:'column',gap:10}}>
-          {alerts.map(a=>{const id=a._id||a.id;const done=a.status==='resolved'||a.status==='closed';return(
-            <div key={id} className="card" style={{display:'flex',alignItems:'center',gap:16,opacity:done?.6:1}}>
-              <div style={{width:48,height:48,borderRadius:11,flexShrink:0,background:a.severity==='high'||a.severity==='critical'?'var(--rv)':a.severity==='medium'?'var(--ov)':'var(--cv)',display:'flex',alignItems:'center',justifyContent:'center',color:a.severity==='high'||a.severity==='critical'?'var(--r)':a.severity==='medium'?'var(--o)':'var(--c)'}}><AlertTriangle size={20}/></div>
-              <div style={{flex:1}}>
-                <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:4,flexWrap:'wrap'}}>
-                  <span style={{fontWeight:700,fontSize:14}}>{a.title||'Alert'}</span>
-                  <span className={`badge ${a.severity==='high'||a.severity==='critical'?'badge-r':a.severity==='medium'?'badge-o':'badge-c'}`}>{a.severity}</span>
-                  <span className={`badge ${a.status==='open'?'badge-v':done?'badge-g':'badge-o'}`}>{a.status?.replace('_',' ')}</span>
+          {alerts.map(a=>{const id=a._id||a.id;const done=a.status==='resolved'||a.status==='closed';const mm=a.matchMetrics||{};const isExpanded=!!expandedAlerts[id];const hasMetrics=mm&&Object.keys(mm).length>0;return(
+            <div key={id} className="card" style={{opacity:done?.6:1,padding:0,overflow:'hidden'}}>
+              {/* Header row */}
+              <div style={{display:'flex',alignItems:'center',gap:16,padding:'16px 20px',cursor:hasMetrics?'pointer':'default'}} onClick={()=>hasMetrics&&toggleExpand(id)}>
+                <div style={{width:48,height:48,borderRadius:11,flexShrink:0,background:a.severity==='high'||a.severity==='critical'?'var(--rv)':a.severity==='medium'?'var(--ov)':'var(--cv)',display:'flex',alignItems:'center',justifyContent:'center',color:a.severity==='high'||a.severity==='critical'?'var(--r)':a.severity==='medium'?'var(--o)':'var(--c)'}}><AlertTriangle size={20}/></div>
+                <div style={{flex:1}}>
+                  <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:4,flexWrap:'wrap'}}>
+                    <span style={{fontWeight:700,fontSize:14}}>{a.title||'Alert'}</span>
+                    <span className={`badge ${a.severity==='high'||a.severity==='critical'?'badge-r':a.severity==='medium'?'badge-o':'badge-c'}`}>{a.severity}</span>
+                    <span className={`badge ${a.status==='open'?'badge-v':done?'badge-g':'badge-o'}`}>{a.status?.replace('_',' ')}</span>
+                  </div>
+                  <div style={{display:'flex',gap:16,flexWrap:'wrap'}}>
+                    <span style={{fontSize:13,color:'var(--t2)',display:'flex',alignItems:'center',gap:5}}><Globe size={12}/>{a.platform||'—'}</span>
+                    <span style={{fontSize:13,color:'var(--t2)',display:'flex',alignItems:'center',gap:5}}><Clock size={12}/>{timeAgo(a.createdAt)}</span>
+                    {hasMetrics&&<span style={{fontSize:12,color:'var(--c)',display:'flex',alignItems:'center',gap:4}}><ChevronRight size={12} style={{transform:isExpanded?'rotate(90deg)':'rotate(0deg)',transition:'transform .2s'}}/> {isExpanded?'Hide':'Show'} Metrics</span>}
+                  </div>
                 </div>
-                <div style={{display:'flex',gap:16,flexWrap:'wrap'}}>
-                  <span style={{fontSize:13,color:'var(--t2)',display:'flex',alignItems:'center',gap:5}}><Globe size={12}/>{a.platform||'—'}</span>
-                  <span style={{fontSize:13,color:'var(--t2)',display:'flex',alignItems:'center',gap:5}}><Clock size={12}/>{timeAgo(a.createdAt)}</span>
+                <div style={{display:'flex',gap:8,flexShrink:0}} onClick={e=>e.stopPropagation()}>
+                  {a.status==='open'&&<button className="btn-g" style={{padding:'8px 14px',fontSize:13}} onClick={()=>handleAck(id)}><Eye size={13}/> Review</button>}
+                  {!done&&<button className="btn-p" style={{padding:'8px 14px',fontSize:13}} onClick={()=>handleTakedown(id)}><Zap size={13}/> Takedown</button>}
+                  {a.status==='resolved'&&<button className="btn-g" style={{padding:'8px 14px',fontSize:13}} onClick={()=>handleClose(id)}><CheckCircle size={13}/> Close</button>}
                 </div>
               </div>
-              <div style={{display:'flex',gap:8,flexShrink:0}}>
-                {a.status==='open'&&<button className="btn-g" style={{padding:'8px 14px',fontSize:13}} onClick={()=>handleAck(id)}><Eye size={13}/> Review</button>}
-                {!done&&<button className="btn-p" style={{padding:'8px 14px',fontSize:13}} onClick={()=>handleTakedown(id)}><Zap size={13}/> Takedown</button>}
-                {a.status==='resolved'&&<button className="btn-g" style={{padding:'8px 14px',fontSize:13}} onClick={()=>handleClose(id)}><CheckCircle size={13}/> Close</button>}
-              </div>
+
+              {/* Expandable match metrics detail panel */}
+              {isExpanded&&hasMetrics&&(
+                <div style={{borderTop:'1px solid var(--bdr)',padding:'16px 20px',background:'var(--bg1)',animation:'fadeIn .25s ease'}}>
+                  {/* Source & matched info */}
+                  <div style={{display:'flex',gap:20,marginBottom:16,flexWrap:'wrap'}}>
+                    {a.sourceFileName&&<div style={{fontSize:13,color:'var(--t2)'}}><span style={{color:'var(--t3)',fontFamily:'Space Mono',fontSize:10,marginRight:6}}>SOURCE:</span>{a.sourceFileName}</div>}
+                    {a.sourceType&&<div style={{fontSize:13,color:'var(--t2)'}}><span style={{color:'var(--t3)',fontFamily:'Space Mono',fontSize:10,marginRight:6}}>TYPE:</span>{a.sourceType}</div>}
+                    {a.matchedPublicId&&<div style={{fontSize:13,color:'var(--t2)'}}><span style={{color:'var(--t3)',fontFamily:'Space Mono',fontSize:10,marginRight:6}}>MATCHED:</span>{a.matchedPublicId}</div>}
+                    {a.matchedFilename&&<div style={{fontSize:13,color:'var(--t2)'}}><span style={{color:'var(--t3)',fontFamily:'Space Mono',fontSize:10,marginRight:6}}>FILE:</span>{a.matchedFilename}</div>}
+                  </div>
+
+                  {/* Hash Similarity Metrics */}
+                  <div style={{fontSize:11,fontFamily:'Space Mono',color:'var(--t3)',marginBottom:10,letterSpacing:'.06em'}}>HASH SIMILARITY METRICS</div>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(130px,1fr))',gap:8,marginBottom:16}}>
+                    <MetricChip label="Global Hash" value={mm.globalHashSimilarity} />
+                    <MetricChip label="Colour" value={mm.colourSimilarity} />
+                    <MetricChip label="Crop" value={mm.cropSimilarity} />
+                    <MetricChip label="ORB" value={mm.orbSimilarity} />
+                    <MetricChip label="aHash" value={mm.ahashSimilarity} />
+                    <MetricChip label="pHash" value={mm.phashSimilarity} />
+                    <MetricChip label="dHash" value={mm.dhashSimilarity} />
+                  </div>
+
+                  {/* Scenario Scores */}
+                  <div style={{fontSize:11,fontFamily:'Space Mono',color:'var(--t3)',marginBottom:10,letterSpacing:'.06em'}}>SCENARIO MATCH SCORES</div>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(155px,1fr))',gap:8,marginBottom:16}}>
+                    <MetricChip label="Standard Match" value={mm.scenarioStandardMatch} unit="%" />
+                    <MetricChip label="Crop Match" value={mm.scenarioCropMatch} unit="%" />
+                    <MetricChip label="Structural Match" value={mm.scenarioStructuralMatch} unit="%" />
+                    <MetricChip label="Heavy Transform" value={mm.scenarioHeavyTransformMatch} unit="%" />
+                  </div>
+
+                  {/* Combined Results */}
+                  <div style={{fontSize:11,fontFamily:'Space Mono',color:'var(--t3)',marginBottom:10,letterSpacing:'.06em'}}>COMBINED RESULTS</div>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}}>
+                    <MetricChip label="Combined Similarity" value={mm.combinedSimilarityPercentage} unit="%" highlight />
+                    <MetricChip label="Score / 20" value={mm.similarityScoreOutOf20} unit="/20" highlight />
+                    <div style={{background:'var(--bg2)',border:'1px solid var(--bdr)',borderRadius:9,padding:'10px 12px',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
+                      <div style={{fontSize:10,fontFamily:'Space Mono',color:'var(--t3)',marginBottom:6,letterSpacing:'.04em'}}>MATCH STATUS</div>
+                      <MatchStatusBadge status={mm.matchStatus}/>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )})}
         </div>
@@ -565,6 +640,11 @@ function AnalyticsPage() {
 
   const platformData=(dS?.byPlatform||[]).map(p=>({platform:p._id,count:p.count||0}))
   const statusData=(dS?.byStatus||[]).map(s=>({name:s._id,value:s.count||0}))
+  const similarityTrend=(dS?.similarityTrend||[]).map(item=>({
+    date:item.date,
+    combinedSimilarityPercentage:item.avgCombinedSimilarityPercentage||0,
+    similarityScoreOutOf20:item.avgSimilarityScoreOutOf20||0,
+  }))
   const statusColors={pending:'#b8a9e8',reported:'#b8a9e8',resolved:'#b8a9e8',false_positive:'#b8a9e8'}
   const sevData=(alS?.bySeverity||[]).map(s=>({name:s._id,value:s.count||0}))
   const sevColors={low:'#b8a9e8',medium:'#b8a9e8',high:'#ff3366',critical:'#b8a9e8'}
@@ -582,6 +662,21 @@ function AnalyticsPage() {
         ))}
       </div>
       <div className="fu2" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14,marginBottom:14}}>
+        {similarityTrend.length>0&&<div className="card" style={{gridColumn:'1 / -1'}}>
+          <div style={{fontFamily:'Poppins',fontWeight:700,fontSize:15,marginBottom:16}}>Similarity Trend (Combined % and Score / 20)</div>
+          <ResponsiveContainer width="100%" height={260}>
+            <LineChart data={similarityTrend} margin={{top:0,right:18,left:0,bottom:0}}>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,.04)" vertical={false}/>
+              <XAxis dataKey="date" tick={{fill:'#3a5168',fontSize:11,fontFamily:'Space Mono'}} axisLine={false} tickLine={false}/>
+              <YAxis yAxisId="left" domain={[0,100]} tick={{fill:'#3a5168',fontSize:11}} axisLine={false} tickLine={false}/>
+              <YAxis yAxisId="right" orientation="right" domain={[0,20]} tick={{fill:'#3a5168',fontSize:11}} axisLine={false} tickLine={false}/>
+              <Tooltip content={<CT/>}/>
+              <Legend wrapperStyle={{fontSize:12}}/>
+              <Line yAxisId="left" type="monotone" dataKey="combinedSimilarityPercentage" name="Combined Similarity %" stroke="#ff3366" strokeWidth={2.2} dot={{r:2}} activeDot={{r:4}}/>
+              <Line yAxisId="right" type="monotone" dataKey="similarityScoreOutOf20" name="Similarity Score / 20" stroke="#b8a9e8" strokeWidth={2.2} dot={{r:2}} activeDot={{r:4}}/>
+            </LineChart>
+          </ResponsiveContainer>
+        </div>}
         {platformData.length>0&&<div className="card">
           <div style={{fontFamily:'Poppins',fontWeight:700,fontSize:15,marginBottom:16}}>Detections by Platform</div>
           <ResponsiveContainer width="100%" height={220}>
@@ -606,7 +701,7 @@ function AnalyticsPage() {
           </div>)}
         </div>}
       </div>
-      {!loading&&platformData.length===0&&statusData.length===0&&(
+      {!loading&&platformData.length===0&&statusData.length===0&&similarityTrend.length===0&&(
         <div className="card" style={{textAlign:'center',padding:40}}><BarChart2 size={32} color="var(--t3)" style={{margin:'0 auto 12px'}}/><p style={{color:'var(--t2)'}}>No analytics data yet.</p></div>
       )}
     </div>

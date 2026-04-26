@@ -397,6 +397,47 @@ export const getDetectionStatistics = asyncHandler(async (req, res) => {
         { $group: { _id: "$status", count: { $sum: 1 } } },
     ]);
 
+    const similarityTrend = await Detection.aggregate([
+        {
+            $match: {
+                userId,
+                combinedSimilarityPercentage: { $ne: null },
+                similarityScoreOutOf20: { $ne: null },
+            },
+        },
+        {
+            $group: {
+                _id: {
+                    $dateToString: {
+                        format: "%Y-%m-%d",
+                        date: "$detectionDate",
+                    },
+                },
+                avgCombinedSimilarityPercentage: {
+                    $avg: "$combinedSimilarityPercentage",
+                },
+                avgSimilarityScoreOutOf20: {
+                    $avg: "$similarityScoreOutOf20",
+                },
+                detections: { $sum: 1 },
+            },
+        },
+        {
+            $project: {
+                _id: 0,
+                date: "$_id",
+                avgCombinedSimilarityPercentage: {
+                    $round: ["$avgCombinedSimilarityPercentage", 2],
+                },
+                avgSimilarityScoreOutOf20: {
+                    $round: ["$avgSimilarityScoreOutOf20", 2],
+                },
+                detections: 1,
+            },
+        },
+        { $sort: { date: 1 } },
+    ]);
+
     return res.status(200).json(
         new ApiResponse(200, {
             summary: {
@@ -408,6 +449,7 @@ export const getDetectionStatistics = asyncHandler(async (req, res) => {
             },
             byPlatform: detectionsByPlatform,
             byStatus: detectionsByStatus,
+            similarityTrend,
         })
     );
 });

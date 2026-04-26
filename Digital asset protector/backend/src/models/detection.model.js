@@ -77,6 +77,67 @@ const detectionSchema = new Schema(
             // optional h kyuki har platform pe thumbnail available nahi
         },
 
+        sourceFileName: {
+            type: String,
+            // scanned input filename from logic engine
+        },
+
+        sourceType: {
+            type: String,
+            enum: ["image", "video", "video_frame", "other"],
+            default: "image",
+            // scanned input type
+        },
+
+        matchedAssetExternalId: {
+            type: String,
+            // UUID/reference received from logic detection engine
+        },
+
+        matchedPublicId: {
+            type: String,
+            // ASSET-XXXXXXXX style public ID from logic detection engine
+        },
+
+        matchedFilename: {
+            type: String,
+            // matched asset filename returned by logic detection engine
+        },
+
+        combinedSimilarityPercentage: {
+            type: Number,
+            min: 0,
+            max: 100,
+            // best scenario similarity percentage (0-100)
+        },
+
+        similarityScoreOutOf20: {
+            type: Number,
+            min: 0,
+            max: 20,
+            // similarity score from logic engine in 0-20 scale
+        },
+
+        matchMetrics: {
+            globalHashSimilarity: Number,
+            colourSimilarity: Number,
+            cropSimilarity: Number,
+            orbSimilarity: Number,
+            ahashSimilarity: Number,
+            phashSimilarity: Number,
+            dhashSimilarity: Number,
+            scenarioStandardMatch: Number,
+            scenarioCropMatch: Number,
+            scenarioStructuralMatch: Number,
+            scenarioHeavyTransformMatch: Number,
+            combinedSimilarityPercentage: Number,
+            similarityScoreOutOf20: Number,
+            matchStatus: {
+                type: String,
+                enum: ["identical", "strong", "partial", "weak", "no_match"],
+            },
+        },
+
         // ========== DETECTION STATUS ==========
         // yahan likha h detection ki current status - kya action liya gaya
 

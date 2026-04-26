@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 
+const getJwtSecret = () => process.env.ACCESS_TOKEN_SECRET || process.env.JWT_SECRET;
+
 export const verifyJWT = (req, res, next) => {
   const header = req.headers.authorization;
 
@@ -8,7 +10,7 @@ export const verifyJWT = (req, res, next) => {
   const token = header.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, getJwtSecret());
     req.user = decoded;
     next();
   } catch {
@@ -24,7 +26,7 @@ export const verifyAdmin = (req, res, next) => {
   const token = header.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, getJwtSecret());
     
     // Check if user is admin
     if (decoded.role !== "admin") {

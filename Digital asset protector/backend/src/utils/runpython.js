@@ -7,25 +7,43 @@ const __dirname = path.dirname(__filename);
 
 const runPython = (filePath) => {
   return new Promise((resolve, reject) => {
-    const scriptPath = path.join(__dirname, "../../detection_py/main.py");
+    const projectRoot = path.resolve(__dirname, "../..");
+    const logicDir = path.resolve(projectRoot, "../logic/detection_engine");
+    const scriptPath = path.join(logicDir, "run_compare.py");
+    const pythonExecutable = path.resolve(projectRoot, "../logic/venv/Scripts/python.exe");
 
-    const child = spawn("python", [scriptPath, filePath]);
+    const child = spawn(pythonExecutable, [scriptPath, filePath], { cwd: logicDir });
 
     let data = "";
+    let stderrData = "";
 
     child.stdout.on("data", (chunk) => {
       data += chunk.toString();
     });
 
     child.stderr.on("data", (err) => {
-      console.error("PYTHON ERROR:", err.toString());
+      stderrData += err.toString();
     });
 
-    child.on("close", () => {
+    child.on("close", (code) => {
+      if (code !== 0) {
+        reject(new Error(stderrData || "Python comparison process failed"));
+        return;
+      }
+
       try {
-        resolve(JSON.parse(data));
+        const trimmed = data.trim();
+        const start = trimmed.indexOf("{");
+        const end = trimmed.lastIndexOf("}");
+
+        if (start === -1 || end === -1 || end <= start) {
+          reject(new Error("Invalid Python response"));
+          return;
+        }
+
+        resolve(JSON.parse(trimmed.slice(start, end + 1)));
       } catch (e) {
-        reject("Invalid Python response");
+        reject(new Error("Invalid Python response"));
       }
     });
   });

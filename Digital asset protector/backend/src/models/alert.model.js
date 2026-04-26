@@ -66,6 +66,53 @@ const alertSchema = new Schema(
             // exact URL jahan violation h
         },
 
+        sourceFileName: {
+            type: String,
+            // uploaded/scanned filename that triggered the alert
+        },
+
+        sourceType: {
+            type: String,
+            enum: ["image", "video", "video_frame", "other"],
+            default: "image",
+            // scanned content type
+        },
+
+        matchedAssetExternalId: {
+            type: String,
+            // UUID/reference from logic detection engine
+        },
+
+        matchedPublicId: {
+            type: String,
+            // public asset ID from logic detection engine
+        },
+
+        matchedFilename: {
+            type: String,
+            // matched asset filename from logic detection engine
+        },
+
+        matchMetrics: {
+            globalHashSimilarity: Number,
+            colourSimilarity: Number,
+            cropSimilarity: Number,
+            orbSimilarity: Number,
+            ahashSimilarity: Number,
+            phashSimilarity: Number,
+            dhashSimilarity: Number,
+            scenarioStandardMatch: Number,
+            scenarioCropMatch: Number,
+            scenarioStructuralMatch: Number,
+            scenarioHeavyTransformMatch: Number,
+            combinedSimilarityPercentage: Number,
+            similarityScoreOutOf20: Number,
+            matchStatus: {
+                type: String,
+                enum: ["identical", "strong", "partial", "weak", "no_match"],
+            },
+        },
+
         // ========== VIOLATION TYPE & SEVERITY ==========
         // yahan likha h violation ka type aur seriousness
 
