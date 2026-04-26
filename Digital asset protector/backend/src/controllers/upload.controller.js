@@ -13,6 +13,8 @@ const toNumber = (value, fallback = 0) => {
     return Number.isFinite(numeric) ? numeric : fallback;
 };
 
+const isFiniteNumber = (value) => Number.isFinite(Number(value));
+
 const severityFromScore = (score) => {
     if (score >= 18) return "critical";
     if (score >= 15) return "high";
@@ -36,6 +38,75 @@ const buildMatchMetrics = (bestMatch) => ({
     similarityScoreOutOf20: toNumber(bestMatch?.similarity_score_out_of_20),
     matchStatus: bestMatch?.match_status || "no_match",
 });
+
+const shouldGenerateAlertFromMetrics = (metrics) => {
+    const hasRequiredCoreMetrics = [
+        metrics?.globalHashSimilarity,
+        metrics?.colourSimilarity,
+        metrics?.cropSimilarity,
+        metrics?.orbSimilarity,
+        metrics?.ahashSimilarity,
+        metrics?.phashSimilarity,
+        metrics?.dhashSimilarity,
+        metrics?.combinedSimilarityPercentage,
+    ].every(isFiniteNumber);
+
+    if (!hasRequiredCoreMetrics) {
+        return false;
+    }
+
+    const normalizedStatus = String(metrics?.matchStatus || "no_match").toLowerCase();
+
+    if (["identical", "strong", "partial"].includes(normalizedStatus)) {
+        return true;
+    }
+
+    const similarityScoreOutOf20 = toNumber(metrics?.similarityScoreOutOf20, 0);
+    const combinedSimilarityPercentage = toNumber(metrics?.combinedSimilarityPercentage, 0);
+    const scenarioHeavyTransformMatch = toNumber(metrics?.scenarioHeavyTransformMatch, 0);
+
+    if (similarityScoreOutOf20 >= ALERT_THRESHOLD) {
+        return true;
+    }
+
+    if (combinedSimilarityPercentage >= 60) {
+        return true;
+    }
+
+    // Secondary signal: strong ORB with transform scenario still indicates probable reuse.
+    return toNumber(metrics?.orbSimilarity, 0) >= 0.6 && scenarioHeavyTransformMatch >= 60;
+};
+
+const isTransformedExistingMatch = (metrics) => {
+    const cropScenario = toNumber(metrics?.scenarioCropMatch, 0);
+    const structuralScenario = toNumber(metrics?.scenarioStructuralMatch, 0);
+    const heavyTransformScenario = toNumber(metrics?.scenarioHeavyTransformMatch, 0);
+    const orbSimilarity = toNumber(metrics?.orbSimilarity, 0);
+    const cropSimilarity = toNumber(metrics?.cropSimilarity, 0);
+    const globalSimilarity = toNumber(metrics?.globalHashSimilarity, 0);
+    const combinedSimilarity = toNumber(metrics?.combinedSimilarityPercentage, 0);
+
+    const hasScenarioSignal =
+        cropScenario >= 45 ||
+        structuralScenario >= 48 ||
+        heavyTransformScenario >= 50 ||
+        (orbSimilarity >= 0.32 && (cropScenario >= 40 || structuralScenario >= 40));
+
+    const hasSupportSignal =
+        cropSimilarity >= 0.18 ||
+        globalSimilarity >= 0.24 ||
+        orbSimilarity >= 0.35 ||
+        combinedSimilarity >= 45;
+
+    return hasScenarioSignal && hasSupportSignal;
+};
+
+const buildSourceAssetHash = ({ userId, sourceHashes, sourceFileName, fileSize }) => {
+    const ahash = sourceHashes?.ahash || "na";
+    const phash = sourceHashes?.phash || "na";
+    const dhash = sourceHashes?.dhash || "na";
+    return `upload-${userId}-${ahash}-${phash}-${dhash}-${sourceFileName}-${fileSize || 0}`;
+};
 
 const ensureLinkedAsset = async ({ userId, bestMatch, sourceType }) => {
     const externalId = bestMatch?.matched_asset_id || "unknown";
@@ -80,26 +151,94 @@ export const uploadFile = asyncHandler(async (req, res) => {
             throw new ApiError(500, comparisonResult.error);
         }
 
-        const bestMatch = comparisonResult?.best_match;
-
-        if (!bestMatch) {
-            return res.status(200).json({
-                status: "no_match",
-                ...comparisonResult,
-            });
-        }
-
         const userId = req.user?._id;
         if (!userId) {
             throw new ApiError(401, "Unauthorized request");
         }
 
+        const bestMatch = comparisonResult?.best_match;
         const sourceFileName = comparisonResult?.source_file_name || req.file.originalname;
         const sourceType = comparisonResult?.source_type || "image";
+        const sourceHashes = comparisonResult?.source_hashes || {};
+
+        if (!bestMatch) {
+            const sourceAssetHash = buildSourceAssetHash({
+                userId,
+                sourceHashes,
+                sourceFileName,
+                fileSize: req.file?.size,
+            });
+
+            const createdAsset = await Asset.create({
+                title: sourceFileName,
+                description: `Protected upload for ${sourceFileName}`,
+                fileUrl: `upload://${sourceFileName}`,
+                fileHash: sourceAssetHash,
+                fileType: sourceType === "video" ? "video" : "image",
+                fileSize: req.file?.size || 0,
+                owner: userId,
+                status: "active",
+                isProtected: true,
+                platforms: ["other"],
+                filename: sourceFileName,
+                source: "user-upload",
+                ahash: sourceHashes?.ahash || null,
+                phash: sourceHashes?.phash || null,
+                dhash: sourceHashes?.dhash || null,
+                colorhash: sourceHashes?.colorhash || null,
+            });
+
+            return res.status(200).json({
+                status: "no_match",
+                ...comparisonResult,
+                matchedFilename: null,
+                confidence: 0,
+                uploadedAssetId: createdAsset?._id || null,
+                alertCreated: false,
+            });
+        }
+
         const matchMetrics = buildMatchMetrics(bestMatch);
         const combinedSimilarityPercentage = matchMetrics.combinedSimilarityPercentage;
         const similarityScoreOutOf20 = matchMetrics.similarityScoreOutOf20;
-        const shouldCreateAlert = similarityScoreOutOf20 >= ALERT_THRESHOLD;
+        const shouldCreateAlert = shouldGenerateAlertFromMetrics(matchMetrics);
+        const transformedExistingMatch = isTransformedExistingMatch(matchMetrics);
+        const isExistingMatch = shouldCreateAlert || transformedExistingMatch;
+        const normalizedMatchStatus = String(matchMetrics.matchStatus || "no_match").toLowerCase();
+        const isDuplicateUpload = ["identical", "strong", "partial"].includes(normalizedMatchStatus) || isExistingMatch;
+
+        let createdUploadedAsset = null;
+        if (!isDuplicateUpload) {
+            const sourceAssetHash = buildSourceAssetHash({
+                userId,
+                sourceHashes,
+                sourceFileName,
+                fileSize: req.file?.size,
+            });
+
+            createdUploadedAsset = await Asset.findOne({ fileHash: sourceAssetHash, owner: userId });
+
+            if (!createdUploadedAsset) {
+                createdUploadedAsset = await Asset.create({
+                    title: sourceFileName,
+                    description: `Protected upload for ${sourceFileName}`,
+                    fileUrl: `upload://${sourceFileName}`,
+                    fileHash: sourceAssetHash,
+                    fileType: sourceType === "video" ? "video" : "image",
+                    fileSize: req.file?.size || 0,
+                    owner: userId,
+                    status: "active",
+                    isProtected: true,
+                    platforms: ["other"],
+                    filename: sourceFileName,
+                    source: "user-upload",
+                    ahash: sourceHashes?.ahash || null,
+                    phash: sourceHashes?.phash || null,
+                    dhash: sourceHashes?.dhash || null,
+                    colorhash: sourceHashes?.colorhash || null,
+                });
+            }
+        }
 
         const linkedAsset = await ensureLinkedAsset({ userId, bestMatch, sourceType });
 
@@ -111,7 +250,7 @@ export const uploadFile = asyncHandler(async (req, res) => {
             confidence: Math.round(combinedSimilarityPercentage),
             matchScore: Math.round((similarityScoreOutOf20 / 20) * 100),
             thumbnailUrl: null,
-            status: shouldCreateAlert ? "pending" : "false_positive",
+            status: isExistingMatch ? "pending" : "false_positive",
             sourceFileName,
             sourceType,
             matchedAssetExternalId: bestMatch?.matched_asset_id,
@@ -164,11 +303,16 @@ export const uploadFile = asyncHandler(async (req, res) => {
         await linkedAsset.save();
 
         return res.status(200).json({
-            status: shouldCreateAlert ? "match" : "no_match",
+            status: isExistingMatch ? "match" : "no_match",
             ...comparisonResult,
+            matchedFilename: bestMatch?.matched_filename || null,
+            confidence: combinedSimilarityPercentage,
             detectionId: detection._id,
             alertId: createdAlert?._id || null,
             alertCreated: Boolean(createdAlert),
+            uploadedAssetId: createdUploadedAsset?._id || null,
+            isDuplicate: isDuplicateUpload,
+            transformedMatchDetected: transformedExistingMatch,
         });
     } catch (error) {
         throw new ApiError(500, error?.message || "Detection failed");

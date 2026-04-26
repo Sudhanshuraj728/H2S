@@ -242,6 +242,9 @@ function UploadPage({setPage}) {
     try {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("title", title || file.name.replace(/\.[^.]+$/, ''));
+      formData.append("description", description || '');
+      formData.append("fileType", fileType || 'image');
       
       const res = await fetch("http://localhost:8000/api/upload", {
         method: "POST",
@@ -257,11 +260,18 @@ function UploadPage({setPage}) {
       clearInterval(iv); setProgress(100); 
       setCreatedAsset(data);
       
-      if (data.status === "match") {
-        setError(`Duplicate Detected: Matches ${data.matched_file} (Confidence: ${data.confidence}%)`);
+      if (data.isDuplicate || data.status === "match") {
+        const matchedName = data?.matchedFilename || data?.best_match?.matched_filename || 'existing protected asset';
+        const confidence = Number(data?.confidence ?? data?.best_match?.combined_similarity_percentage ?? 0);
+        if (data?.transformedMatchDetected) {
+          setError(`Transformed match detected (crop/filter): Matches ${matchedName} (Confidence: ${confidence.toFixed(2)}%)`);
+        } else {
+          setError(`Duplicate Detected: Matches ${matchedName} (Confidence: ${confidence.toFixed(2)}%)`);
+        }
         setStep(0);
       } else {
-        setTimeout(()=>setStep(2),600);
+        setError('');
+        setTimeout(()=>setStep(3),600);
       }
     } catch(err) { clearInterval(iv); setProgress(0); setStep(0); setError(err.message||'Upload failed') }
   }
@@ -274,9 +284,9 @@ function UploadPage({setPage}) {
     if(['pdf','doc','docx','txt','xls','xlsx'].includes(ext)) return 'document'
     return 'image'
   }
-  const onFileSelected = (f) => { setFile(f); setFileType(guessFileType(f)); if(!title) setTitle(f.name.replace(/\.[^.]+$/,'')) }
+  const onFileSelected = (f) => { setError(''); setFile(f); setFileType(guessFileType(f)); if(!title) setTitle(f.name.replace(/\.[^.]+$/,'')) }
 
-  const steps=['Upload Asset','Fingerprinting','Registering','Protected']
+  const steps=['Upload Asset','Fingerprinting','Registering','Registered']
   const fingerSteps=[{label:'Analyzing file structure',done:progress>20},{label:'Generating cryptographic hash',done:progress>40},{label:'Creating digital fingerprint',done:progress>60},{label:'Registering asset in database',done:progress>80},{label:'Protection activated',done:progress>=100}]
 
   return (
@@ -371,7 +381,7 @@ function UploadPage({setPage}) {
         </div>
       )}
 
-      {step===2&&(
+      {step>=2&&(
         <div className="fu2">
           <div className="card" style={{textAlign:'center',padding:'48px 40px'}}>
             <div style={{width:80,height:80,background:'var(--gv)',border:'2px solid var(--gb)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 24px',animation:'glow 2s ease-in-out infinite'}}><CheckCircle size={40} color="var(--g)"/></div>
@@ -468,6 +478,14 @@ function AssetLibrary({setPage}) {
                   <span style={{color:'var(--t2)',fontSize:12}}>{formatBytes(a.fileSize)} · {formatDate(a.createdAt)}</span>
                   <button className="btn-g" style={{padding:'4px 8px',fontSize:12,color:'var(--r)'}} onClick={()=>handleDelete(id)} title="Delete"><X size={13}/></button>
                 </div>
+                {(a.ahash || a.phash || a.dhash) && (
+                  <div style={{marginTop:10,paddingTop:8,borderTop:'1px solid var(--bdr)',display:'grid',gridTemplateColumns:'1fr',gap:4}}>
+                    <div style={{fontSize:10,fontFamily:'Space Mono',color:'var(--t3)',letterSpacing:'.04em'}}>HASHES</div>
+                    <div style={{fontSize:11,color:'var(--t2)',fontFamily:'Space Mono'}}>aHash: {a.ahash || '—'}</div>
+                    <div style={{fontSize:11,color:'var(--t2)',fontFamily:'Space Mono'}}>pHash: {a.phash || '—'}</div>
+                    <div style={{fontSize:11,color:'var(--t2)',fontFamily:'Space Mono'}}>dHash: {a.dhash || '—'}</div>
+                  </div>
+                )}
               </div>
             </div>
           )})}
@@ -636,18 +654,105 @@ function AlertsPage() {
    ═══════════════════════════════════════════════════════════════════════════ */
 function AnalyticsPage() {
   const [aS,setAS]=useState(null),[dS,setDS]=useState(null),[alS,setALS]=useState(null),[loading,setLoading]=useState(true)
-  useEffect(()=>{(async()=>{setLoading(true);const[a,d,al]=await Promise.allSettled([assetsAPI.getStats(),detectionsAPI.getStats(),alertsAPI.getStats()]);if(a.status==='fulfilled')setAS(a.value.data||a.value);if(d.status==='fulfilled')setDS(d.value.data||d.value);if(al.status==='fulfilled')setALS(al.value.data||al.value);setLoading(false)})()},[])
+  const [mediaDetections,setMediaDetections]=useState([])
 
-  const platformData=(dS?.byPlatform||[]).map(p=>({platform:p._id,count:p.count||0}))
-  const statusData=(dS?.byStatus||[]).map(s=>({name:s._id,value:s.count||0}))
-  const similarityTrend=(dS?.similarityTrend||[]).map(item=>({
-    date:item.date,
-    combinedSimilarityPercentage:item.avgCombinedSimilarityPercentage||0,
-    similarityScoreOutOf20:item.avgSimilarityScoreOutOf20||0,
+  useEffect(()=>{
+    (async()=>{
+      setLoading(true)
+      const [a,d,al,allDetections] = await Promise.allSettled([
+        assetsAPI.getStats(),
+        detectionsAPI.getStats(),
+        alertsAPI.getStats(),
+        detectionsAPI.getAll('page=1&limit=500'),
+      ])
+      if(a.status==='fulfilled') setAS(a.value.data||a.value)
+      if(d.status==='fulfilled') setDS(d.value.data||d.value)
+      if(al.status==='fulfilled') setALS(al.value.data||al.value)
+      if(allDetections.status==='fulfilled') {
+        const payload = allDetections.value.data || allDetections.value
+        const detections = payload?.detections || []
+        setMediaDetections(Array.isArray(detections) ? detections : [])
+      }
+      setLoading(false)
+    })()
+  },[])
+
+  const getMediaName = (detection, index) => {
+    const sourceName = detection?.sourceFileName
+    if (sourceName) return sourceName
+    const matchedName = detection?.matchedFilename
+    if (matchedName) return matchedName
+    const assetTitle = detection?.assetId?.title
+    if (assetTitle) return assetTitle
+    const fromUrl = detection?.detectedUrl?.split('/')?.pop()
+    if (fromUrl) return fromUrl
+    return `Media ${index + 1}`
+  }
+
+  const compactMediaName = (name, max = 26) => {
+    if (!name) return 'Unnamed media'
+    const cleaned = String(name).replace(/^\d+[_-]?/, '').trim()
+    if (cleaned.length <= max) return cleaned
+    return `${cleaned.slice(0, max - 1)}…`
+  }
+
+  const getSimilarityScoreOutOf20 = (detection) => {
+    const candidates = [
+      detection?.similarityScoreOutOf20,
+      detection?.matchMetrics?.similarityScoreOutOf20,
+    ]
+
+    for (const candidate of candidates) {
+      if (candidate === null || candidate === undefined || candidate === '') continue
+      const numeric = Number(candidate)
+      if (Number.isFinite(numeric)) return numeric
+    }
+
+    return null
+  }
+
+  const mediaScoreLineData = [...mediaDetections]
+    .sort((a,b)=>new Date(a?.detectionDate||a?.createdAt||0)-new Date(b?.detectionDate||b?.createdAt||0))
+    .map((d,index)=>{
+      const score = getSimilarityScoreOutOf20(d)
+      if (score === null) return null
+
+      const mediaName = getMediaName(d, index)
+      return {
+        mediaIndex: index + 1,
+        mediaName,
+        mediaLabel: `M${index + 1}`,
+        mediaDisplayName: compactMediaName(mediaName),
+        similarityScoreOutOf20: Number(score.toFixed(2)),
+      }
+    })
+    .filter(Boolean)
+    .slice(-12)
+
+  const piePalette = ['#ff3366','#b8a9e8','#4dd4ac','#ffc857','#5aa9e6','#ff7f50','#9bdeac','#c88cff','#ff9f1c','#2ec4b6']
+  const topPieItems = [...mediaScoreLineData]
+    .sort((a,b)=>b.similarityScoreOutOf20-a.similarityScoreOutOf20)
+    .slice(0,8)
+  const remainingPieItems = [...mediaScoreLineData]
+    .sort((a,b)=>b.similarityScoreOutOf20-a.similarityScoreOutOf20)
+    .slice(8)
+  const remainingTotal = remainingPieItems.reduce((sum, item) => sum + item.similarityScoreOutOf20, 0)
+
+  const mediaScorePieData = topPieItems.map((entry, index) => ({
+    name: entry.mediaDisplayName,
+    fullName: entry.mediaName,
+    value: Number(entry.similarityScoreOutOf20.toFixed(2)),
+    fill: piePalette[index % piePalette.length],
   }))
-  const statusColors={pending:'#b8a9e8',reported:'#b8a9e8',resolved:'#b8a9e8',false_positive:'#b8a9e8'}
-  const sevData=(alS?.bySeverity||[]).map(s=>({name:s._id,value:s.count||0}))
-  const sevColors={low:'#b8a9e8',medium:'#b8a9e8',high:'#ff3366',critical:'#b8a9e8'}
+
+  if (remainingTotal > 0) {
+    mediaScorePieData.push({
+      name: 'Others',
+      fullName: `${remainingPieItems.length} more uploads`,
+      value: Number(remainingTotal.toFixed(2)),
+      fill: '#3a5168',
+    })
+  }
 
   return (
     <div style={{padding:'28px 32px',maxWidth:1200}} className="fu">
@@ -662,46 +767,49 @@ function AnalyticsPage() {
         ))}
       </div>
       <div className="fu2" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14,marginBottom:14}}>
-        {similarityTrend.length>0&&<div className="card" style={{gridColumn:'1 / -1'}}>
-          <div style={{fontFamily:'Poppins',fontWeight:700,fontSize:15,marginBottom:16}}>Similarity Trend (Combined % and Score / 20)</div>
+        {mediaScoreLineData.length>0&&<div className="card" style={{gridColumn:'1 / -1'}}>
+          <div style={{fontFamily:'Poppins',fontWeight:700,fontSize:15,marginBottom:16}}>Similarity Score / 20 by Uploaded Media</div>
           <ResponsiveContainer width="100%" height={260}>
-            <LineChart data={similarityTrend} margin={{top:0,right:18,left:0,bottom:0}}>
+            <LineChart data={mediaScoreLineData} margin={{top:0,right:18,left:0,bottom:0}}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,.04)" vertical={false}/>
-              <XAxis dataKey="date" tick={{fill:'#3a5168',fontSize:11,fontFamily:'Space Mono'}} axisLine={false} tickLine={false}/>
-              <YAxis yAxisId="left" domain={[0,100]} tick={{fill:'#3a5168',fontSize:11}} axisLine={false} tickLine={false}/>
-              <YAxis yAxisId="right" orientation="right" domain={[0,20]} tick={{fill:'#3a5168',fontSize:11}} axisLine={false} tickLine={false}/>
+              <XAxis dataKey="mediaLabel" interval={0} height={46} tick={{fill:'#3a5168',fontSize:10,fontFamily:'Space Mono'}} axisLine={false} tickLine={false}/>
+              <YAxis domain={[0,20]} tick={{fill:'#3a5168',fontSize:11}} axisLine={false} tickLine={false}/>
               <Tooltip content={<CT/>}/>
-              <Legend wrapperStyle={{fontSize:12}}/>
-              <Line yAxisId="left" type="monotone" dataKey="combinedSimilarityPercentage" name="Combined Similarity %" stroke="#ff3366" strokeWidth={2.2} dot={{r:2}} activeDot={{r:4}}/>
-              <Line yAxisId="right" type="monotone" dataKey="similarityScoreOutOf20" name="Similarity Score / 20" stroke="#b8a9e8" strokeWidth={2.2} dot={{r:2}} activeDot={{r:4}}/>
+              <Line type="linear" dataKey="similarityScoreOutOf20" name="Similarity Score / 20" stroke="#ff3366" strokeWidth={2.2} dot={{r:3}} activeDot={{r:5}} connectNulls={false}/>
             </LineChart>
           </ResponsiveContainer>
+          <div style={{marginTop:10,display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:8}}>
+            {mediaScoreLineData.map(item=>(
+              <div key={item.mediaLabel} style={{fontSize:11,color:'var(--t2)',display:'flex',justifyContent:'space-between',gap:8,padding:'6px 8px',border:'1px solid var(--bdr)',borderRadius:8,background:'var(--bg2)'}}>
+                <span style={{fontFamily:'Space Mono',color:'var(--t3)'}}>{item.mediaLabel}</span>
+                <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}} title={item.mediaName}>{item.mediaDisplayName}</span>
+                <span style={{fontFamily:'Space Mono',color:'var(--c)'}}>{item.similarityScoreOutOf20}</span>
+              </div>
+            ))}
+          </div>
         </div>}
-        {platformData.length>0&&<div className="card">
-          <div style={{fontFamily:'Poppins',fontWeight:700,fontSize:15,marginBottom:16}}>Detections by Platform</div>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={platformData} margin={{top:0,right:0,left:-20,bottom:0}}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,.04)" vertical={false}/>
-              <XAxis dataKey="platform" tick={{fill:'#3a5168',fontSize:11,fontFamily:'Space Mono'}} axisLine={false} tickLine={false}/>
-              <YAxis tick={{fill:'#3a5168',fontSize:11}} axisLine={false} tickLine={false}/>
-              <Tooltip content={<CT/>}/><Bar dataKey="count" name="Detections" fill="#b8a9e8" radius={[4,4,0,0]}/>
-            </BarChart>
+        {mediaScorePieData.length>0&&<div className="card" style={{gridColumn:'1 / -1'}}>
+          <div style={{fontFamily:'Poppins',fontWeight:700,fontSize:15,marginBottom:16}}>Similarity Score Share by Uploaded Media</div>
+          <ResponsiveContainer width="100%" height={280}>
+            <PieChart>
+              <Pie data={mediaScorePieData} cx="50%" cy="50%" innerRadius={55} outerRadius={95} paddingAngle={2} dataKey="value" nameKey="name">
+                {mediaScorePieData.map((entry,i)=><Cell key={i} fill={entry.fill}/>) }
+              </Pie>
+              <Tooltip content={<CT/>}/>
+            </PieChart>
           </ResponsiveContainer>
-        </div>}
-        {statusData.length>0&&<div className="card">
-          <div style={{fontFamily:'Poppins',fontWeight:700,fontSize:15,marginBottom:16}}>Detection Status</div>
-          <ResponsiveContainer width="100%" height={160}>
-            <PieChart><Pie data={statusData} cx="50%" cy="50%" innerRadius={40} outerRadius={65} paddingAngle={3} dataKey="value">
-              {statusData.map((e,i)=><Cell key={i} fill={statusColors[e.name]||'#3a5168'}/>)}
-            </Pie><Tooltip content={<CT/>}/></PieChart>
-          </ResponsiveContainer>
-          {statusData.map((s,i)=><div key={i} style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:8}}>
-            <div style={{display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:'50%',background:statusColors[s.name]||'#3a5168'}}/><span style={{fontSize:13,color:'var(--t2)',textTransform:'capitalize'}}>{s.name?.replace('_',' ')}</span></div>
-            <span style={{fontSize:13,fontWeight:600,fontFamily:'Space Mono'}}>{s.value}</span>
-          </div>)}
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:8,marginTop:8}}>
+            {mediaScorePieData.map((item, i)=>(
+              <div key={`${item.name}-${i}`} style={{display:'flex',alignItems:'center',gap:8,fontSize:12,color:'var(--t2)',padding:'6px 8px',border:'1px solid var(--bdr)',borderRadius:8,background:'var(--bg2)'}}>
+                <span style={{width:10,height:10,borderRadius:'50%',background:item.fill,display:'inline-block',flexShrink:0}} />
+                <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}} title={item.fullName || item.name}>{item.name}</span>
+                <span style={{marginLeft:'auto',fontFamily:'Space Mono',color:'var(--c)'}}>{item.value}</span>
+              </div>
+            ))}
+          </div>
         </div>}
       </div>
-      {!loading&&platformData.length===0&&statusData.length===0&&similarityTrend.length===0&&(
+      {!loading&&mediaScoreLineData.length===0&&mediaScorePieData.length===0&&(
         <div className="card" style={{textAlign:'center',padding:40}}><BarChart2 size={32} color="var(--t3)" style={{margin:'0 auto 12px'}}/><p style={{color:'var(--t2)'}}>No analytics data yet.</p></div>
       )}
     </div>

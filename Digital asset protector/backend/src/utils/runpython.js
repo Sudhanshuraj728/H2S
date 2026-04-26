@@ -11,11 +11,18 @@ const runPython = (filePath) => {
     const logicDir = path.resolve(projectRoot, "../logic/detection_engine");
     const scriptPath = path.join(logicDir, "run_compare.py");
     const pythonExecutable = path.resolve(projectRoot, "../logic/venv/Scripts/python.exe");
+    const resolvedFilePath = path.isAbsolute(filePath)
+      ? filePath
+      : path.resolve(projectRoot, filePath);
 
-    const child = spawn(pythonExecutable, [scriptPath, filePath], { cwd: logicDir });
+    const child = spawn(pythonExecutable, [scriptPath, resolvedFilePath], { cwd: logicDir });
 
     let data = "";
     let stderrData = "";
+
+    child.on("error", (err) => {
+      reject(new Error(`Python process failed to start: ${err.message}`));
+    });
 
     child.stdout.on("data", (chunk) => {
       data += chunk.toString();
@@ -27,6 +34,17 @@ const runPython = (filePath) => {
 
     child.on("close", (code) => {
       if (code !== 0) {
+        const trimmed = data.trim();
+        try {
+          const parsed = JSON.parse(trimmed);
+          if (parsed?.error) {
+            reject(new Error(parsed.error));
+            return;
+          }
+        } catch {
+          // Ignore JSON parse error and fall back to stderr.
+        }
+
         reject(new Error(stderrData || "Python comparison process failed"));
         return;
       }

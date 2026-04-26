@@ -187,6 +187,26 @@ const assetSchema = new Schema(
             // kuch cases mein different hashing algorithms use ho skte hain
         },
 
+        ahash: {
+            type: String,
+            // perceptual average hash from detection engine
+        },
+
+        phash: {
+            type: String,
+            // perceptual pHash from detection engine
+        },
+
+        dhash: {
+            type: String,
+            // perceptual dHash from detection engine
+        },
+
+        colorhash: {
+            type: String,
+            // color hash from detection engine
+        },
+
         uploadedAt: {
             type: Date,
             // kab ye asset upload hua - separate from uploadDate for clarity

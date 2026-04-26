@@ -15,7 +15,7 @@ def compare_image(file_path: str) -> dict:
     ahash, phash, dhash, colorhash = compute_hashes(image)
     tile_hashes = compute_tile_hashes(image)
 
-    return compare_hashes_to_assets(
+    result = compare_hashes_to_assets(
         source_name=os.path.basename(file_path),
         source_type="image",
         ahash=ahash,
@@ -25,6 +25,15 @@ def compare_image(file_path: str) -> dict:
         tile_hashes=tile_hashes,
         source_path=file_path,
     )
+
+    result["source_hashes"] = {
+        "ahash": ahash,
+        "phash": phash,
+        "dhash": dhash,
+        "colorhash": colorhash,
+    }
+
+    return result
 
 
 def main() -> int:

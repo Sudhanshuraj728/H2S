@@ -1,7 +1,6 @@
 # hashing.py
 from PIL import Image, ImageEnhance
 import imagehash
-import numpy as np
 from typing import Tuple, List, Dict
 
 
@@ -26,7 +25,7 @@ def compute_hashes(image: Image.Image) -> Tuple[str, str, str, str]:
     p = imagehash.phash(processed)
     d = imagehash.dhash(processed)
     c = imagehash.colorhash(processed)
-    
+
     return str(a), str(p), str(d), str(c)
 
 

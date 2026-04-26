@@ -22,10 +22,19 @@ def get_status(score: float) -> Literal["identical", "strong", "partial", "weak"
 
 def hamming_sim(hash1: str, hash2: str) -> float:
     """Calculate Hamming similarity (0-1, higher=more similar)"""
-    h1 = imagehash.hex_to_hash(hash1)
-    h2 = imagehash.hex_to_hash(hash2)
+    # Handle empty or invalid hashes
+    if not hash1 or not hash2:
+        return 0.0
+    
+    try:
+        h1 = imagehash.hex_to_hash(hash1)
+        h2 = imagehash.hex_to_hash(hash2)
+    except (ValueError, TypeError):
+        # Invalid hash format
+        return 0.0
+    
     dist = h1 - h2
-    max_dist = len(h1.hash) ** 2
+    max_dist = h1.hash.size  # Correct: total bits in hash (64 for 8x8 hash)
     sim = 1.0 - (dist / max_dist)
     return sim
 
