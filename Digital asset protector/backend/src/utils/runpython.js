@@ -1,5 +1,6 @@
 import { spawn } from "child_process";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -10,7 +11,9 @@ const runPython = (filePath) => {
     const projectRoot = path.resolve(__dirname, "../..");
     const logicDir = path.resolve(projectRoot, "../logic/detection_engine");
     const scriptPath = path.join(logicDir, "run_compare.py");
-    const pythonExecutable = path.resolve(projectRoot, "../logic/venv/Scripts/python.exe");
+    const venvPython = path.resolve(projectRoot, "../logic/venv/Scripts/python.exe");
+    // Use the venv python if it exists, otherwise fall back to system python
+    const pythonExecutable = fs.existsSync(venvPython) ? venvPython : "python";
     const resolvedFilePath = path.isAbsolute(filePath)
       ? filePath
       : path.resolve(projectRoot, filePath);

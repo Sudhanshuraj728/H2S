@@ -33,28 +33,37 @@ IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".webp")
 VIDEO_EXTENSIONS = (".mp4", ".avi", ".mkv", ".mov")
 
 def _orb_similarity(asset_path: str, source_path: str) -> float:
-    """ORB feature matching for geometric robustness (0-1)"""
+    """
+    ORB feature matching for geometric robustness (0-1).
+    FIX: Divides by min(keypoints) instead of total matches so that a cropped
+    image that fully matches a sub-region of the original scores high (not low).
+    Also uses a looser distance threshold (65) for better recall on compressed/cropped images.
+    """
     try:
         img1 = cv2.imread(asset_path, cv2.IMREAD_GRAYSCALE)
         img2 = cv2.imread(source_path, cv2.IMREAD_GRAYSCALE)
         if img1 is None or img2 is None:
             return 0.0
-        
+
         orb = cv2.ORB_create(ORB_FEATURES)
         kp1, des1 = orb.detectAndCompute(img1, None)
         kp2, des2 = orb.detectAndCompute(img2, None)
-        
-        if des1 is None or des2 is None:
+
+        if des1 is None or des2 is None or len(kp1) == 0 or len(kp2) == 0:
             return 0.0
-        
+
         bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
         matches = bf.match(des1, des2)
         matches = sorted(matches, key=lambda x: x.distance)
-        
-        # Threshold 50: ~19% bit difference max. Keeps precision high — avoids
-        # accidental matches between unrelated images that inflate the ratio.
-        good_matches = [m for m in matches if m.distance < 50]
-        return len(good_matches) / max(len(matches), 1)
+
+        # Threshold 65: slightly looser to improve recall for
+        # compressed/cropped/resized images while still rejecting random matches.
+        good_matches = [m for m in matches if m.distance < 65]
+
+        # FIXED: Divide by the SMALLER keypoint set (the crop has fewer keypoints).
+        # This gives a true "fraction of the query keypoints that found a home" score.
+        min_kp = min(len(kp1), len(kp2))
+        return len(good_matches) / max(min_kp, 1)
     except:
         return 0.0
 
@@ -69,22 +78,20 @@ def _hamming_ratio(hash1: str, hash2: str) -> float:
 
 def _tile_similarity(asset_tile_hashes: List[Dict], query_tile_hashes: List[Dict]) -> float:
     """
-    UPDATED: Position-INDEPENDENT tile matching for crop resistance.
+    Position-INDEPENDENT tile matching for crop resistance.
     Each query tile finds its BEST matching asset tile regardless of position.
 
-    OLD approach (position-based): query tile (0,0) only matched asset tile (0,0).
-    Problem: a cropped image's content lands at DIFFERENT grid positions, so score was always ~0.
-
-    NEW approach (best-match): each query tile scans ALL asset tiles and takes
-    the highest similarity. A crop's content will find its counterpart asset tile
-    even if it's no longer at the same grid position.
+    FIXED: Takes the TOP-K scoring pairs (K = min tile count) instead of
+    averaging ALL query tiles. This prevents score dilution when the query
+    has more tiles than the asset (e.g., 34-tile query vs 9-tile asset).
+    A crop's matching tiles score high; we keep only those top matches.
     """
     from similarity import hamming_sim
-    
+
     if not asset_tile_hashes or not query_tile_hashes:
         return 0.0
 
-    total_best = 0.0
+    best_scores = []
 
     for query_tile in query_tile_hashes:
         best_tile_sim = 0.0
@@ -95,9 +102,13 @@ def _tile_similarity(asset_tile_hashes: List[Dict], query_tile_hashes: List[Dict
             sim = (ah_sim + ph_sim + dh_sim) / 3.0
             if sim > best_tile_sim:
                 best_tile_sim = sim
-        total_best += best_tile_sim
+        best_scores.append(best_tile_sim)
 
-    return total_best / len(query_tile_hashes)
+    # Use top-K scores where K = number of asset tiles to avoid dilution
+    # from extra query tiles that have no matching region in a small asset tile set.
+    k = min(len(asset_tile_hashes), len(best_scores))
+    top_scores = sorted(best_scores, reverse=True)[:k]
+    return sum(top_scores) / k if top_scores else 0.0
 
 
 def score_against_asset(
@@ -126,6 +137,19 @@ def score_against_asset(
     # --- Crop / Tile similarity (0-1) ---
     tile_sim = _tile_similarity(asset.tile_hashes, tile_hashes or []) if tile_hashes else 0.0
 
+    # --- Region Match (0-1): Does the query's GLOBAL hash match any single tile of the asset?
+    # This is the key insight for crop detection: a cropped image's overall hash
+    # should resemble one of the original's tile hashes (the tile covering that region).
+    region_sim = 0.0
+    if asset.tile_hashes:
+        for asset_tile in asset.tile_hashes:
+            ats_a = hamming_sim(asset_tile["ahash"], ahash)
+            ats_p = hamming_sim(asset_tile["phash"], phash)
+            ats_d = hamming_sim(asset_tile["dhash"], dhash)
+            tile_vs_query = (ats_a * 0.20) + (ats_p * 0.50) + (ats_d * 0.30)
+            if tile_vs_query > region_sim:
+                region_sim = tile_vs_query
+
     # --- ORB feature matching (0-1) ---
     orb_sim = 0.0
     if source_path and asset.file_path and os.path.exists(asset.file_path) and os.path.exists(source_path):
@@ -133,25 +157,32 @@ def score_against_asset(
 
     # ==========================================
     # SCENARIO-BASED SCORING
-    # Instead of one fixed formula, we evaluate different "profiles" of matches.
-    # The final score is the best fitting profile.
     # ==========================================
 
     # 1. Standard Match: Good for identical images or minor compression
     standard_sim = (global_combined * 0.45) + (color_sim * 0.10) + (tile_sim * 0.25) + (orb_sim * 0.20)
 
-    # 2. Crop Match: Ignores global hashes and color, relies entirely on local structure
-    crop_sim = (tile_sim * 0.40) + (orb_sim * 0.60)
+    # 2. Crop Match: tile + ORB (ignores misleading global hashes)
+    crop_sim = (tile_sim * 0.55) + (orb_sim * 0.45)
 
-    # 3. Structural Match: Ignores color completely, useful for grayscale/color-altered images
-    structural_sim = (global_combined * 0.45) + (tile_sim * 0.30) + (orb_sim * 0.25)
+    # 3. Region Match: query global hash vs asset tile hashes.
+    # A crop's overall hash ≈ the tile of the original covering that region.
+    region_match_sim = (region_sim * 0.60) + (color_sim * 0.20) + (tile_sim * 0.20)
 
-    # 4. Heavy Transform Match: When an image is BOTH cropped and color-altered,
-    # global, color, and tile hashes all fail. ORB is the only robust signal left.
+    # 4. Structural Match: ignores color
+    structural_sim = (global_combined * 0.40) + (tile_sim * 0.35) + (orb_sim * 0.25)
+
+    # 5. Heavy Transform: ORB-only fallback
     heavy_transform_sim = orb_sim
 
-    # The overall similarity is the maximum of the scenarios
-    best_overall_sim = max(standard_sim, crop_sim, structural_sim, heavy_transform_sim)
+    # 6. Tile-only: when ORB and global hashes both fail
+    tile_only_sim = tile_sim
+
+    # Best scenario wins
+    best_overall_sim = max(
+        standard_sim, crop_sim, region_match_sim,
+        structural_sim, heavy_transform_sim, tile_only_sim
+    )
     best_score = best_overall_sim * 20.0
     best_sa, best_sp, best_sd = sa, sp, sd
 
@@ -174,15 +205,17 @@ def score_against_asset(
         "colour_similarity": round(color_sim, 4),
         "crop_similarity": round(tile_sim, 4),
         "orb_similarity": round(orb_sim, 4),
-        
+        "region_similarity": round(region_sim, 4),
+
         # Individual hash breakdowns
         "ahash_similarity": round(best_sa, 4),
         "phash_similarity": round(best_sp, 4),
         "dhash_similarity": round(best_sd, 4),
-        
+
         # Scenario scores
         "scenario_standard_match": round(standard_sim * 100, 2),
         "scenario_crop_match": round(crop_sim * 100, 2),
+        "scenario_region_match": round(region_match_sim * 100, 2),
         "scenario_structural_match": round(structural_sim * 100, 2),
         "scenario_heavy_transform_match": round(heavy_transform_sim * 100, 2),
 

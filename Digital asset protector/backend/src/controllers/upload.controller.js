@@ -6,7 +6,7 @@ import { Asset } from "../models/asset.model.js";
 import { Detection } from "../models/detection.model.js";
 import { Alert } from "../models/alert.model.js";
 
-const ALERT_THRESHOLD = 12;
+const ALERT_THRESHOLD = 10;
 
 const toNumber = (value, fallback = 0) => {
     const numeric = Number(value);
@@ -63,40 +63,56 @@ const shouldGenerateAlertFromMetrics = (metrics) => {
 
     const similarityScoreOutOf20 = toNumber(metrics?.similarityScoreOutOf20, 0);
     const combinedSimilarityPercentage = toNumber(metrics?.combinedSimilarityPercentage, 0);
+    const scenarioCropMatch = toNumber(metrics?.scenarioCropMatch, 0);
+    const scenarioRegionMatch = toNumber(metrics?.scenarioRegionMatch, 0);
     const scenarioHeavyTransformMatch = toNumber(metrics?.scenarioHeavyTransformMatch, 0);
 
+    // Score >= 10 out of 20 covers partial/crop matches
     if (similarityScoreOutOf20 >= ALERT_THRESHOLD) {
         return true;
     }
 
-    if (combinedSimilarityPercentage >= 60) {
+    // Crop scenario >= 30% = tile + ORB signal
+    if (scenarioCropMatch >= 30) {
         return true;
     }
 
-    // Secondary signal: strong ORB with transform scenario still indicates probable reuse.
-    return toNumber(metrics?.orbSimilarity, 0) >= 0.6 && scenarioHeavyTransformMatch >= 60;
+    // Region match >= 35%: the crop's hash matches a sub-tile of the original
+    if (scenarioRegionMatch >= 35) {
+        return true;
+    }
+
+    if (combinedSimilarityPercentage >= 45) {
+        return true;
+    }
+
+    return toNumber(metrics?.orbSimilarity, 0) >= 0.5 && scenarioHeavyTransformMatch >= 40;
 };
 
 const isTransformedExistingMatch = (metrics) => {
     const cropScenario = toNumber(metrics?.scenarioCropMatch, 0);
+    const regionScenario = toNumber(metrics?.scenarioRegionMatch, 0);
     const structuralScenario = toNumber(metrics?.scenarioStructuralMatch, 0);
     const heavyTransformScenario = toNumber(metrics?.scenarioHeavyTransformMatch, 0);
     const orbSimilarity = toNumber(metrics?.orbSimilarity, 0);
+    const regionSimilarity = toNumber(metrics?.regionSimilarity, 0);
     const cropSimilarity = toNumber(metrics?.cropSimilarity, 0);
     const globalSimilarity = toNumber(metrics?.globalHashSimilarity, 0);
     const combinedSimilarity = toNumber(metrics?.combinedSimilarityPercentage, 0);
 
     const hasScenarioSignal =
-        cropScenario >= 45 ||
-        structuralScenario >= 48 ||
-        heavyTransformScenario >= 50 ||
-        (orbSimilarity >= 0.32 && (cropScenario >= 40 || structuralScenario >= 40));
+        cropScenario >= 25 ||           // tile+ORB crop match
+        regionScenario >= 30 ||         // query hash matches an asset tile (the crop region)
+        structuralScenario >= 30 ||
+        heavyTransformScenario >= 30 ||
+        (orbSimilarity >= 0.20 && (cropScenario >= 20 || regionScenario >= 25));
 
     const hasSupportSignal =
-        cropSimilarity >= 0.18 ||
-        globalSimilarity >= 0.24 ||
-        orbSimilarity >= 0.35 ||
-        combinedSimilarity >= 45;
+        regionSimilarity >= 0.40 ||     // query's hash matches one of the asset's tile hashes
+        cropSimilarity >= 0.10 ||
+        globalSimilarity >= 0.18 ||
+        orbSimilarity >= 0.20 ||
+        combinedSimilarity >= 30;
 
     return hasScenarioSignal && hasSupportSignal;
 };
