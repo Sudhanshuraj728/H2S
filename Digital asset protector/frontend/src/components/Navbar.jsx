@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
-import { Shield } from "lucide-react"
+
+const BRAND_LOGO = "/Gemini_Generated_Image_pszjk6pszjk6pszj.png"
 
 export default function Navbar() {
   return (
@@ -12,14 +13,18 @@ export default function Navbar() {
       borderBottom: "1px solid rgba(184,169,232,0.06)",
     }}>
       <Link to="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", cursor: "pointer" }}>
-        <div style={{
-          width: 40, height: 40, background: "#b8a9e8",
-          borderRadius: 11, display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: "0 0 20px rgba(184,169,232,0.2)",
-        }}>
-          <Shield size={20} color="#000" strokeWidth={2.5} />
-        </div>
-        <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: 20, color: "#fff" }}>OptiPrimes</span>
+        <img
+          src={BRAND_LOGO}
+          alt="TRAQ logo"
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 11,
+            objectFit: "cover",
+            boxShadow: "0 0 20px rgba(184,169,232,0.2)",
+          }}
+        />
+        <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: 20, color: "#fff" }}>TRAQ</span>
       </Link>
 
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>

@@ -68,7 +68,7 @@ export default function SignInPage({ onLogin }) {
             <Shield size={28} color="#000" strokeWidth={2.5} />
           </div>
           <h1 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: 30, color: "#fff", marginBottom: 8 }}>Welcome Back</h1>
-          <p style={{ color: "#a0a0b8", fontSize: 15 }}>Sign in to your OptiPrimes workspace</p>
+          <p style={{ color: "#a0a0b8", fontSize: 15 }}>Sign in to your TRAQ workspace</p>
         </div>
 
         <div className="glass" style={{ borderRadius: 20, padding: "36px 32px" }}>
