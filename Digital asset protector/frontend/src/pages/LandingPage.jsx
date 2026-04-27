@@ -83,6 +83,7 @@ function PurpleSpotlight() {
 }
 
 export default function LandingPage() {
+  const brandLogo = "/Gemini_Generated_Image_pszjk6pszjk6pszj.png"
   const subtitle = "Enterprise-grade digital fingerprinting, real-time piracy detection, and automated DMCA takedowns — all in one platform."
   const { displayed, done } = useTypewriter(subtitle, 30, 800)
 
@@ -378,7 +379,7 @@ export default function LandingPage() {
               fontSize: "clamp(28px, 4vw, 44px)", letterSpacing: "-0.03em",
               marginBottom: 16, color: "#fff",
             }}>
-              How <span style={{ color: "#b8a9e8" }}>OptiPrimes</span> Works
+              How <span style={{ color: "#b8a9e8" }}>TRAQ</span> Works
             </h2>
             <p style={{ color: "#a0a0b8", fontSize: 16, maxWidth: 600, margin: "0 auto", lineHeight: 1.7 }}>
               From asset upload to automated takedown — our system tracks and protects your content in real-time.
@@ -494,7 +495,7 @@ export default function LandingPage() {
               Everything You Need to <span style={{ color: "#b8a9e8" }}>Fight Piracy</span>
             </h2>
             <p style={{ color: "#a0a0b8", fontSize: 16, maxWidth: 550, margin: "0 auto" }}>
-              From upload to takedown, OptiPrimes covers every step of digital asset protection.
+              From upload to takedown, TRAQ covers every step of digital asset protection.
             </p>
           </div>
 
@@ -540,7 +541,7 @@ export default function LandingPage() {
             Ready to Protect Your Assets?
           </h2>
           <p style={{ color: "#a0a0b8", fontSize: 16, marginBottom: 32, position: "relative" }}>
-            Join thousands of creators and brands who trust OptiPrimes to safeguard their digital content.
+            Join thousands of creators and brands who trust TRAQ to safeguard their digital content.
           </p>
           <Link to="/signup" className="cta-primary" style={{ display: "inline-flex" }}>
             <Shield size={18} /> Get Started Free <ArrowRight size={16} />
@@ -576,14 +577,18 @@ export default function LandingPage() {
             {/* ── Col 1: Brand ── */}
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
-                <div style={{
-                  width: 42, height: 42, background: "#b8a9e8",
-                  borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center",
-                  boxShadow: "0 0 24px rgba(184,169,232,0.15)",
-                }}>
-                  <Shield size={20} color="#000" strokeWidth={2.5} />
-                </div>
-                <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: 20, color: "#fff" }}>OptiPrimes</span>
+                <img
+                  src={brandLogo}
+                  alt="TRAQ logo"
+                  style={{
+                    width: 42,
+                    height: 42,
+                    borderRadius: 12,
+                    objectFit: "cover",
+                    boxShadow: "0 0 24px rgba(184,169,232,0.15)",
+                  }}
+                />
+                <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: 20, color: "#fff" }}>TRAQ</span>
               </div>
               <p style={{
                 color: "#6a6a80", fontSize: 13, lineHeight: 1.75, maxWidth: 260,
@@ -595,7 +600,7 @@ export default function LandingPage() {
                 {[
                   { icon: <GitFork size={16} />, href: "#" },
                   { icon: <Globe size={16} />, href: "#" },
-                  { icon: <Mail size={16} />, href: "mailto:support@optiprimes.com" },
+                  { icon: <Mail size={16} />, href: "mailto:support@traq.com" },
                 ].map((s, i) => (
                   <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" style={{
                     width: 34, height: 34, borderRadius: 10,
@@ -668,14 +673,14 @@ export default function LandingPage() {
               }}>Contact</h4>
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 14 }}>
                 <li>
-                  <a href="mailto:support@optiprimes.com" style={{
+                  <a href="mailto:support@traq.com" style={{
                     color: "#6a6a80", fontSize: 14, textDecoration: "none",
                     transition: "color 0.25s ease", display: "inline-flex", alignItems: "center", gap: 8,
                   }}
                     onMouseEnter={e => e.currentTarget.style.color = "#b8a9e8"}
                     onMouseLeave={e => e.currentTarget.style.color = "#6a6a80"}
                   >
-                    <Mail size={14} /> support@optiprimes.com
+                    <Mail size={14} /> support@traq.com
                   </a>
                 </li>
                 <li>
@@ -712,7 +717,7 @@ export default function LandingPage() {
             flexWrap: "wrap", gap: 12,
           }}>
             <p style={{ color: "#4a4a60", fontSize: 13 }}>
-              © {new Date().getFullYear()} OptiPrimes. All rights reserved.
+              © {new Date().getFullYear()} TRAQ. All rights reserved.
             </p>
             <p style={{ color: "#4a4a60", fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}>
               <Code2 size={13} /> Built for Hackathon 2026

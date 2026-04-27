@@ -58,6 +58,7 @@ const CT = ({active,payload,label}) => {
    SIDEBAR
    ═══════════════════════════════════════════════════════════════════════════ */
 function Sidebar({page,setPage,onLogout,user,alertCount}) {
+  const brandLogo = '/Gemini_Generated_Image_pszjk6pszjk6pszj.png'
   const navItems = [
     {id:'dashboard', icon:<Home size={16}/>,  label:'Dashboard'},
     {id:'upload',    icon:<Upload size={16}/>, label:'Upload & Protect'},
@@ -78,11 +79,13 @@ function Sidebar({page,setPage,onLogout,user,alertCount}) {
     <div style={{width:220,background:'var(--bg1)',borderRight:'1px solid var(--bdr)',display:'flex',flexDirection:'column',height:'100vh',position:'sticky',top:0,flexShrink:0}}>
       <div style={{padding:'20px 16px 16px',borderBottom:'1px solid var(--bdr)'}}>
         <div style={{display:'flex',alignItems:'center',gap:10}}>
-          <div style={{width:36,height:36,background:'linear-gradient(135deg,var(--c),#b8a9e8)',borderRadius:9,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 0 14px rgba(184,169,232,.3)',flexShrink:0}}>
-            <Shield size={18} color="#020c18" strokeWidth={2.5}/>
-          </div>
+          <img
+            src={brandLogo}
+            alt="TRAQ logo"
+            style={{width:36,height:36,borderRadius:9,objectFit:'cover',boxShadow:'0 0 14px rgba(184,169,232,.3)',flexShrink:0}}
+          />
           <div>
-            <div style={{fontFamily:'Poppins, sans-serif',fontWeight:800,fontSize:15,letterSpacing:'-0.01em'}}>OptiPrimes</div>
+            <div style={{fontFamily:'Poppins, sans-serif',fontWeight:800,fontSize:15,letterSpacing:'-0.01em'}}>TRAQ</div>
             <div style={{fontSize:10,color:'var(--t3)',fontFamily:'Space Mono'}}>ASSET PROTECTION</div>
           </div>
         </div>
