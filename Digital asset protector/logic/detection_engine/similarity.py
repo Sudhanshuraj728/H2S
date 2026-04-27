@@ -21,8 +21,8 @@ def get_status(score: float) -> Literal["identical", "strong", "partial", "weak"
 
 
 def hamming_sim(hash1: str, hash2: str) -> float:
-    """Calculate Hamming similarity (0-1, higher=more similar)"""
-    # Handle empty or invalid hashes
+    """Calculate Hamming similarity (0-1, higher=more similar)
+       Adjusted so chance-level matches are mapped to 0."""
     if not hash1 or not hash2:
         return 0.0
     
@@ -30,13 +30,15 @@ def hamming_sim(hash1: str, hash2: str) -> float:
         h1 = imagehash.hex_to_hash(hash1)
         h2 = imagehash.hex_to_hash(hash2)
     except (ValueError, TypeError):
-        # Invalid hash format
         return 0.0
     
     dist = h1 - h2
-    max_dist = h1.hash.size  # Correct: total bits in hash (64 for 8x8 hash)
-    sim = 1.0 - (dist / max_dist)
-    return sim
+    max_dist = h1.hash.size
+    
+    # 50% bit difference is random chance, so map dist from 0 -> max_dist/2 to 1.0 -> 0.0
+    threshold = max_dist / 2.0
+    sim = 1.0 - (dist / threshold)
+    return max(0.0, sim)
 
 
 def _tile_similarity(asset_tile_hashes: List[Dict], query_tile_hashes: List[Dict]) -> float:
