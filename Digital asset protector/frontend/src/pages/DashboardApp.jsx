@@ -263,14 +263,16 @@ function UploadPage({setPage}) {
       clearInterval(iv); setProgress(100); 
       setCreatedAsset(data);
       
-      if (data.isDuplicate || data.status === "match") {
+      if (data.isDuplicate || data.status === "match" || data.status === "duplicate") {
         const matchedName = data?.matchedFilename || data?.best_match?.matched_filename || 'existing protected asset';
         const confidence = Number(data?.confidence ?? data?.best_match?.combined_similarity_percentage ?? 0);
-        if (data?.transformedMatchDetected) {
-          setError(`Transformed match detected (crop/filter): Matches ${matchedName} (Confidence: ${confidence.toFixed(2)}%)`);
-        } else {
-          setError(`Duplicate Detected: Matches ${matchedName} (Confidence: ${confidence.toFixed(2)}%)`);
-        }
+        const matchType = data?.matchType || (data?.isCropDetected ? 'Cropped' : data?.isContrastDetected ? 'Transformed' : data?.transformedMatchDetected ? 'Transformed' : 'Original');
+        
+        // Build specific alert message based on matchType
+        const typeLabel = matchType === 'Original' ? 'Exact Copy' : matchType === 'Cropped' ? 'Cropped Copy' : 'Transformed Copy';
+        const typeEmoji = matchType === 'Original' ? '🔴' : matchType === 'Cropped' ? '✂️' : '🔄';
+        
+        setError(`${typeEmoji} ${typeLabel} Detected!\nThis file matches ${matchedName} already in your vault.\n\nCONFIDENCE\n${confidence.toFixed(1)}%\nMATCH TYPE\n${matchType}\nThis asset was NOT registered — it already exists in your vault`);
         setStep(0);
       } else {
         setError('');
@@ -298,7 +300,7 @@ function UploadPage({setPage}) {
         <h1 style={{fontFamily:'Poppins',fontWeight:800,fontSize:28,letterSpacing:'-0.02em'}}>Upload & Protect</h1>
         <p style={{color:'var(--t2)',fontSize:14,marginTop:4}}>Add a new asset to your protection vault.</p>
       </div>
-      {error&&<div className="error-msg" style={{marginBottom:16}}><AlertTriangle size={14}/>{error}</div>}
+      {error&&<div className="error-msg" style={{marginBottom:16,whiteSpace:'pre-line',lineHeight:'1.6'}}><AlertTriangle size={14}/>{error}</div>}
 
       {/* Step indicator */}
       <div className="fu1" style={{display:'flex',alignItems:'center',gap:0,marginBottom:36}}>
@@ -586,6 +588,9 @@ function AlertsPage() {
                     <span style={{fontWeight:700,fontSize:14}}>{a.title||'Alert'}</span>
                     <span className={`badge ${a.severity==='high'||a.severity==='critical'?'badge-r':a.severity==='medium'?'badge-o':'badge-c'}`}>{a.severity}</span>
                     <span className={`badge ${a.status==='open'?'badge-v':done?'badge-g':'badge-o'}`}>{a.status?.replace('_',' ')}</span>
+                    {mm.isCrop&&<span className="badge badge-o" style={{fontSize:10,fontWeight:700}}>✂️ CROP</span>}
+                    {mm.isContrast&&<span className="badge badge-o" style={{fontSize:10,fontWeight:700}}>🎨 CONTRAST</span>}
+                    {mm.transformationType&&mm.transformationType!=='none'&&!mm.isCrop&&!mm.isContrast&&<span className="badge badge-c" style={{fontSize:10,fontWeight:700}}>🔄 {mm.transformationType.replace('_',' ').toUpperCase()}</span>}
                   </div>
                   <div style={{display:'flex',gap:16,flexWrap:'wrap'}}>
                     <span style={{fontSize:13,color:'var(--t2)',display:'flex',alignItems:'center',gap:5}}><Globe size={12}/>{a.platform||'—'}</span>
@@ -618,6 +623,7 @@ function AlertsPage() {
                     <MetricChip label="Colour" value={mm.colourSimilarity} />
                     <MetricChip label="Crop" value={mm.cropSimilarity} />
                     <MetricChip label="ORB" value={mm.orbSimilarity} />
+                    <MetricChip label="Region" value={mm.regionSimilarity} />
                     <MetricChip label="aHash" value={mm.ahashSimilarity} />
                     <MetricChip label="pHash" value={mm.phashSimilarity} />
                     <MetricChip label="dHash" value={mm.dhashSimilarity} />
@@ -628,18 +634,23 @@ function AlertsPage() {
                   <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(155px,1fr))',gap:8,marginBottom:16}}>
                     <MetricChip label="Standard Match" value={mm.scenarioStandardMatch} unit="%" />
                     <MetricChip label="Crop Match" value={mm.scenarioCropMatch} unit="%" />
+                    <MetricChip label="Region Match" value={mm.scenarioRegionMatch} unit="%" />
                     <MetricChip label="Structural Match" value={mm.scenarioStructuralMatch} unit="%" />
                     <MetricChip label="Heavy Transform" value={mm.scenarioHeavyTransformMatch} unit="%" />
                   </div>
 
                   {/* Combined Results */}
                   <div style={{fontSize:11,fontFamily:'Space Mono',color:'var(--t3)',marginBottom:10,letterSpacing:'.06em'}}>COMBINED RESULTS</div>
-                  <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}}>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8}}>
                     <MetricChip label="Combined Similarity" value={mm.combinedSimilarityPercentage} unit="%" highlight />
                     <MetricChip label="Score / 20" value={mm.similarityScoreOutOf20} unit="/20" highlight />
                     <div style={{background:'var(--bg2)',border:'1px solid var(--bdr)',borderRadius:9,padding:'10px 12px',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
                       <div style={{fontSize:10,fontFamily:'Space Mono',color:'var(--t3)',marginBottom:6,letterSpacing:'.04em'}}>MATCH STATUS</div>
                       <MatchStatusBadge status={mm.matchStatus}/>
+                    </div>
+                    <div style={{background:'var(--bg2)',border:'1px solid var(--bdr)',borderRadius:9,padding:'10px 12px',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
+                      <div style={{fontSize:10,fontFamily:'Space Mono',color:'var(--t3)',marginBottom:6,letterSpacing:'.04em'}}>TRANSFORM TYPE</div>
+                      <span className={`badge ${mm.isCrop?'badge-o':mm.isContrast?'badge-o':mm.transformationType==='exact'?'badge-r':'badge-c'}`} style={{fontSize:12,padding:'3px 10px',textTransform:'capitalize'}}>{mm.isCrop?'✂️ Crop':mm.isContrast?'🎨 Contrast':mm.transformationType?mm.transformationType.replace('_',' '):'None'}</span>
                     </div>
                   </div>
                 </div>

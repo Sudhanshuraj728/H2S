@@ -98,11 +98,13 @@ const alertSchema = new Schema(
             colourSimilarity: Number,
             cropSimilarity: Number,
             orbSimilarity: Number,
+            regionSimilarity: Number,
             ahashSimilarity: Number,
             phashSimilarity: Number,
             dhashSimilarity: Number,
             scenarioStandardMatch: Number,
             scenarioCropMatch: Number,
+            scenarioRegionMatch: Number,
             scenarioStructuralMatch: Number,
             scenarioHeavyTransformMatch: Number,
             combinedSimilarityPercentage: Number,
@@ -111,6 +113,9 @@ const alertSchema = new Schema(
                 type: String,
                 enum: ["identical", "strong", "partial", "weak", "no_match"],
             },
+            transformationType: String,
+            isCrop: Boolean,
+            isContrast: Boolean,
         },
 
         // ========== VIOLATION TYPE & SEVERITY ==========

@@ -123,11 +123,13 @@ const detectionSchema = new Schema(
             colourSimilarity: Number,
             cropSimilarity: Number,
             orbSimilarity: Number,
+            regionSimilarity: Number,
             ahashSimilarity: Number,
             phashSimilarity: Number,
             dhashSimilarity: Number,
             scenarioStandardMatch: Number,
             scenarioCropMatch: Number,
+            scenarioRegionMatch: Number,
             scenarioStructuralMatch: Number,
             scenarioHeavyTransformMatch: Number,
             combinedSimilarityPercentage: Number,
@@ -136,6 +138,9 @@ const detectionSchema = new Schema(
                 type: String,
                 enum: ["identical", "strong", "partial", "weak", "no_match"],
             },
+            transformationType: String,
+            isCrop: Boolean,
+            isContrast: Boolean,
         },
 
         // ========== DETECTION STATUS ==========
@@ -184,6 +189,10 @@ const detectionSchema = new Schema(
             // like count (agar platform se mil sake)
             description: String,
             // detected content ka description
+            transformationType: String,
+            // exact, crop, contrast, heavy_transform, near_exact
+            isCrop: Boolean,
+            isContrast: Boolean,
         },
 
         notes: {

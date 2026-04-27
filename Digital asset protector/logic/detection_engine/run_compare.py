@@ -33,6 +33,17 @@ def compare_image(file_path: str) -> dict:
         "colorhash": colorhash,
     }
 
+    # Extract transformation info from best match for the backend
+    best = result.get("best_match")
+    if best:
+        result["transformation_type"] = best.get("transformation_type", "none")
+        result["is_crop"] = best.get("is_crop", False)
+        result["is_contrast"] = best.get("is_contrast", False)
+    else:
+        result["transformation_type"] = "none"
+        result["is_crop"] = False
+        result["is_contrast"] = False
+
     return result
 
 

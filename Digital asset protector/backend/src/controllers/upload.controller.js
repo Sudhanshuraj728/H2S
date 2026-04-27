@@ -13,8 +13,6 @@ const toNumber = (value, fallback = 0) => {
     return Number.isFinite(numeric) ? numeric : fallback;
 };
 
-const isFiniteNumber = (value) => Number.isFinite(Number(value));
-
 const severityFromScore = (score) => {
     if (score >= 18) return "critical";
     if (score >= 15) return "high";
@@ -27,36 +25,31 @@ const buildMatchMetrics = (bestMatch) => ({
     colourSimilarity: toNumber(bestMatch?.colour_similarity),
     cropSimilarity: toNumber(bestMatch?.crop_similarity),
     orbSimilarity: toNumber(bestMatch?.orb_similarity),
+    regionSimilarity: toNumber(bestMatch?.region_similarity),
     ahashSimilarity: toNumber(bestMatch?.ahash_similarity),
     phashSimilarity: toNumber(bestMatch?.phash_similarity),
     dhashSimilarity: toNumber(bestMatch?.dhash_similarity),
     scenarioStandardMatch: toNumber(bestMatch?.scenario_standard_match),
     scenarioCropMatch: toNumber(bestMatch?.scenario_crop_match),
+    scenarioRegionMatch: toNumber(bestMatch?.scenario_region_match),
     scenarioStructuralMatch: toNumber(bestMatch?.scenario_structural_match),
     scenarioHeavyTransformMatch: toNumber(bestMatch?.scenario_heavy_transform_match),
     combinedSimilarityPercentage: toNumber(bestMatch?.combined_similarity_percentage),
     similarityScoreOutOf20: toNumber(bestMatch?.similarity_score_out_of_20),
     matchStatus: bestMatch?.match_status || "no_match",
+    transformationType: bestMatch?.transformation_type || "none",
+    isCrop: Boolean(bestMatch?.is_crop),
+    isContrast: Boolean(bestMatch?.is_contrast),
 });
 
+/**
+ * Determines if an alert should be generated based on match metrics.
+ * FIXED: No longer requires ALL core metrics to be present — uses score-based logic instead.
+ */
 const shouldGenerateAlertFromMetrics = (metrics) => {
-    const hasRequiredCoreMetrics = [
-        metrics?.globalHashSimilarity,
-        metrics?.colourSimilarity,
-        metrics?.cropSimilarity,
-        metrics?.orbSimilarity,
-        metrics?.ahashSimilarity,
-        metrics?.phashSimilarity,
-        metrics?.dhashSimilarity,
-        metrics?.combinedSimilarityPercentage,
-    ].every(isFiniteNumber);
-
-    if (!hasRequiredCoreMetrics) {
-        return false;
-    }
-
     const normalizedStatus = String(metrics?.matchStatus || "no_match").toLowerCase();
 
+    // Direct match status check: identical, strong, or partial → always alert
     if (["identical", "strong", "partial"].includes(normalizedStatus)) {
         return true;
     }
@@ -66,29 +59,50 @@ const shouldGenerateAlertFromMetrics = (metrics) => {
     const scenarioCropMatch = toNumber(metrics?.scenarioCropMatch, 0);
     const scenarioRegionMatch = toNumber(metrics?.scenarioRegionMatch, 0);
     const scenarioHeavyTransformMatch = toNumber(metrics?.scenarioHeavyTransformMatch, 0);
+    const scenarioStructuralMatch = toNumber(metrics?.scenarioStructuralMatch, 0);
+    const orbSimilarity = toNumber(metrics?.orbSimilarity, 0);
 
-    // Score >= 10 out of 20 covers partial/crop matches
+    // Score >= threshold → alert
     if (similarityScoreOutOf20 >= ALERT_THRESHOLD) {
         return true;
     }
 
-    // Crop scenario >= 30% = tile + ORB signal
-    if (scenarioCropMatch >= 30) {
+    // Crop scenario >= 35% = tile + ORB signal (increased to avoid false positives)
+    if (scenarioCropMatch >= 35) {
         return true;
     }
 
-    // Region match >= 35%: the crop's hash matches a sub-tile of the original
-    if (scenarioRegionMatch >= 35) {
+    // Region match >= 40%: the crop's hash matches a sub-tile of the original (increased to avoid false positives)
+    if (scenarioRegionMatch >= 40) {
         return true;
     }
 
-    if (combinedSimilarityPercentage >= 45) {
+    // Structural match >= 30% (contrast/filter changes)
+    if (scenarioStructuralMatch >= 30) {
         return true;
     }
 
-    return toNumber(metrics?.orbSimilarity, 0) >= 0.5 && scenarioHeavyTransformMatch >= 40;
+    // Combined similarity >= 40%
+    if (combinedSimilarityPercentage >= 40) {
+        return true;
+    }
+
+    // ORB feature matching fallback
+    if (orbSimilarity >= 0.4 && scenarioHeavyTransformMatch >= 35) {
+        return true;
+    }
+
+    // Transformation type flags from Python engine
+    if (metrics?.isCrop || metrics?.isContrast) {
+        return true;
+    }
+
+    return false;
 };
 
+/**
+ * Detects if this is a transformed version of an existing asset (crop, contrast, etc.)
+ */
 const isTransformedExistingMatch = (metrics) => {
     const cropScenario = toNumber(metrics?.scenarioCropMatch, 0);
     const regionScenario = toNumber(metrics?.scenarioRegionMatch, 0);
@@ -99,6 +113,11 @@ const isTransformedExistingMatch = (metrics) => {
     const cropSimilarity = toNumber(metrics?.cropSimilarity, 0);
     const globalSimilarity = toNumber(metrics?.globalHashSimilarity, 0);
     const combinedSimilarity = toNumber(metrics?.combinedSimilarityPercentage, 0);
+
+    // Python engine explicitly flagged as crop or contrast
+    if (metrics?.isCrop || metrics?.isContrast) {
+        return true;
+    }
 
     const hasScenarioSignal =
         cropScenario >= 25 ||           // tile+ORB crop match
@@ -122,6 +141,140 @@ const buildSourceAssetHash = ({ userId, sourceHashes, sourceFileName, fileSize }
     const phash = sourceHashes?.phash || "na";
     const dhash = sourceHashes?.dhash || "na";
     return `upload-${userId}-${ahash}-${phash}-${dhash}-${sourceFileName}-${fileSize || 0}`;
+};
+
+/**
+ * Check if this exact image (by perceptual hash) already exists in the user's assets.
+ * This prevents re-uploading the exact same image to the DB.
+ */
+const findExistingAssetByHash = async (userId, sourceHashes) => {
+    if (!sourceHashes?.ahash || !sourceHashes?.phash || !sourceHashes?.dhash) {
+        return null;
+    }
+    // Look for an asset with matching perceptual hashes owned by this user
+    return Asset.findOne({
+        owner: userId,
+        ahash: sourceHashes.ahash,
+        phash: sourceHashes.phash,
+        dhash: sourceHashes.dhash,
+    });
+};
+
+// ─── MongoDB-Level Perceptual Hash Scanning ───
+// This bridges the gap between the Python engine's local JSON DB and MongoDB.
+// When an image was registered on another system, the Python engine won't find it,
+// but these functions search MongoDB directly using the computed hashes.
+
+/**
+ * Compute Hamming similarity between two hex hash strings (0.0 to 1.0).
+ * Compares character-by-character (each hex char = 4 bits).
+ * Maps distance from [0, maxDist/2] → [1.0, 0.0] (50% is random chance = 0.0).
+ */
+const hexHammingSimilarity = (hex1, hex2) => {
+    if (!hex1 || !hex2 || hex1.length !== hex2.length) return 0.0;
+    let diffBits = 0;
+    for (let i = 0; i < hex1.length; i++) {
+        const v1 = parseInt(hex1[i], 16);
+        const v2 = parseInt(hex2[i], 16);
+        if (isNaN(v1) || isNaN(v2)) return 0.0;
+        let xor = v1 ^ v2;
+        while (xor) { diffBits += xor & 1; xor >>= 1; }
+    }
+    const totalBits = hex1.length * 4;
+    const threshold = totalBits / 2.0;
+    const sim = 1.0 - (diffBits / threshold);
+    return Math.max(0.0, sim);
+};
+
+/**
+ * Compute a combined perceptual similarity score between uploaded hashes and a DB asset.
+ * Uses the same weighting as the Python engine: aHash 20%, pHash 50%, dHash 30%.
+ * Returns { similarity (0-1), score (0-20), matchType: "Original"|"Cropped"|"Transformed" }
+ */
+const computeMongoSimilarity = (sourceHashes, dbAsset) => {
+    const sa = hexHammingSimilarity(sourceHashes.ahash, dbAsset.ahash);
+    const sp = hexHammingSimilarity(sourceHashes.phash, dbAsset.phash);
+    const sd = hexHammingSimilarity(sourceHashes.dhash, dbAsset.dhash);
+    const globalCombined = (sa * 0.20) + (sp * 0.50) + (sd * 0.30);
+
+    // Color hash similarity (if available)
+    let colorSim = 0.0;
+    if (sourceHashes.colorhash && dbAsset.colorhash) {
+        colorSim = hexHammingSimilarity(sourceHashes.colorhash, dbAsset.colorhash);
+    }
+
+    // Weighted final: 70% global hash + 30% color
+    const finalSim = (globalCombined * 0.70) + (colorSim * 0.30);
+    const score = finalSim * 20.0;
+
+    // Determine match type
+    let matchType = "Transformed";
+    if (sa >= 0.95 && sp >= 0.95 && sd >= 0.95) {
+        matchType = "Original";
+    } else if (globalCombined >= 0.85 && colorSim >= 0.70) {
+        matchType = "Original";
+    } else if (globalCombined < 0.65 && (sa >= 0.40 || sp >= 0.40 || sd >= 0.40)) {
+        matchType = "Cropped";
+    }
+
+    return {
+        similarity: finalSim,
+        score,
+        matchType,
+        ahashSim: sa,
+        phashSim: sp,
+        dhashSim: sd,
+        colorSim,
+        globalCombined,
+    };
+};
+
+/**
+ * Search ALL assets in MongoDB for perceptual hash matches.
+ * This is the critical fix: scans the MongoDB vault regardless of the Python engine result.
+ * Returns the best matching asset with similarity info, or null.
+ */
+const findBestMatchInMongoDB = async (sourceHashes) => {
+    if (!sourceHashes?.ahash || !sourceHashes?.phash || !sourceHashes?.dhash) {
+        console.log("[MongoScan] Skipped — source hashes missing");
+        return null;
+    }
+
+    // Fetch all assets that have perceptual hashes stored
+    // Use $nin to exclude null, undefined, and empty string
+    const allAssets = await Asset.find({
+        ahash: { $nin: [null, "", undefined] },
+        phash: { $nin: [null, "", undefined] },
+        dhash: { $nin: [null, "", undefined] },
+    }).select('title filename ahash phash dhash colorhash owner source').lean();
+
+    console.log(`[MongoScan] Scanning ${allAssets.length} assets with hashes...`);
+
+    let bestMatch = null;
+    let bestSimilarity = 0;
+
+    for (const asset of allAssets) {
+        if (!asset.ahash || !asset.phash || !asset.dhash) continue;
+
+        const result = computeMongoSimilarity(sourceHashes, asset);
+
+        // Only consider matches above a meaningful threshold (score >= 12/20 = 60%)
+        if (result.score >= 12 && result.similarity > bestSimilarity) {
+            bestSimilarity = result.similarity;
+            bestMatch = {
+                asset,
+                ...result,
+            };
+        }
+    }
+
+    if (bestMatch) {
+        console.log(`[MongoScan] Best match: ${bestMatch.asset.filename || bestMatch.asset.title} (similarity=${(bestMatch.similarity * 100).toFixed(1)}%, score=${bestMatch.score.toFixed(1)}/20, type=${bestMatch.matchType})`);
+    } else {
+        console.log("[MongoScan] No match above threshold found");
+    }
+
+    return bestMatch;
 };
 
 const ensureLinkedAsset = async ({ userId, bestMatch, sourceType }) => {
@@ -153,6 +306,44 @@ const ensureLinkedAsset = async ({ userId, bestMatch, sourceType }) => {
     return asset;
 };
 
+/**
+ * Build the alert title with transformation context
+ */
+const buildAlertTitle = (metrics, matchStatus) => {
+    if (metrics?.isCrop) {
+        return `Cropped image detected (${matchStatus})`;
+    }
+    if (metrics?.isContrast) {
+        return `Contrast-modified image detected (${matchStatus})`;
+    }
+    const transformationType = metrics?.transformationType || "none";
+    if (transformationType === "heavy_transform") {
+        return `Heavily transformed match detected (${matchStatus})`;
+    }
+    if (transformationType === "exact") {
+        return `Exact duplicate detected (${matchStatus})`;
+    }
+    if (transformationType === "near_exact") {
+        return `Near-exact match detected (${matchStatus})`;
+    }
+    return `Potential infringement detected (${matchStatus})`;
+};
+
+/**
+ * Build the alert description with transformation context
+ */
+const buildAlertDescription = (sourceFileName, matchedFilename, combinedSimilarityPercentage, metrics) => {
+    let desc = `${sourceFileName} matched ${matchedFilename} with ${combinedSimilarityPercentage}% similarity`;
+    if (metrics?.isCrop) {
+        desc += ` — Image appears to be a CROPPED version of the original`;
+    } else if (metrics?.isContrast) {
+        desc += ` — Image appears to have CONTRAST/COLOR modifications`;
+    } else if (metrics?.transformationType === "heavy_transform") {
+        desc += ` — Image has been heavily transformed (rotation, filter, etc.)`;
+    }
+    return desc;
+};
+
 export const uploadFile = asyncHandler(async (req, res) => {
     if (!req.file) {
         throw new ApiError(400, "No file uploaded");
@@ -177,7 +368,74 @@ export const uploadFile = asyncHandler(async (req, res) => {
         const sourceType = comparisonResult?.source_type || "image";
         const sourceHashes = comparisonResult?.source_hashes || {};
 
+        // ─── DEBUG: Log the matching pipeline ───
+        console.log("\n========== UPLOAD MATCH PIPELINE ==========");
+        console.log("File:", sourceFileName);
+        console.log("Source hashes:", JSON.stringify(sourceHashes));
+        console.log("Python engine bestMatch:", bestMatch ? `YES (${bestMatch.matched_filename}, score=${bestMatch.similarity_score_out_of_20})` : "NO MATCH");
+
+        // ─── Check if this exact image already exists in user's DB ───
+        const existingAssetByHash = await findExistingAssetByHash(userId, sourceHashes);
+        console.log("findExistingAssetByHash:", existingAssetByHash ? `FOUND (${existingAssetByHash.filename || existingAssetByHash.title})` : "NOT FOUND");
+
+        // ─── MongoDB-level vault scan ───
+        // The Python engine only checks its local JSON DB (data/assets.json).
+        // Assets registered via MongoDB (from other systems/users) won't be found by Python.
+        // This scan searches ALL assets in MongoDB by perceptual hash similarity.
+        const mongoMatch = await findBestMatchInMongoDB(sourceHashes);
+        console.log("findBestMatchInMongoDB:", mongoMatch ? `FOUND (${mongoMatch.asset.filename || mongoMatch.asset.title}, similarity=${(mongoMatch.similarity * 100).toFixed(1)}%, type=${mongoMatch.matchType})` : "NOT FOUND");
+        console.log("============================================\n");
+
         if (!bestMatch) {
+            // No match found in the Python logic engine.
+            // But check: does MongoDB have a match?
+
+            // 1. Exact hash match in user's own assets
+            if (existingAssetByHash) {
+                return res.status(200).json({
+                    status: "duplicate",
+                    ...comparisonResult,
+                    matchedFilename: existingAssetByHash.filename || existingAssetByHash.title,
+                    confidence: 100,
+                    alertCreated: false,
+                    isDuplicate: true,
+                    transformedMatchDetected: false,
+                    matchType: "Original",
+                    message: "This exact image already exists in your asset library.",
+                });
+            }
+
+            // 2. Perceptual hash similarity match across ALL MongoDB assets
+            if (mongoMatch) {
+                const matchedAsset = mongoMatch.asset;
+                const confidence = Math.round(mongoMatch.similarity * 100);
+                const matchedFilename = matchedAsset.filename || matchedAsset.title || "unknown";
+
+                return res.status(200).json({
+                    status: "match",
+                    ...comparisonResult,
+                    matchedFilename,
+                    confidence,
+                    alertCreated: false,
+                    isDuplicate: true,
+                    transformedMatchDetected: mongoMatch.matchType !== "Original",
+                    matchType: mongoMatch.matchType,
+                    isCropDetected: mongoMatch.matchType === "Cropped",
+                    isContrastDetected: false,
+                    transformationType: mongoMatch.matchType === "Original" ? "exact" : mongoMatch.matchType.toLowerCase(),
+                    mongoMatchDetails: {
+                        ahashSimilarity: mongoMatch.ahashSim,
+                        phashSimilarity: mongoMatch.phashSim,
+                        dhashSimilarity: mongoMatch.dhashSim,
+                        colorSimilarity: mongoMatch.colorSim,
+                        globalCombined: mongoMatch.globalCombined,
+                        scoreOutOf20: mongoMatch.score,
+                    },
+                    message: `This file matches ${matchedFilename} already in your vault.`,
+                });
+            }
+
+            // 3. No match anywhere — register as new asset
             const sourceAssetHash = buildSourceAssetHash({
                 userId,
                 sourceHashes,
@@ -214,45 +472,81 @@ export const uploadFile = asyncHandler(async (req, res) => {
             });
         }
 
+        // ─── We have a best match from the detection engine ───
         const matchMetrics = buildMatchMetrics(bestMatch);
-        const combinedSimilarityPercentage = matchMetrics.combinedSimilarityPercentage;
-        const similarityScoreOutOf20 = matchMetrics.similarityScoreOutOf20;
+        let combinedSimilarityPercentage = matchMetrics.combinedSimilarityPercentage;
+        let similarityScoreOutOf20 = matchMetrics.similarityScoreOutOf20;
         const shouldCreateAlert = shouldGenerateAlertFromMetrics(matchMetrics);
         const transformedExistingMatch = isTransformedExistingMatch(matchMetrics);
         const isExistingMatch = shouldCreateAlert || transformedExistingMatch;
         const normalizedMatchStatus = String(matchMetrics.matchStatus || "no_match").toLowerCase();
         const isDuplicateUpload = ["identical", "strong", "partial"].includes(normalizedMatchStatus) || isExistingMatch;
 
+        // Also use Python-side transformation flags
+        const isCropDetected = Boolean(comparisonResult?.is_crop || matchMetrics.isCrop);
+        const isContrastDetected = Boolean(comparisonResult?.is_contrast || matchMetrics.isContrast);
+        const transformationType = comparisonResult?.transformation_type || matchMetrics.transformationType || "none";
+
+        // ─── Determine matchType label: Original / Cropped / Transformed ───
+        let matchType = "Transformed";
+        if (transformationType === "exact" || normalizedMatchStatus === "identical") {
+            matchType = "Original";
+        } else if (transformationType === "near_exact" && combinedSimilarityPercentage >= 85) {
+            matchType = "Original";
+        } else if (isCropDetected || transformationType === "crop") {
+            matchType = "Cropped";
+        } else if (isContrastDetected || transformationType === "contrast") {
+            matchType = "Transformed";
+        }
+
+        // If mongoMatch is stronger than the Python match, prefer it for matchedFilename
+        let resolvedMatchedFilename = bestMatch?.matched_filename || null;
+        if (mongoMatch && mongoMatch.similarity * 100 > combinedSimilarityPercentage) {
+            const mongoAsset = mongoMatch.asset;
+            resolvedMatchedFilename = mongoAsset.filename || mongoAsset.title || resolvedMatchedFilename;
+            combinedSimilarityPercentage = Math.round(mongoMatch.similarity * 100);
+            similarityScoreOutOf20 = mongoMatch.score;
+            matchType = mongoMatch.matchType;
+        }
+
+        // ─── Prevent duplicate uploads to DB ───
+        // If it's a duplicate/existing match, do NOT create a new asset in the user's library
         let createdUploadedAsset = null;
         if (!isDuplicateUpload) {
-            const sourceAssetHash = buildSourceAssetHash({
-                userId,
-                sourceHashes,
-                sourceFileName,
-                fileSize: req.file?.size,
-            });
-
-            createdUploadedAsset = await Asset.findOne({ fileHash: sourceAssetHash, owner: userId });
-
-            if (!createdUploadedAsset) {
-                createdUploadedAsset = await Asset.create({
-                    title: sourceFileName,
-                    description: `Protected upload for ${sourceFileName}`,
-                    fileUrl: `upload://${sourceFileName}`,
-                    fileHash: sourceAssetHash,
-                    fileType: sourceType === "video" ? "video" : "image",
-                    fileSize: req.file?.size || 0,
-                    owner: userId,
-                    status: "active",
-                    isProtected: true,
-                    platforms: ["other"],
-                    filename: sourceFileName,
-                    source: "user-upload",
-                    ahash: sourceHashes?.ahash || null,
-                    phash: sourceHashes?.phash || null,
-                    dhash: sourceHashes?.dhash || null,
-                    colorhash: sourceHashes?.colorhash || null,
+            // Check if exact hash already exists first
+            if (existingAssetByHash) {
+                // Don't create another — it already exists
+                createdUploadedAsset = existingAssetByHash;
+            } else {
+                const sourceAssetHash = buildSourceAssetHash({
+                    userId,
+                    sourceHashes,
+                    sourceFileName,
+                    fileSize: req.file?.size,
                 });
+
+                createdUploadedAsset = await Asset.findOne({ fileHash: sourceAssetHash, owner: userId });
+
+                if (!createdUploadedAsset) {
+                    createdUploadedAsset = await Asset.create({
+                        title: sourceFileName,
+                        description: `Protected upload for ${sourceFileName}`,
+                        fileUrl: `upload://${sourceFileName}`,
+                        fileHash: sourceAssetHash,
+                        fileType: sourceType === "video" ? "video" : "image",
+                        fileSize: req.file?.size || 0,
+                        owner: userId,
+                        status: "active",
+                        isProtected: true,
+                        platforms: ["other"],
+                        filename: sourceFileName,
+                        source: "user-upload",
+                        ahash: sourceHashes?.ahash || null,
+                        phash: sourceHashes?.phash || null,
+                        dhash: sourceHashes?.dhash || null,
+                        colorhash: sourceHashes?.colorhash || null,
+                    });
+                }
             }
         }
 
@@ -271,12 +565,15 @@ export const uploadFile = asyncHandler(async (req, res) => {
             sourceType,
             matchedAssetExternalId: bestMatch?.matched_asset_id,
             matchedPublicId: bestMatch?.matched_public_id,
-            matchedFilename: bestMatch?.matched_filename,
+            matchedFilename: resolvedMatchedFilename,
             combinedSimilarityPercentage,
             similarityScoreOutOf20,
             matchMetrics,
             metadata: {
                 description: `Match status: ${matchMetrics.matchStatus}`,
+                transformationType,
+                isCrop: isCropDetected,
+                isContrast: isContrastDetected,
             },
         });
 
@@ -288,12 +585,20 @@ export const uploadFile = asyncHandler(async (req, res) => {
         let createdAlert = null;
 
         if (shouldCreateAlert) {
+            const alertTitle = buildAlertTitle(matchMetrics, matchMetrics.matchStatus);
+            const alertDescription = buildAlertDescription(
+                sourceFileName,
+                resolvedMatchedFilename,
+                combinedSimilarityPercentage,
+                matchMetrics
+            );
+
             createdAlert = await Alert.create({
                 assetId: linkedAsset._id,
                 userId,
                 detectionId: detection._id,
-                title: `Potential infringement detected (${matchMetrics.matchStatus})`,
-                description: `${sourceFileName} matched ${bestMatch?.matched_filename} with ${combinedSimilarityPercentage}% similarity`,
+                title: alertTitle,
+                description: alertDescription,
                 platform: "other",
                 urlFound: `upload://${sourceFileName}`,
                 violationType: "unauthorized_use",
@@ -303,7 +608,7 @@ export const uploadFile = asyncHandler(async (req, res) => {
                 sourceType,
                 matchedAssetExternalId: bestMatch?.matched_asset_id,
                 matchedPublicId: bestMatch?.matched_public_id,
-                matchedFilename: bestMatch?.matched_filename,
+                matchedFilename: resolvedMatchedFilename,
                 matchMetrics,
                 metadata: {
                     firstDetectionDate: new Date(),
@@ -321,7 +626,7 @@ export const uploadFile = asyncHandler(async (req, res) => {
         return res.status(200).json({
             status: isExistingMatch ? "match" : "no_match",
             ...comparisonResult,
-            matchedFilename: bestMatch?.matched_filename || null,
+            matchedFilename: resolvedMatchedFilename,
             confidence: combinedSimilarityPercentage,
             detectionId: detection._id,
             alertId: createdAlert?._id || null,
@@ -329,6 +634,10 @@ export const uploadFile = asyncHandler(async (req, res) => {
             uploadedAssetId: createdUploadedAsset?._id || null,
             isDuplicate: isDuplicateUpload,
             transformedMatchDetected: transformedExistingMatch,
+            matchType,
+            isCropDetected,
+            isContrastDetected,
+            transformationType,
         });
     } catch (error) {
         throw new ApiError(500, error?.message || "Detection failed");

@@ -304,6 +304,9 @@ assetSchema.index({ category: 1, status: 1 });
 assetSchema.index({ uploadedAt: -1 });
 // recently uploaded assets dikhane ke liye
 
+assetSchema.index({ ahash: 1, phash: 1, dhash: 1 });
+// perceptual hash fields se search fast karne ke liye (MongoDB-level vault scan)
+
 // ========== EXPORT ==========
 export const Asset = mongoose.model("Asset", assetSchema);
 

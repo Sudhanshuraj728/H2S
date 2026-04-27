@@ -199,6 +199,51 @@ def score_against_asset(
                 best_overall_sim = fc
                 best_sa, best_sp, best_sd = fa, fp, fd
 
+    # ==========================================
+    # TRANSFORMATION TYPE DETECTION
+    # ==========================================
+    transformation_type = "none"
+    is_crop = False
+    is_contrast = False
+
+    if best_score >= 12:
+        # Determine which scenario dominated
+        winning_scenario = max(
+            ("standard", standard_sim),
+            ("crop", crop_sim),
+            ("region", region_match_sim),
+            ("structural", structural_sim),
+            ("heavy_transform", heavy_transform_sim),
+            ("tile_only", tile_only_sim),
+            key=lambda x: x[1]
+        )
+        scenario_name = winning_scenario[0]
+
+        # Crop detection: crop/region/tile scenarios win AND global hash is low
+        if scenario_name in ("crop", "region", "tile_only") and global_combined < 0.65:
+            if crop_sim >= 0.40 or region_match_sim >= 0.45:
+                is_crop = True
+                transformation_type = "crop"
+        # Contrast/color change: structural wins (ignores color) but color sim is low
+        elif scenario_name == "structural" and color_sim < 0.4 and global_combined >= 0.3:
+            is_contrast = True
+            transformation_type = "contrast"
+        # Heavy transform (rotation, heavy filter, etc.)
+        elif scenario_name == "heavy_transform":
+            transformation_type = "heavy_transform"
+        # Exact/near-exact match
+        elif global_combined >= 0.85:
+            transformation_type = "exact"
+        elif global_combined >= 0.5:
+            transformation_type = "near_exact"
+        # Fallback: if crop or region scores are significantly higher than standard
+        elif (crop_sim > standard_sim * 1.3 or region_match_sim > standard_sim * 1.3) and global_combined < 0.65:
+            is_crop = True
+            transformation_type = "crop"
+        elif color_sim < 0.35 and global_combined >= 0.25 and tile_sim >= 0.15:
+            is_contrast = True
+            transformation_type = "contrast"
+
     detailed_result = {
         # Raw component similarities
         "global_hash_similarity": round(global_combined, 4),
@@ -223,6 +268,11 @@ def score_against_asset(
         "combined_similarity_percentage": round(best_overall_sim * 100.0, 2),
         "similarity_score_out_of_20": round(best_score, 2),
         "match_status": get_status(best_score),
+
+        # Transformation detection
+        "transformation_type": transformation_type,
+        "is_crop": is_crop,
+        "is_contrast": is_contrast,
     }
 
     return best_score, detailed_result
