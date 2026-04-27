@@ -658,6 +658,7 @@ function AlertsPage() {
 function AnalyticsPage() {
   const [aS,setAS]=useState(null),[dS,setDS]=useState(null),[alS,setALS]=useState(null),[loading,setLoading]=useState(true)
   const [mediaDetections,setMediaDetections]=useState([])
+  const [activeMedia,setActiveMedia]=useState(null)
 
   useEffect(()=>{
     (async()=>{
@@ -778,15 +779,15 @@ function AnalyticsPage() {
               <XAxis dataKey="mediaLabel" interval={0} height={46} tick={{fill:'#3a5168',fontSize:10,fontFamily:'Space Mono'}} axisLine={false} tickLine={false}/>
               <YAxis domain={[0,20]} tick={{fill:'#3a5168',fontSize:11}} axisLine={false} tickLine={false}/>
               <Tooltip content={<CT/>}/>
-              <Line type="linear" dataKey="similarityScoreOutOf20" name="Similarity Score / 20" stroke="#ff3366" strokeWidth={2.2} dot={{r:3}} activeDot={{r:5}} connectNulls={false}/>
+              <Line type="linear" dataKey="similarityScoreOutOf20" name="Similarity Score / 20" stroke="#ff3366" strokeWidth={2.2} activeDot={{r:5}} connectNulls={false} dot={(props)=>{const {cx,cy,payload}=props;const isActive=activeMedia===payload.mediaLabel;return <circle key={payload.mediaLabel} cx={cx} cy={cy} r={isActive?8:3} fill={isActive?'#fff':'#ff3366'} stroke={isActive?'#ff3366':'none'} strokeWidth={isActive?3:0}/>}}/>
             </LineChart>
           </ResponsiveContainer>
           <div style={{marginTop:10,display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:8}}>
             {mediaScoreLineData.map(item=>(
-              <div key={item.mediaLabel} style={{fontSize:11,color:'var(--t2)',display:'flex',justifyContent:'space-between',gap:8,padding:'6px 8px',border:'1px solid var(--bdr)',borderRadius:8,background:'var(--bg2)'}}>
-                <span style={{fontFamily:'Space Mono',color:'var(--t3)'}}>{item.mediaLabel}</span>
+              <div key={item.mediaLabel} onClick={()=>setActiveMedia(activeMedia===item.mediaLabel?null:item.mediaLabel)} style={{cursor:'pointer',transition:'all .2s',fontSize:11,color:activeMedia===item.mediaLabel?'#fff':'var(--t2)',display:'flex',justifyContent:'space-between',gap:8,padding:'6px 8px',border:activeMedia===item.mediaLabel?'1px solid var(--c)':'1px solid var(--bdr)',borderRadius:8,background:activeMedia===item.mediaLabel?'var(--cv)':'var(--bg2)'}}>
+                <span style={{fontFamily:'Space Mono',color:activeMedia===item.mediaLabel?'var(--c)':'var(--t3)'}}>{item.mediaLabel}</span>
                 <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}} title={item.mediaName}>{item.mediaDisplayName}</span>
-                <span style={{fontFamily:'Space Mono',color:'var(--c)'}}>{item.similarityScoreOutOf20}</span>
+                <span style={{fontFamily:'Space Mono',color:activeMedia===item.mediaLabel?'#fff':'var(--c)'}}>{item.similarityScoreOutOf20}</span>
               </div>
             ))}
           </div>

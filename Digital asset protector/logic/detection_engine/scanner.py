@@ -79,6 +79,8 @@ def _tile_similarity(asset_tile_hashes: List[Dict], query_tile_hashes: List[Dict
     the highest similarity. A crop's content will find its counterpart asset tile
     even if it's no longer at the same grid position.
     """
+    from similarity import hamming_sim
+    
     if not asset_tile_hashes or not query_tile_hashes:
         return 0.0
 
@@ -87,9 +89,9 @@ def _tile_similarity(asset_tile_hashes: List[Dict], query_tile_hashes: List[Dict
     for query_tile in query_tile_hashes:
         best_tile_sim = 0.0
         for asset_tile in asset_tile_hashes:
-            ah_sim = _hamming_ratio(asset_tile["ahash"], query_tile["ahash"])
-            ph_sim = _hamming_ratio(asset_tile["phash"], query_tile["phash"])
-            dh_sim = _hamming_ratio(asset_tile["dhash"], query_tile["dhash"])
+            ah_sim = hamming_sim(asset_tile["ahash"], query_tile["ahash"])
+            ph_sim = hamming_sim(asset_tile["phash"], query_tile["phash"])
+            dh_sim = hamming_sim(asset_tile["dhash"], query_tile["dhash"])
             sim = (ah_sim + ph_sim + dh_sim) / 3.0
             if sim > best_tile_sim:
                 best_tile_sim = sim
