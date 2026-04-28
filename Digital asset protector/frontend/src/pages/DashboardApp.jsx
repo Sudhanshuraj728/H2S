@@ -272,7 +272,14 @@ function UploadPage({setPage}) {
         const typeLabel = matchType === 'Original' ? 'Exact Copy' : matchType === 'Cropped' ? 'Cropped Copy' : 'Transformed Copy';
         const typeEmoji = matchType === 'Original' ? '🔴' : matchType === 'Cropped' ? '✂️' : '🔄';
         
-        setError(`${typeEmoji} ${typeLabel} Detected!\nThis file matches ${matchedName} already in your vault.\n\nCONFIDENCE\n${confidence.toFixed(1)}%\nMATCH TYPE\n${matchType}\nThis asset was NOT registered — it already exists in your vault`);
+        setError({
+          isMatch: true,
+          emoji: typeEmoji,
+          label: typeLabel,
+          matchedName,
+          confidence: confidence.toFixed(1),
+          matchType
+        });
         setStep(0);
       } else {
         setError('');
@@ -300,7 +307,69 @@ function UploadPage({setPage}) {
         <h1 style={{fontFamily:'Poppins',fontWeight:800,fontSize:28,letterSpacing:'-0.02em'}}>Upload & Protect</h1>
         <p style={{color:'var(--t2)',fontSize:14,marginTop:4}}>Add a new asset to your protection vault.</p>
       </div>
-      {error&&<div className="error-msg" style={{marginBottom:16,whiteSpace:'pre-line',lineHeight:'1.6'}}><AlertTriangle size={14}/>{error}</div>}
+      {error && typeof error === 'string' && <div className="error-msg" style={{marginBottom:16,whiteSpace:'pre-line',lineHeight:'1.6'}}><AlertTriangle size={14}/>{error}</div>}
+      
+      {error && typeof error === 'object' && error.isMatch && (
+        <div style={{
+          background: 'var(--bg2)',
+          border: '1px solid var(--r)',
+          borderRadius: 16,
+          padding: 24,
+          marginBottom: 36,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 20,
+          boxShadow: '0 8px 32px rgba(255, 51, 102, 0.15)',
+          animation: 'fadeIn 0.4s ease-out'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ width: 56, height: 56, borderRadius: 14, background: 'var(--rv)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, flexShrink: 0, boxShadow: '0 0 20px rgba(255,51,102,.2)' }}>
+              {error.emoji}
+            </div>
+            <div>
+              <h2 style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 26, color: 'var(--r)', margin: 0, letterSpacing: '-0.02em' }}>
+                {error.label} Detected!
+              </h2>
+              <p style={{ color: 'var(--t2)', fontSize: 15, marginTop: 4 }}>
+                This asset was <strong style={{color: 'var(--r)'}}>NOT registered</strong> — it already exists in your vault.
+              </p>
+            </div>
+          </div>
+          
+          <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+            <div style={{ flex: 1, minWidth: 280, background: 'var(--bg1)', borderRadius: 12, padding: 20, border: '1px solid var(--bdr)' }}>
+               <div style={{ fontSize: 12, fontFamily: 'Space Mono', color: 'var(--t3)', marginBottom: 8, letterSpacing: '.05em' }}>MATCHED ASSET NAME</div>
+               <div style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 24, color: 'var(--c)', wordBreak: 'break-word', lineHeight: 1.2 }}>
+                 {error.matchedName}
+               </div>
+               
+               <div style={{ display: 'flex', gap: 24, marginTop: 20, paddingTop: 16, borderTop: '1px solid var(--bdr)' }}>
+                 <div>
+                   <div style={{ fontSize: 11, fontFamily: 'Space Mono', color: 'var(--t3)', marginBottom: 4 }}>CONFIDENCE</div>
+                   <div style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 24, color: 'var(--g)' }}>{error.confidence}%</div>
+                 </div>
+                 <div>
+                   <div style={{ fontSize: 11, fontFamily: 'Space Mono', color: 'var(--t3)', marginBottom: 4 }}>MATCH TYPE</div>
+                   <div style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 20, color: 'var(--o)', marginTop: 4 }}>{error.matchType}</div>
+                 </div>
+               </div>
+            </div>
+            
+            {file && file.type.startsWith('image/') && (
+              <div style={{ flex: 1, minWidth: 250, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#080810', borderRadius: 12, border: '1px dashed var(--bdr)', overflow: 'hidden', padding: 12, position: 'relative' }}>
+                <div style={{ position: 'absolute', top: 12, left: 12, background: 'rgba(2, 12, 24, 0.8)', backdropFilter: 'blur(4px)', padding: '4px 10px', borderRadius: 8, fontSize: 10, fontFamily: 'Space Mono', color: 'var(--t2)', border: '1px solid var(--bdr)' }}>UPLOADED IMAGE</div>
+                <img src={URL.createObjectURL(file)} alt="Matched preview" style={{ maxWidth: '100%', maxHeight: 200, objectFit: 'contain', borderRadius: 8 }} />
+              </div>
+            )}
+            {file && file.type.startsWith('video/') && (
+              <div style={{ flex: 1, minWidth: 250, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#080810', borderRadius: 12, border: '1px dashed var(--bdr)', overflow: 'hidden', padding: 12, position: 'relative' }}>
+                <div style={{ position: 'absolute', top: 12, left: 12, background: 'rgba(2, 12, 24, 0.8)', backdropFilter: 'blur(4px)', padding: '4px 10px', borderRadius: 8, fontSize: 10, fontFamily: 'Space Mono', color: 'var(--t2)', border: '1px solid var(--bdr)' }}>UPLOADED VIDEO</div>
+                <video src={URL.createObjectURL(file)} controls style={{ maxWidth: '100%', maxHeight: 200, objectFit: 'contain', borderRadius: 8 }} />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Step indicator */}
       <div className="fu1" style={{display:'flex',alignItems:'center',gap:0,marginBottom:36}}>
