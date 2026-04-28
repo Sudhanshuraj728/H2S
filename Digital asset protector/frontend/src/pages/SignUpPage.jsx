@@ -1,10 +1,11 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Shield, Mail, Lock, User, Building2, AlertTriangle, Eye, EyeOff, ArrowRight, CheckCircle } from "lucide-react"
+import { Mail, Lock, User, Building2, AlertTriangle, Eye, EyeOff, ArrowRight, CheckCircle } from "lucide-react"
 import { authAPI, setTokens, saveUser } from "../api.js"
 import PurpleSpotlight from "../components/PurpleSpotlight.jsx"
 
 export default function SignUpPage({ onLogin }) {
+  const brandLogo = "/Gemini_Generated_Image_pszjk6pszjk6pszj.png"
   const navigate = useNavigate()
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", password: "", confirmPassword: "", company: "" })
   const [showPass, setShowPass] = useState(false)
@@ -68,10 +69,10 @@ export default function SignUpPage({ onLogin }) {
         <div style={{ textAlign: "center", marginBottom: 32 }}>
           <div style={{
             width: 56, height: 56, background: "#b8a9e8",
-            borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center",
+            borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
             margin: "0 auto 20px", boxShadow: "0 0 30px rgba(184,169,232,0.2)",
           }}>
-            <Shield size={28} color="#000" strokeWidth={2.5} />
+            <img src={brandLogo} alt="TRAQ logo" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
           <h1 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: 30, color: "#fff", marginBottom: 8 }}>Create Your Account</h1>
           <p style={{ color: "#a0a0b8", fontSize: 15 }}>Start protecting your digital assets today</p>

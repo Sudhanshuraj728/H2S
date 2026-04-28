@@ -928,7 +928,69 @@ export default function DashboardApp({ user, onLogout }) {
     library:   <AssetLibrary setPage={setPage}/>,
     alerts:    <AlertsPage/>,
     analytics: <AnalyticsPage/>,
-    help:      <div style={{padding:32}}><h2 style={{fontFamily:'Poppins',fontSize:24,marginBottom:12}}>Help & Support</h2><p style={{color:'var(--t2)'}}>Documentation coming soon.</p></div>,
+    help:      (
+      <div style={{padding:'28px 32px',maxWidth:1100}}>
+        <div style={{marginBottom:24}}>
+          <h2 style={{fontFamily:'Poppins',fontSize:30,fontWeight:800,letterSpacing:'-0.02em',marginBottom:8}}>Help & Support</h2>
+          <p style={{color:'var(--t2)',fontSize:14,lineHeight:1.7}}>Complete documentation for operating the TRAQ platform at project handoff.</p>
+        </div>
+
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:14,marginBottom:14}}>
+          <div className="card" style={{padding:18}}>
+            <h3 style={{fontFamily:'Poppins',fontSize:16,fontWeight:700,marginBottom:10}}>System Overview</h3>
+            <p style={{color:'var(--t2)',fontSize:13,lineHeight:1.7,marginBottom:10}}>TRAQ protects digital assets through upload fingerprinting, duplicate/match detection, and alert-based monitoring.</p>
+            <ul style={{paddingLeft:16,color:'var(--t2)',fontSize:13,lineHeight:1.8,margin:0}}>
+              <li>Frontend: React + Vite dashboard</li>
+              <li>Backend: Node.js + Express APIs</li>
+              <li>Engine: Python similarity and hashing pipeline</li>
+              <li>Database: MongoDB Atlas/local MongoDB</li>
+            </ul>
+          </div>
+
+          <div className="card" style={{padding:18}}>
+            <h3 style={{fontFamily:'Poppins',fontSize:16,fontWeight:700,marginBottom:10}}>Start All Services</h3>
+            <p style={{color:'var(--t2)',fontSize:13,lineHeight:1.7,marginBottom:10}}>Run each service in its own terminal from the project root.</p>
+            <div style={{background:'var(--bg1)',border:'1px solid var(--bdr)',borderRadius:10,padding:'10px 12px',fontFamily:'Space Mono',fontSize:12,color:'#d7e6f7',lineHeight:1.7}}>
+              cd backend && npm run dev<br/>
+              cd frontend && npm run dev<br/>
+              cd logic/detection_engine && python run_compare.py &lt;file_path&gt;
+            </div>
+          </div>
+
+          <div className="card" style={{padding:18}}>
+            <h3 style={{fontFamily:'Poppins',fontSize:16,fontWeight:700,marginBottom:10}}>Core Flows</h3>
+            <ul style={{paddingLeft:16,color:'var(--t2)',fontSize:13,lineHeight:1.8,margin:0}}>
+              <li>Upload & Protect: registers and fingerprints new assets</li>
+              <li>Asset Library: view protected assets and metadata</li>
+              <li>Alert Center: active detections with severity labels</li>
+              <li>Analytics: volume trends and similarity insights</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(320px,1fr))',gap:14}}>
+          <div className="card" style={{padding:18}}>
+            <h3 style={{fontFamily:'Poppins',fontSize:16,fontWeight:700,marginBottom:10}}>Troubleshooting</h3>
+            <ul style={{paddingLeft:16,color:'var(--t2)',fontSize:13,lineHeight:1.8,margin:0}}>
+              <li>If login fails, verify backend is running and token storage is enabled.</li>
+              <li>If detection fails, install Python packages from requirements.txt.</li>
+              <li>If MongoDB fails, ensure MONGODB_URI is valid and IP is whitelisted.</li>
+              <li>If uploads fail, check max file limits and accepted file types.</li>
+            </ul>
+          </div>
+
+          <div className="card" style={{padding:18}}>
+            <h3 style={{fontFamily:'Poppins',fontSize:16,fontWeight:700,marginBottom:10}}>Release Checklist</h3>
+            <ul style={{paddingLeft:16,color:'var(--t2)',fontSize:13,lineHeight:1.8,margin:0}}>
+              <li>Confirm frontend and backend environment variables.</li>
+              <li>Run smoke test: signup, signin, upload, alert creation.</li>
+              <li>Verify duplicate detection using known matching files.</li>
+              <li>Validate analytics cards and charts after sample scans.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    ),
   }
 
   return (

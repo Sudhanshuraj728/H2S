@@ -1,8 +1,11 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 const BRAND_LOGO = "/Gemini_Generated_Image_pszjk6pszjk6pszj.png"
 
 export default function Navbar() {
+  const location = useLocation()
+  const isHome = location.pathname === "/"
+
   return (
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
@@ -12,7 +15,25 @@ export default function Navbar() {
       backdropFilter: "blur(20px)",
       borderBottom: "1px solid rgba(184,169,232,0.06)",
     }}>
-      <Link to="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", cursor: "pointer" }}>
+      <Link
+        to="/"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          textDecoration: "none",
+          cursor: "pointer",
+          transform: "translateZ(0)",
+          transition: "transform 260ms cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
+        onMouseEnter={e => {
+          if (!isHome) return
+          e.currentTarget.style.transform = "translateY(-2px) scale(1.05)"
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.transform = "translateY(0) scale(1)"
+        }}
+      >
         <img
           src={BRAND_LOGO}
           alt="TRAQ logo"
@@ -24,7 +45,28 @@ export default function Navbar() {
             boxShadow: "0 0 20px rgba(184,169,232,0.2)",
           }}
         />
-        <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 800, fontSize: 20, color: "#fff" }}>TRAQ</span>
+        <span
+          style={{
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: 800,
+            fontSize: 20,
+            color: "#fff",
+            display: "inline-block",
+            transform: "translateZ(0) scale(1)",
+            transition: "transform 280ms cubic-bezier(0.22, 1, 0.36, 1), text-shadow 280ms ease",
+          }}
+          onMouseEnter={e => {
+            if (!isHome) return
+            e.currentTarget.style.transform = "translateZ(0) scale(1.2)"
+            e.currentTarget.style.textShadow = "0 0 18px rgba(184,169,232,0.45)"
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.transform = "translateZ(0) scale(1)"
+            e.currentTarget.style.textShadow = "none"
+          }}
+        >
+          TRAQ
+        </span>
       </Link>
 
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
