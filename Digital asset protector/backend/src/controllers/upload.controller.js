@@ -15,6 +15,13 @@ const toNumber = (value, fallback = 0) => {
     return Number.isFinite(numeric) ? numeric : fallback;
 };
 
+// Small helper to validate that a value represents a finite number.
+const isFiniteNumber = (value) => {
+    if (value === null || value === undefined) return false;
+    const n = Number(value);
+    return Number.isFinite(n);
+};
+
 const severityFromScore = (score) => {
     if (score >= 18) return "critical";
     if (score >= 15) return "high";
@@ -121,7 +128,7 @@ const isTransformedExistingMatch = (metrics) => {
     if (cropSimilarity >= 0.45)  signals++; // tile similarity
     if (globalSimilarity >= 0.35) signals++; // some global hash overlap
     if (orbSimilarity >= 0.40)   signals++; // feature matching
-    if (combined >= 50)          signals++; // overall combined
+    if (combinedSimilarity >= 50)          signals++; // overall combined
     if (structuralScenario >= 45) signals++; // structural match
 
     // Need at least 2 independent signals to confirm a transformed match
@@ -445,7 +452,7 @@ export const uploadFile = asyncHandler(async (req, res) => {
             const createdAsset = await Asset.create({
                 title: sourceFileName,
                 description: `Protected upload for ${sourceFileName}`,
-                fileUrl: `upload://${sourceFileName}`,
+                fileUrl: `/uploads/${req.file.filename}`,
                 fileHash: sourceAssetHash,
                 fileType: sourceType === "video" ? "video" : "image",
                 fileSize: req.file?.size || 0,
@@ -540,7 +547,7 @@ export const uploadFile = asyncHandler(async (req, res) => {
                 createdUploadedAsset = await Asset.create({
                     title: sourceFileName,
                     description: `Protected upload for ${sourceFileName}`,
-                    fileUrl: `upload://${sourceFileName}`,
+                    fileUrl: `/uploads/${req.file.filename}`,
                     fileHash: sourceAssetHash,
                     fileType: sourceType === "video" ? "video" : "image",
                     fileSize: req.file?.size || 0,
@@ -556,6 +563,7 @@ export const uploadFile = asyncHandler(async (req, res) => {
                     colorhash: sourceHashes?.colorhash || null,
                 });
             }
+        }
         }
 
         const linkedAsset = await ensureLinkedAsset({ userId, bestMatch, sourceType });

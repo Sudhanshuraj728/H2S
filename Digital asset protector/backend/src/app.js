@@ -40,6 +40,9 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 // Static files - public folder se static files serve kr skte h (images, CSS, JS)
 app.use(express.static("public"));
 
+// Serve uploaded files as static
+app.use("/uploads", express.static("uploads"));
+
 // Cookie parser - incoming cookies ko parse kr rhe h request me
 app.use(cookieParser());
 // ab req.cookies se cookies ko access kr skte h

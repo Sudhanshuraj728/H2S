@@ -560,10 +560,10 @@ function AssetLibrary({setPage}) {
         </div>
       ):(
         <div className="fu2" style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:14}}>
-          {filtered.map(a=>{const id=a._id||a.id; const color=typeColor(a.fileType); return(
+          {filtered.map(a=>{const id=a._id||a.id; const color=typeColor(a.fileType); const hasThumbnail=a.fileUrl&&(a.fileType==='image'||a.fileType==='video'); return(
             <div key={id} className="card" style={{cursor:'pointer',padding:0,overflow:'hidden'}}>
-              <div style={{height:130,background:`linear-gradient(135deg,${color}20,${color}08)`,display:'flex',alignItems:'center',justifyContent:'center',position:'relative',borderBottom:'1px solid var(--bdr)'}}>
-                <div style={{color,opacity:.7}}>{typeIcon(a.fileType)}</div>
+              <div style={{height:130,background:hasThumbnail?'#020c18':`linear-gradient(135deg,${color}20,${color}08)`,display:'flex',alignItems:'center',justifyContent:'center',position:'relative',borderBottom:'1px solid var(--bdr)',overflow:'hidden'}}>
+                {hasThumbnail&&a.fileType==='image'?<img src={a.fileUrl} alt={a.title} style={{width:'100%',height:'100%',objectFit:'cover'}}/>:hasThumbnail&&a.fileType==='video'?<video src={a.fileUrl} style={{width:'100%',height:'100%',objectFit:'cover'}}/>:<div style={{color,opacity:.7}}>{typeIcon(a.fileType)}</div>}
                 <div style={{position:'absolute',top:10,right:10}}><span className={`badge ${a.status==='active'?'badge-g':a.status==='flagged'?'badge-r':'badge-o'}`}>{a.status}</span></div>
                 {a.detectionCount>0&&<div style={{position:'absolute',top:10,left:10}}><span className="badge badge-r"><AlertTriangle size={9}/>{a.detectionCount}</span></div>}
               </div>
