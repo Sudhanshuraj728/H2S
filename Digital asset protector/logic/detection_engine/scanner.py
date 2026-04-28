@@ -104,11 +104,12 @@ def _tile_similarity(asset_tile_hashes: List[Dict], query_tile_hashes: List[Dict
                 best_tile_sim = sim
         best_scores.append(best_tile_sim)
 
-    # Use top-K scores where K = number of asset tiles to avoid dilution
-    # from extra query tiles that have no matching region in a small asset tile set.
-    k = min(len(asset_tile_hashes), len(best_scores))
-    top_scores = sorted(best_scores, reverse=True)[:k]
-    return sum(top_scores) / k if top_scores else 0.0
+    # Top-40% of best scores: focuses on tiles that genuinely match (the crop region).
+    # Using all tiles (old approach) diluted the score with non-overlapping tiles.
+    # For a 30-50% crop, ~40% of query tiles will match the original region well.
+    n = max(1, int(len(best_scores) * 0.40))
+    top_scores = sorted(best_scores, reverse=True)[:n]
+    return sum(top_scores) / len(top_scores)
 
 
 def score_against_asset(
@@ -153,7 +154,15 @@ def score_against_asset(
     # --- ORB feature matching (0-1) ---
     orb_sim = 0.0
     if source_path and asset.file_path and os.path.exists(asset.file_path) and os.path.exists(source_path):
-        orb_sim = _orb_similarity(asset.file_path, source_path)
+        raw_orb = _orb_similarity(asset.file_path, source_path)
+        # CAP ORB when global hash similarity is very low (< 0.20).
+        # If two images have fundamentally different hash fingerprints, any ORB
+        # matches are coincidental (shared textures/patterns, not same content).
+        # Allowing full ORB in this case causes false positives.
+        if global_combined < 0.20 and tile_sim < 0.35:
+            orb_sim = raw_orb * 0.3  # heavily discount ORB for clearly different images
+        else:
+            orb_sim = raw_orb
 
     # ==========================================
     # SCENARIO-BASED SCORING
@@ -172,22 +181,20 @@ def score_against_asset(
     # 4. Structural Match: ignores color
     structural_sim = (global_combined * 0.40) + (tile_sim * 0.35) + (orb_sim * 0.25)
 
-    # 5. Heavy Transform: ORB-only fallback
-    heavy_transform_sim = orb_sim
-
-    # 6. Tile-only: when ORB and global hashes both fail
+    # 5. Tile-only: when ORB and global hashes both fail (small crops, extreme resize)
     tile_only_sim = tile_sim
 
-    # Best scenario wins
+    # Best scenario wins (removed pure-ORB scenario to prevent false positives)
     best_overall_sim = max(
         standard_sim, crop_sim, region_match_sim,
-        structural_sim, heavy_transform_sim, tile_only_sim
+        structural_sim, tile_only_sim
     )
     best_score = best_overall_sim * 20.0
     best_sa, best_sp, best_sd = sa, sp, sd
 
     # --- Video frame fallback: pick the best-matching frame ---
-    if asset.type == "video" and getattr(asset, "frame_hashes", None):
+    asset_type = getattr(asset, "type", None) or getattr(asset, "fileType", None) or "image"
+    if asset_type == "video" and getattr(asset, "frame_hashes", None):
         for frame in asset.frame_hashes:
             fa = hamming_sim(frame["ahash"], ahash)
             fp = hamming_sim(frame["phash"], phash)
@@ -262,7 +269,7 @@ def score_against_asset(
         "scenario_crop_match": round(crop_sim * 100, 2),
         "scenario_region_match": round(region_match_sim * 100, 2),
         "scenario_structural_match": round(structural_sim * 100, 2),
-        "scenario_heavy_transform_match": round(heavy_transform_sim * 100, 2),
+        "scenario_heavy_transform_match": round(orb_sim * 100, 2),
 
         # Final verdicts
         "combined_similarity_percentage": round(best_overall_sim * 100.0, 2),
@@ -294,10 +301,12 @@ def compare_hashes_to_assets(
     ahash: str, phash: str, dhash: str,
     colorhash: str = "",
     tile_hashes: Optional[List[Dict]] = None,
-    source_path: str = None  # NEW: Optional source image path for ORB
+    source_path: str = None  # Optional source image path for ORB
 ) -> Dict[str, Any]:
-    """UPDATED: Now accepts colorhash, tile_hashes, and source_path for ORB"""
-    ASSET_DB, _, _, _ = _get_dbs()
+    """Always creates a fresh AssetDB() so it reads the latest assets.json from disk.
+    Previously used _get_dbs() which imported from main.py — when run_compare.py is
+    called standalone (from Node.js), main.py is never executed so the DB was stale."""
+    ASSET_DB = AssetDB()  # Fresh read from disk every call
     matches = []
     best_match = None
 
@@ -329,6 +338,114 @@ def compare_hashes_to_assets(
 
     matches.sort(key=lambda x: x["similarity_score_out_of_20"], reverse=True)
 
+
+    return {
+        "source_file_name": source_name,
+        "source_type": source_type,
+        "best_match": best_match,
+        "matches": matches,
+    }
+
+
+def compare_hashes_to_mongo_assets(
+    source_name: str,
+    source_type: str,
+    ahash: str, phash: str, dhash: str,
+    colorhash: str = "",
+    tile_hashes: Optional[List[Dict]] = None,
+    source_path: str = None,
+    mongo_assets: List[Dict] = None,
+) -> Dict[str, Any]:
+    """
+    Compare an image against MongoDB assets passed directly from Node.js.
+    MongoDB is the single source of truth — assets.json is not used at all.
+
+    Each mongo_asset dict has: _id, filename, title, ahash, phash, dhash,
+    colorhash (optional), fileType (optional).
+    tile_hashes are not stored in MongoDB, so tile similarity falls back
+    to whatever the query image tiles can match against the global hashes.
+    For exact duplicates, global hash match alone gives 100%.
+    """
+    from types import SimpleNamespace
+
+    matches = []
+    best_match = None
+
+    for ma in (mongo_assets or []):
+        a_ahash = ma.get("ahash") or ""
+        a_phash = ma.get("phash") or ""
+        a_dhash = ma.get("dhash") or ""
+        if not a_ahash or not a_phash or not a_dhash:
+            continue  # skip assets without hashes
+
+        # MongoDB _id comes as either a string or {"$oid": "..."} dict
+        raw_id = ma.get("_id") or ""
+        asset_id = str(raw_id.get("$oid", raw_id) if isinstance(raw_id, dict) else raw_id)
+
+        display_name = ma.get("filename") or ma.get("title") or "unknown"
+        pub_id = f"ASSET-{asset_id[:8].upper()}" if asset_id else "ASSET-UNKNOWN"
+
+        # MongoDB stores tileHashes as camelCase; Python uses snake_case internally.
+        # Convert MongoDB tileHashes to the format score_against_asset expects.
+        raw_tiles = ma.get("tileHashes") or []
+        asset_tile_hashes = [
+            {"ahash": t.get("ahash",""), "phash": t.get("phash",""), "dhash": t.get("dhash","")}
+            for t in raw_tiles if isinstance(t, dict)
+        ]
+
+        asset = SimpleNamespace(
+            id=asset_id,
+            public_id=pub_id,
+            filename=display_name,
+            ahash=a_ahash,
+            phash=a_phash,
+            dhash=a_dhash,
+            colorhash=ma.get("colorhash") or "",
+            tile_hashes=asset_tile_hashes,  # used for crop detection
+            file_path="",                   # no file on disk for ORB
+        )
+
+        from similarity import hamming_sim
+
+        # EXACT MATCH SHORTCUT: If all 3 perceptual hashes match perfectly,
+        # it's the same image (100%) regardless of tile/ORB availability.
+        # This is the key for MongoDB assets which don't store tile_hashes.
+        if (hamming_sim(a_ahash, ahash) == 1.0 and
+                hamming_sim(a_phash, phash) == 1.0 and
+                hamming_sim(a_dhash, dhash) == 1.0):
+            score = 20.0
+            result = {
+                "global_hash_similarity": 1.0, "colour_similarity": 1.0,
+                "crop_similarity": 1.0, "orb_similarity": 1.0, "region_similarity": 1.0,
+                "ahash_similarity": 1.0, "phash_similarity": 1.0, "dhash_similarity": 1.0,
+                "scenario_standard_match": 100.0, "scenario_crop_match": 100.0,
+                "scenario_region_match": 100.0, "scenario_structural_match": 100.0,
+                "scenario_heavy_transform_match": 100.0,
+                "combined_similarity_percentage": 100.0,
+                "similarity_score_out_of_20": 20.0,
+                "match_status": "identical",
+            }
+        else:
+            score, result = score_against_asset(
+                asset, ahash, phash, dhash, colorhash, tile_hashes,
+                source_path=source_path,
+            )
+
+        item = {
+            "matched_asset_id": asset.id,
+            "matched_public_id": asset.public_id,
+            "matched_filename": asset.filename,
+            "source_file_name": source_name,
+            "source_type": source_type,
+            **result,
+            "similarity_score_out_of_20": score,
+        }
+
+        matches.append(item)
+        if best_match is None or score > best_match["similarity_score_out_of_20"]:
+            best_match = item
+
+    matches.sort(key=lambda x: x["similarity_score_out_of_20"], reverse=True)
 
     return {
         "source_file_name": source_name,

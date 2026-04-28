@@ -914,6 +914,2879 @@
       ],
       "frame_count": 0,
       "duration_seconds": 0
+    },
+    {
+      "id": "69ef9bbfa1b99fc5db5d3054",
+      "public_id": "ASSET-4643JL51",
+      "filename": "1777310650703_bhubhaneswar.jpeg",
+      "file_path": "uploads\\69ef9bbfa1b99fc5db5d3054_1777310650703_bhubhaneswar.jpeg",
+      "upload_timestamp": "2026-04-27 22:54:17.820955",
+      "type": "image",
+      "ahash": "00000000000fffff",
+      "phash": "9b42b80a47bf5e0b",
+      "dhash": "a9aa5d5d53793a5a",
+      "colorhash": "03640008000",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "203c1c8f1f2687c7",
+          "phash": "93496706e17d469e",
+          "dhash": "d6597910956c6d1d",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "6bcf45c167272036",
+          "phash": "a0b9df05e56a8627",
+          "dhash": "caaaab9bcec64554",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "83829c991b67607b",
+          "phash": "ad7e6520ad53863c",
+          "dhash": "162e6873b3cdcbf7",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "e3e24283632307a5",
+          "phash": "a6f4f281bb3f8a01",
+          "dhash": "0e84a626ceef6f4d",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "bf0323e6341109cd",
+          "phash": "8f85a90cd0f9cf07",
+          "dhash": "7266468cec673b9b",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "d9c0c6c0079a10d7",
+          "phash": "fc73ea0da208bb86",
+          "dhash": "178e8caa2a32b5a5",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "0000c8f88acbefff",
+          "phash": "f97826238e42a8fd",
+          "dhash": "4d191390529a8a29",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "00000f0fff6f07ff",
+          "phash": "91134641df3497bd",
+          "dhash": "ccddfffed3d59668",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "0000ffffffbd3bff",
+          "phash": "ba72213ab2a1b6ad",
+          "dhash": "8d4df48a2939ba7a",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "1010170701c36363",
+          "phash": "ac5e456913b6e247",
+          "dhash": "b6372537bba7aeca",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "0003c3c14143cb69",
+          "phash": "a93e570e52fde500",
+          "dhash": "d123039b9bd393db",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "e56c2e060682e1f3",
+          "phash": "b712ea79ac4cbb80",
+          "dhash": "cdcd4c6c761e0f27",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "d8d8d0f07171e0c0",
+          "phash": "e8d87983e037f823",
+          "dhash": "913131a5e5c5c614",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "0702001cb8f3e3e3",
+          "phash": "a514a1ef92239be5",
+          "dhash": "8e163a6961638787",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "09098080a0f0fcfc",
+          "phash": "ff3981ed0fe44430",
+          "dhash": "7b3b2a6a62624949",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "604060fe7e5e7e7c",
+          "phash": "c161639dc3f6a14b",
+          "dhash": "db938aacb8bee0c0",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "c3a340c1d9fd1d09",
+          "phash": "e96537ee70386298",
+          "dhash": "0743939bb361b9d9",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "c7c72624a2a0ffbe",
+          "phash": "b630f8695d4a5a8e",
+          "dhash": "1d8e6c684e4b6564",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "df010007e767dc00",
+          "phash": "a42d58a2bdc861f7",
+          "dhash": "97174e6f4fcdb534",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "f474c4c079392c6c",
+          "phash": "d3e68381407efe91",
+          "dhash": "48cc2c14d3dbd9d9",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "60743f3f3c3c7c5c",
+          "phash": "822771492babbbd2",
+          "dhash": "cac4e569e1f9d1d1",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "2041c36377303838",
+          "phash": "8a315c43032f3fcf",
+          "dhash": "c1890bcfcbe5e1f1",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "defe8c0808107060",
+          "phash": "d89ec496191d362f",
+          "dhash": "382839597b64e3d3",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "161d10129617e6e0",
+          "phash": "f41e739574052c73",
+          "dhash": "343125a424668e8c",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "0080000000f1f3f7",
+          "phash": "ee18e60b17ef1215",
+          "dhash": "3931b3233a430746",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "5c4d0d0c4ccf8f0f",
+          "phash": "9a5a855552ce855f",
+          "dhash": "91999999991b3f6e",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "040484c7c2dfffff",
+          "phash": "b6561f4565a80a7e",
+          "dhash": "7c6c2d8f163efedf",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "00480c0600ffffff",
+          "phash": "d151e36424b6df4c",
+          "dhash": "d4d9d89c96d27fee",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "00090b0d00ffffff",
+          "phash": "b838f07256b6746c",
+          "dhash": "9393bb7931205500",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "f39383a139f9fdff",
+          "phash": "ef2594ca826272b7",
+          "dhash": "66266e6b49d91916",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "00919294bd83ffff",
+          "phash": "fe6ce17992562581",
+          "dhash": "2e27666d6b2a0cd7",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "030fdfcb5b003fff",
+          "phash": "b8398700ec7f1ae5",
+          "dhash": "df9a9a32b7b5e582",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "0ffff949d80001ff",
+          "phash": "c9c9b636992d46d2",
+          "dhash": "7e959392924d2750",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "fff5f4743533f2ff",
+          "phash": "ce4ab5259b59465a",
+          "dhash": "362525ade5e4e659",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "69efaf642b9f8ff7903d54f6",
+      "public_id": "ASSET-I11ISICP",
+      "filename": "1777315679914_cropped_abd.jpeg",
+      "file_path": "uploads\\69efaf642b9f8ff7903d54f6_1777315679914_cropped_abd.jpeg",
+      "upload_timestamp": "2026-04-28 00:18:06.672817",
+      "type": "image",
+      "ahash": "1effc4b0a46cfcd2",
+      "phash": "d68b81936c5a397a",
+      "dhash": "f0c529656cc8a8b6",
+      "colorhash": "06600040000",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "0000868f1fbf7c20",
+          "phash": "9833478cb9f3a664",
+          "dhash": "f0f81c1f3070e0c1",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "1c1c3ffff0f80000",
+          "phash": "d492135874b3ed4e",
+          "dhash": "f8f8f00804803f37",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "0163f8ffbfe3c180",
+          "phash": "ed8268351ee95d0b",
+          "dhash": "87c7c2e06a068729",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "e0e0e1e363e18099",
+          "phash": "e1e25e068c7e4f2c",
+          "dhash": "85898f87c7c72333",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "03e0f0f8f08327e7",
+          "phash": "e658b62cd98c694e",
+          "dhash": "97c4c12003076e4e",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "8080e141c0e0fefd",
+          "phash": "e83edf7c28916384",
+          "dhash": "1e2bc79393011209",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "930f1fb0f87c3c08",
+          "phash": "9ebc3cc06c4c5ccd",
+          "dhash": "367c7863e0f0f078",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "67e7e72703703010",
+          "phash": "a6b34b4c3642cd3e",
+          "dhash": "ce0ecece6fe3e3f3",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "e1e0f0c0c8f87cfc",
+          "phash": "cfe7864a3b09cc92",
+          "dhash": "034a661b19e0f074",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "ef010001e0e1c3c7",
+          "phash": "a45ab4e9d6a55a54",
+          "dhash": "9effff870303060e",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "000000003cffffff",
+          "phash": "e26ebd8242efa512",
+          "dhash": "87070783c9fe0000",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "060e1e3e7ffffff8",
+          "phash": "95167db249966996",
+          "dhash": "fcfcf8f0f0000c12",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "0000038fffffff18",
+          "phash": "be374ce34ca3c483",
+          "dhash": "383c3e1f1f2e3331",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "000103c2f0fcffbf",
+          "phash": "fd320dc264bb443b",
+          "dhash": "0f1f3f1e04005a26",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "070f3f00003878f0",
+          "phash": "82b6e6166d4c65b6",
+          "dhash": "2c2cec7368e0e1c3",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "fffffc0000000000",
+          "phash": "b7cca2965d116ee0",
+          "dhash": "05000010186ccf0f",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "f8ffff00030000c0",
+          "phash": "e9c9d949494969ab",
+          "dhash": "92001feb67731307",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "19fffef8f8f87000",
+          "phash": "d9b72d692a2634c5",
+          "dhash": "3310ec9090d2f232",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "ffef070300000000",
+          "phash": "b6b6d65a4a8cac4c",
+          "dhash": "6c0c0f1f737fec63",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "f0f0f8787c38b8c0",
+          "phash": "c8e0ff05b29f6918",
+          "dhash": "c3c3c1e0e0e06000",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "030f1f3f3f3f0c00",
+          "phash": "9eba6881e8f94707",
+          "dhash": "3f7d7cf8f8f8f830",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "f0f8fcfcf8e08061",
+          "phash": "cad5247da632a53a",
+          "dhash": "0680c060610103c7",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "090b06040c3effff",
+          "phash": "903be94b7ac2d456",
+          "dhash": "337b3c3cf8f0e0e0",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "838f2f63030180e0",
+          "phash": "a3bcff3ce107c018",
+          "dhash": "4f1fdfc787034948",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "c0c7cfc781070f8f",
+          "phash": "b3f15d4e609c88ce",
+          "dhash": "0e1c1c1c0f3f3f1e",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "0000003dffffffc1",
+          "phash": "9f1e72c0206b2ff8",
+          "dhash": "78747371e1c00b17",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "014363c3c7c7c7e7",
+          "phash": "a4640c7c4c6f2fc7",
+          "dhash": "87878f8f0f0f0f8f",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "f0f0f0f8f8f1e1e0",
+          "phash": "ea527582d59545b5",
+          "dhash": "8001002021070702",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "ffa081838282c2c2",
+          "phash": "fdcad09591f02a6a",
+          "dhash": "8040471a36663616",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "0ebe7f3f1f1f0700",
+          "phash": "95dc759f209b61b0",
+          "dhash": "3878f8f8fefe7e1f",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "0300c0e3e3e3e0c0",
+          "phash": "fd1a18e4a2e2a4f5",
+          "dhash": "3f30000f07070707",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "c70301f8f8f87878",
+          "phash": "caa434d3d9d98d07",
+          "dhash": "8f8fe7d1e1e0e0e0",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "fcf8f81f0703073f",
+          "phash": "cad4c03dacadada1",
+          "dhash": "0080c0f7fffffff1",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "6231f0f8e0f8fcfc",
+          "phash": "c32d866571d9d472",
+          "dhash": "c26363028d8189c9",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "69efb2752b9f8ff7903d55fe",
+      "public_id": "ASSET-GU57NPLW",
+      "filename": "1777316465383_CRIC.jpeg",
+      "file_path": "uploads\\69efb2752b9f8ff7903d55fe_1777316465383_CRIC.jpeg",
+      "upload_timestamp": "2026-04-28 00:31:10.957790",
+      "type": "image",
+      "ahash": "1c0044df0c1dbfbf",
+      "phash": "92524f1bbebe804b",
+      "dhash": "7c48cd3d29f9712c",
+      "colorhash": "0a001000041",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "dfc10103472f2c3d",
+          "phash": "ba7cdbb2841e8992",
+          "dhash": "2bab33b6aecdcdd9",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "f97f03011030818b",
+          "phash": "ae82d1cc716a353d",
+          "dhash": "c3e9d7c55775231a",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "c9d8e098181140c0",
+          "phash": "fcf9f20a9102ef12",
+          "dhash": "1b121232b225a514",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "1523f8fcec01000c",
+          "phash": "dbc7142ed95828d3",
+          "dhash": "e5cada9159cb99d8",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "080b7b7b4b830747",
+          "phash": "a1c9767b838cdc31",
+          "dhash": "9292d2d39b3a9e9e",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "e0e0efefef000080",
+          "phash": "f1f14c1db70770e0",
+          "dhash": "1e94994a1c1ea214",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "0c090901fbf3f9fb",
+          "phash": "a91a12e6e21b33ed",
+          "dhash": "d85353d38383f3f3",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "1b101400b6f637c7",
+          "phash": "960de0ed3d0be08f",
+          "dhash": "36a4647866a44d2d",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "33330300dbdfd8ff",
+          "phash": "ac27c7b04643b9b9",
+          "dhash": "65765767b6b7b5b5",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "e7e5e0e0a6024069",
+          "phash": "e3e2aab4af41a8e1",
+          "dhash": "4d4d49445494dcd9",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "ff9f09181c18347c",
+          "phash": "8abfe6ce504433a6",
+          "dhash": "293b7b303979e5cd",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "f0feff0900121010",
+          "phash": "e4d344743a2fa556",
+          "dhash": "0588eabbbda6a3b3",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "3cbc7cfcf8300000",
+          "phash": "c99f3f2cfd00023e",
+          "dhash": "6868f8d0d2d5d54d",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "7173f662e0e46664",
+          "phash": "e68c8a2a0b91fdb9",
+          "dhash": "a5a5868e878ccccc",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "292909191f3f0f1f",
+          "phash": "8b6b7380cc33e91e",
+          "dhash": "596b7b73b3ebe879",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "4c44c6c6c6c345bd",
+          "phash": "f0500a0ddf21ff59",
+          "dhash": "90949e9e9e0e9b69",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "d9393000051fdefc",
+          "phash": "c86fccbc605cd652",
+          "dhash": "b35369c9c93cb4b0",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "20202044dcdedefe",
+          "phash": "d463a5dcf83323c8",
+          "dhash": "4969c998b434b4b4",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "c181880c0c1e3eff",
+          "phash": "bb6aad44c355f444",
+          "dhash": "0b1b191999bc6c7e",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "00fbfffbfbf90000",
+          "phash": "c99c14481c35ebf7",
+          "dhash": "b1b2d7971333538c",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "b581818981c70f0f",
+          "phash": "bb6e84c64b96e229",
+          "dhash": "69235919132abc9a",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "8df9fcfdcc8c0d01",
+          "phash": "fbcc0c33310557f8",
+          "dhash": "1931f18919595995",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "defe7ffefefe8040",
+          "phash": "d494789d617ec32a",
+          "dhash": "bcbc98a2aab22295",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "483f3f3f3f3f0000",
+          "phash": "878d78f0703e968e",
+          "dhash": "9af2646cf8f8d982",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "0103030303030303",
+          "phash": "a95656545a575555",
+          "dhash": "cb4b4bab9b8b8bcb",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "07c367e7e72d1c1c",
+          "phash": "92665d6bf71603a4",
+          "dhash": "5d05cd4dcdd9b1b0",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "03c303bdb8a32b2f",
+          "phash": "af3c207fc30f0f03",
+          "dhash": "1717776b6b6b6bca",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "e0e0f4f7e38303e1",
+          "phash": "efd25321a135ca78",
+          "dhash": "9609290707671747",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "000000cfcfce6f6f",
+          "phash": "b14e07f4bd83501f",
+          "dhash": "cc64999b1a98d89a",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "00fcfefe00000303",
+          "phash": "d4d62b2b28c4d33d",
+          "dhash": "3b74a8a4a25b7636",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "081c1e1f171e1e9f",
+          "phash": "9d585961a95bda15",
+          "dhash": "7270747a66646e2e",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "002071f1f2f37317",
+          "phash": "850b16717f80fe87",
+          "dhash": "fac9e1c34286c666",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "0080dcfc1c38feff",
+          "phash": "da6a252482dacfc7",
+          "dhash": "6b2f393978609cda",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "0000efefcfc0c0e8",
+          "phash": "f03f7d4da0a0e1b8",
+          "dhash": "9b689d9d9da5aa89",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "69efb5c099a34680c75ce371",
+      "public_id": "ASSET-Z07TKP2H",
+      "filename": "1777317310524_MRUNIVERSE.jpeg",
+      "file_path": "uploads\\69efb5c099a34680c75ce371_1777317310524_MRUNIVERSE.jpeg",
+      "upload_timestamp": "2026-04-28 00:45:13.227993",
+      "type": "image",
+      "ahash": "efef8fcf00202000",
+      "phash": "bbbba24242c38b3d",
+      "dhash": "dd1b3b1bc44b6961",
+      "colorhash": "0b202010000",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "bf9f0f3778e06060",
+          "phash": "c79cb4c886679b51",
+          "dhash": "2c30596ec183c3cc",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "0707870707070f0f",
+          "phash": "b66fc1100050fffd",
+          "dhash": "1e5e5e7d3c3c3cdc",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "e7e7e7e707182207",
+          "phash": "b7e2c40db2e31f30",
+          "dhash": "4e4d4d0c1c70c63c",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "f7ff702000000003",
+          "phash": "e5c5a5d657464343",
+          "dhash": "66b6c269d8d76617",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "7fefc70260000080",
+          "phash": "b5a4b782da0e0ea7",
+          "dhash": "be8e0ff6c7c71710",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "ffffbc8800000000",
+          "phash": "9e9eb4b5a16149c9",
+          "dhash": "bc3c3118803236ce",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "032323217b232323",
+          "phash": "afa835b1ba2a2715",
+          "dhash": "176b6b6b6b6b666e",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "c0c0c0c0fce0e0e0",
+          "phash": "f33c078d0e7061be",
+          "dhash": "08081909189909c9",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "00ff0101ff0f0103",
+          "phash": "aa5455d5562a2b97",
+          "dhash": "cacbdb034bdb1b1b",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "cf8f8783891c1c3e",
+          "phash": "bfb39059e88c545a",
+          "dhash": "1a4d4e6771307064",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "f8fcfcfcdc5c4000",
+          "phash": "d8db29c9b4499e64",
+          "dhash": "110928183cb093ae",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "070703030b0b0b0b",
+          "phash": "a94a9ecb90f2de48",
+          "dhash": "6b4b5bdbdb5a5e56",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "ffffffffffffe0c0",
+          "phash": "f58a619c6a956a95",
+          "dhash": "0000000000000202",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "0f0f0f1f1f1f1f1f",
+          "phash": "99bbc738c7304738",
+          "dhash": "5a5a50d4f4b4b4f2",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "7b7878383c9ccc63",
+          "phash": "dbc9a09ea7b06c52",
+          "dhash": "d6c3c051693098cb",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "8f070f0360f0797f",
+          "phash": "8633dfe8b09c78c1",
+          "dhash": "384dd975cfa1e3e6",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "0b0f070707170705",
+          "phash": "a49d6b847916cc3b",
+          "dhash": "56767636d6e46d2f",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "e0e1e7ecf0e0e0e0",
+          "phash": "e3a0674d5e9235cc",
+          "dhash": "01838e984354480b",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "73c0031f1e1e1e1c",
+          "phash": "9ce14a8f9985278f",
+          "dhash": "c2030e3c206c6834",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "ff7e1c0008000000",
+          "phash": "cfc2c5c5e5656131",
+          "dhash": "e0f0b9893977723c",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "ffffc0c083c0483c",
+          "phash": "eeae868ea6525929",
+          "dhash": "6d26130e2733d8d8",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "e7c511ffffc00000",
+          "phash": "aaaa2aabb7b7840c",
+          "dhash": "0f19e14013a72323",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "fbf9b10818000000",
+          "phash": "c3e1e1f171383e0e",
+          "dhash": "93c3639930e0c0c0",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "fff8fc88e0000000",
+          "phash": "c4c8e8fcba3e1a1a",
+          "dhash": "a1a1a00080048c8c",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "00000000ffff0c0c",
+          "phash": "9b641b90e41b9bb9",
+          "dhash": "1c20410399991919",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "020e1f1c1e1e1f1f",
+          "phash": "9d632566734dc866",
+          "dhash": "ded0d2707474763a",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "80808080ffff8682",
+          "phash": "ff087487687f80c6",
+          "dhash": "232229284c4c2434",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "00000000ffff0f00",
+          "phash": "b77b0a8c492fc750",
+          "dhash": "e91c0e06006e7e88",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "00000000feffff01",
+          "phash": "aa552bd479a8d265",
+          "dhash": "9256c624a0e7f31b",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "0cffff0c0c0c1c1c",
+          "phash": "99a7e15b1b191b1a",
+          "dhash": "19d979b93939b9b9",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "0f1f1f1f1f171717",
+          "phash": "9e9293b5192969cd",
+          "dhash": "383db536666e6e6f",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "8086ffc2c0c2c2e2",
+          "phash": "f41f0370747f83e0",
+          "dhash": "24343c2c84949494",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "00ffff1f00000000",
+          "phash": "8ffc54531302ade5",
+          "dhash": "51212b690a4ac840",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "0103ff0b03030303",
+          "phash": "a9da6a2a2a95d6a5",
+          "dhash": "8b0b73fbdbcbcbcb",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "69efb60f99a34680c75ce387",
+      "public_id": "ASSET-0K9R918O",
+      "filename": "1777317390198_CROPPED_UNIVERSE.jpeg",
+      "file_path": "uploads\\69efb60f99a34680c75ce387_1777317390198_CROPPED_UNIVERSE.jpeg",
+      "upload_timestamp": "2026-04-28 00:46:32.704860",
+      "type": "image",
+      "ahash": "dfdf1f1b00404040",
+      "phash": "989dfa7273f88806",
+      "dhash": "3933737208979595",
+      "colorhash": "0b202010000",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "f0f8f8f080180000",
+          "phash": "cccea01e7202df1f",
+          "dhash": "252163453971f99f",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "1f1f1f3f3c3c3c3c",
+          "phash": "8eaca95ab5aa552a",
+          "dhash": "f4f0e8e9e8e8e968",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "c7c7cf8f0f30c60e",
+          "phash": "b1fae0471ff0011f",
+          "dhash": "9d9cba387ae28ed8",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "e77fac800700583c",
+          "phash": "c3e3c36026786e3b",
+          "dhash": "cdcc583f4ea6b0e0",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "ff7f1e0200000000",
+          "phash": "9a92c3e3e361349b",
+          "dhash": "f1f0b8163b3cbc43",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "ff7f780800000000",
+          "phash": "939391b5b43c4cce",
+          "dhash": "58d861b000664a12",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "38383c3c3c3e2e2f",
+          "phash": "874e23e6ee141763",
+          "dhash": "e0f0e87074dcdade",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "00ff2020ff602060",
+          "phash": "c3381efcf84307b8",
+          "dhash": "01c34f48c2cf4948",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "00ff0301ff0b0303",
+          "phash": "ab5655d5562a2b91",
+          "dhash": "2837bb039bbb2333",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "fcfefefede9c4000",
+          "phash": "d4d74a9a2c43be61",
+          "dhash": "2804229a16b89017",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "c581810181830383",
+          "phash": "aad2b480ff00fe87",
+          "dhash": "091b1b33333b9b3b",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "3f3f3f3f3f3f7f7e",
+          "phash": "833f54aa55aa54ab",
+          "dhash": "6868d0d0d0d0d0d4",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "fcfcfcfcfcf8f800",
+          "phash": "dad625cb34c932cc",
+          "dhash": "090909090901b313",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "3f3f3f3f3f3f3f76",
+          "phash": "873e748a748b748b",
+          "dhash": "6868686868d0d0c6",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "8f03060160f87c7f",
+          "phash": "8c379ef8229af892",
+          "dhash": "2d6eec73c7b0f0f1",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "038303037b1f44c0",
+          "phash": "a5ad7a80e53a1769",
+          "dhash": "bb3e1e86d6fead81",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "7e7e7c7c7ffebe1e",
+          "phash": "d5400fe12bf255ab",
+          "dhash": "d484a4a4a2905072",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "030f3fffc7824202",
+          "phash": "a59a2d7c63c20e5b",
+          "dhash": "0f3cf8c61ea68696",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "e202023e7e7e7c7c",
+          "phash": "d03d6be4c7b630e0",
+          "dhash": "06021ef8c0a481d9",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "ffbf808080804c7e",
+          "phash": "eeae84ccac745159",
+          "dhash": "a623190723309ccc",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "fdf1063fff3e2000",
+          "phash": "c3f84ac2c3171e76",
+          "dhash": "c1833cd842e8c84a",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "ff3f1b0000000000",
+          "phash": "8e9697d7d3c34828",
+          "dhash": "6c6e3315b3fffe7e",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "fffffffcff000000",
+          "phash": "bdbd3db514504307",
+          "dhash": "36365b8881800707",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "fdfdfdfcf0000000",
+          "phash": "e2ea6aea8a1a8b8b",
+          "dhash": "c90981a100881838",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "000f2f0f0f1f1f0f",
+          "phash": "9b436c6d568ad964",
+          "dhash": "cbda58797abafbbc",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "80c0c0c0e8efe0e0",
+          "phash": "ff1c67804f40bf03",
+          "dhash": "0908228491934b4a",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "00000000ffffe3c0",
+          "phash": "f00f70ab1e259f52",
+          "dhash": "bd40402281939b98",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "00000000ffffff00",
+          "phash": "896434e974aecd66",
+          "dhash": "06c0e37300f3fb42",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "0000000000ffff03",
+          "phash": "ad52add22db1d834",
+          "dhash": "6cac0cc8818bdf57",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "0f1f1f1f1f13171f",
+          "phash": "9cb5b5261a2a5ada",
+          "dhash": "3e3636b3b7e767e2",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "e0c0e0e0f0f0f0f8",
+          "phash": "ee33796e47638d00",
+          "dhash": "0a0a8bc8642424f2",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "40ffffe0c0c0c0c0",
+          "phash": "f09e707060278fcf",
+          "dhash": "9290939b929b9a9a",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "00ffffff00000000",
+          "phash": "cb976e6024979d8c",
+          "dhash": "091858d991915101",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "0303ff3703030303",
+          "phash": "a549292d3ad2d2b7",
+          "dhash": "1716c6e626261616",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "69efc97199a34680c75ce614",
+      "public_id": "ASSET-566E0XTO",
+      "filename": "1777322352000_BC.jpeg",
+      "file_path": "uploads\\69efc97199a34680c75ce614_1777322352000_BC.jpeg",
+      "upload_timestamp": "2026-04-28 02:09:14.470486",
+      "type": "image",
+      "ahash": "0000607abe161840",
+      "phash": "c767389cc649269b",
+      "dhash": "573ccac26c2cb286",
+      "colorhash": "06411000000",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "2363e4e0e0fcd8d6",
+          "phash": "f56bb44bb44a944a",
+          "dhash": "46cec889800031b4",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "000000385b0f8703",
+          "phash": "b94e2699c9663399",
+          "dhash": "c4d22a77d39b3d1e",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "0b0f3f7ffefcf8e0",
+          "phash": "881839f9e5c887ed",
+          "dhash": "b3f9f1c084000086",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "070f0f1f3161c140",
+          "phash": "a2b770644c74d579",
+          "dhash": "aedfdd75e38b8b91",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "00c8c0fce3ffc781",
+          "phash": "f8513ba547904767",
+          "dhash": "d53908ac062ebf0f",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "080c2420e0f8f8f0",
+          "phash": "cf338cf926c94670",
+          "dhash": "1a78c8400402a3e7",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "781818003d3c3c18",
+          "phash": "ce73c98b21c5d3c8",
+          "dhash": "f171e1e4e96120b0",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "607b3f1f0e0e8080",
+          "phash": "95856353787e9319",
+          "dhash": "cec66636382c2d12",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "f60c3c7c7c755160",
+          "phash": "80dfece6c4c4c6cc",
+          "dhash": "6499e9c8e1e5a785",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "1838b8f8f8f8fcfc",
+          "phash": "ca5c911aba5695d5",
+          "dhash": "3071606161e1c0c0",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "183878f8c0c080c0",
+          "phash": "cc8d033371f97133",
+          "dhash": "f361e133051c0202",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "000000000030f88c",
+          "phash": "d966996433c926d9",
+          "dhash": "4783113218649219",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "00000003070f3fff",
+          "phash": "b873c3b4ec0ae692",
+          "dhash": "9d9e0f1f3fbffcf0",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "61283878f8fcfcfc",
+          "phash": "c02021f1f1f367bd",
+          "dhash": "8fd3d19191008800",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "f8fee2e262622231",
+          "phash": "e2d58a55aa55aa55",
+          "dhash": "80848c8e8ecec6e5",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "000000006078fdff",
+          "phash": "c13fb842b758e4a3",
+          "dhash": "05030212cec2b3aa",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "0401030101c2dfbf",
+          "phash": "bc229f7016fd108f",
+          "dhash": "2d2f36779d9a327c",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "3fff7fffde7cf0e0",
+          "phash": "c0a74fd7af1702d0",
+          "dhash": "c18182812a88a0a3",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "f8c00000003c3e3e",
+          "phash": "c778c6333c866bb0",
+          "dhash": "100000060c68e4e4",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "0101030f1f3e7c78",
+          "phash": "833e6a8eb89734e8",
+          "dhash": "e571665e326cc1c1",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "ffff7f4f0f0f0f0d",
+          "phash": "99e4ff1d19f0005e",
+          "dhash": "624a9a98fb9b5959",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "0481fea7b1e13f0f",
+          "phash": "bf5710601f87d0cb",
+          "dhash": "5c0f4a6e4397677e",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "00000000f8feffff",
+          "phash": "fd2ea2d0682f17c2",
+          "dhash": "c70f773600300319",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "38b890800080e0e0",
+          "phash": "ff0cc30c83f01ee3",
+          "dhash": "6060202000300a49",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "79737f1f00000000",
+          "phash": "81c1e06a5adadbd3",
+          "dhash": "83c6da759ede5cfc",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "8f8f848001000003",
+          "phash": "b797b3a9a9694850",
+          "dhash": "5b4c2c35bd3c1e4e",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "030242e0f0fd7f3f",
+          "phash": "e1348fea6ba0fb01",
+          "dhash": "4f9696864323d3d3",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "ffff1f000080c0c0",
+          "phash": "f08ce3d3596c07e1",
+          "dhash": "f3fe7f3794090f8f",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "e0c0c08000200000",
+          "phash": "f8f0e1c10307e7f2",
+          "dhash": "8b163c34e0c30271",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "00000f0f0f0f0706",
+          "phash": "964b6db49b96b290",
+          "dhash": "f8ededdc1c5c2c2c",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "030fcec6c6c60303",
+          "phash": "b55a292676a656a5",
+          "dhash": "2f1a1e0c06060606",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "3f1f0f0f07000000",
+          "phash": "949a4a4fa75369a5",
+          "dhash": "6935dc6ca6822022",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "e7c7c7870f0d0f0f",
+          "phash": "bbf9e00187eee0e0",
+          "dhash": "0e1e1f3f5b9bb83c",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "f8f8c889c3c38000",
+          "phash": "eacf45858e1fb218",
+          "dhash": "61c11133131b1149",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "69efcc2b5f40483b1cb58d10",
+      "public_id": "ASSET-TSJ2QFEC",
+      "filename": "1777323048093_ROHIT SHARMA.jpeg",
+      "file_path": "uploads\\69efcc2b5f40483b1cb58d10_1777323048093_ROHIT SHARMA.jpeg",
+      "upload_timestamp": "2026-04-28 02:20:53.216636",
+      "type": "image",
+      "ahash": "0000102048c7ffff",
+      "phash": "f54bac3142a65e59",
+      "dhash": "d1fa72ead85e1632",
+      "colorhash": "06202000080",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "120f80017ccdc6ce",
+          "phash": "b00db5824f6cda57",
+          "dhash": "e2ca1babd99dbc3a",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "18080206c6cd7fbf",
+          "phash": "911d8bd8568f69a6",
+          "dhash": "313176cc9c99d13a",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "0000820616bccfcf",
+          "phash": "9e2579ce20b1ce39",
+          "dhash": "1dd056cc24283a3a",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "88c98d0f0e7aff00",
+          "phash": "b97a6ed5109805be",
+          "dhash": "193bbbb9aaaa3a28",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "62e3c10f2f3f1f06",
+          "phash": "b5e04087139c4f7f",
+          "dhash": "ce8e27bb5a4a767c",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "989c9c9cc0e0ff60",
+          "phash": "de1ca4f15c8c64b5",
+          "dhash": "202828701889d1c8",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "4468ecece080ffff",
+          "phash": "f250196fe2921eb6",
+          "dhash": "999bdd8d4d69d823",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "0000143b393effff",
+          "phash": "8e3ef045cf9014eb",
+          "dhash": "3475256263748240",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "047e3b7e3e5b1cff",
+          "phash": "96555452726b696b",
+          "dhash": "acec6aaa4caa2104",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "0e2d2930c1453c37",
+          "phash": "921397b2ff5d2061",
+          "dhash": "6849db63ad9dd166",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "32b2f890049819c7",
+          "phash": "de44af173340dcc3",
+          "dhash": "666222345c70712b",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "3c1c0c0d01698bd7",
+          "phash": "9a50d4432eebd32d",
+          "dhash": "70b0b939d5db5b37",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "200027b6f4f484b8",
+          "phash": "ff0101fccf25c0b3",
+          "dhash": "426a4c6424251c51",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "0800da4a061e9fde",
+          "phash": "9d66fa186699dc22",
+          "dhash": "b25212d2de521212",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "3260e0e043c3f2e2",
+          "phash": "e5078e1e98f419d5",
+          "dhash": "66ceca8a9e9706ca",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "c7cd009183868183",
+          "phash": "bbd0bbf6ad241502",
+          "dhash": "0b99812726485b5b",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "8c8c9f3e3dc0c0c0",
+          "phash": "fb9b7d2206e48594",
+          "dhash": "18193aa8e9012725",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "31b8f8e8c8b898f8",
+          "phash": "db432e3e305ec68c",
+          "dhash": "6353525812323212",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "d8b8b03630b4b438",
+          "phash": "ceddf97901a2c249",
+          "dhash": "3020656564282869",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "e948616361604dff",
+          "phash": "a161fc7aa709cf03",
+          "dhash": "9b9adbdbdb99999e",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "8f8f89f8f0b090fc",
+          "phash": "dfa9b626922aca29",
+          "dhash": "5f5e525244646470",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "a030090f4f6f6f7f",
+          "phash": "816f4c733fb39822",
+          "dhash": "45c3db5a9898c9b1",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "494868e0d8d4ddde",
+          "phash": "d849bada65a344d9",
+          "dhash": "9b939292a0a9a9b4",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "bcfad8f8701000ff",
+          "phash": "ccdcbf0fc14e9052",
+          "dhash": "6a2aa8a2aa6a6b9b",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "c1000071797b79f9",
+          "phash": "c936f0c58ace153d",
+          "dhash": "9f9dc5c3c3d2d393",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "fc8000e4bcbcecec",
+          "phash": "d22dd99ed3f10c06",
+          "dhash": "606093096d6d0999",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "1903031b13171f37",
+          "phash": "8c71c3dcce987364",
+          "dhash": "b3eb5eb6a6b4b56d",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "0282801e1e3e363e",
+          "phash": "957ae085bd455b46",
+          "dhash": "b6346936766ee676",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "1000009cfefef6f6",
+          "phash": "dc2b24ddda293127",
+          "dhash": "b124022120282626",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "7878c8c8c8fbffff",
+          "phash": "c94886ae3aba2dcd",
+          "dhash": "93829a999b522d12",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "e4e42404e0fbffff",
+          "phash": "d352f9e9301609ed",
+          "dhash": "5949496d0a530c0a",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "307878293df5ffff",
+          "phash": "c14154be2b2376de",
+          "dhash": "c0d0d0db7905aa11",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "9e32229e82e1ffff",
+          "phash": "9715c0fa9f9f6804",
+          "dhash": "6e66466e6e8b6000",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "9e9c9c9494c8c000",
+          "phash": "dede916526a6492c",
+          "dhash": "24202d2d25590500",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "69efce3c94a2180671aaa75b",
+      "public_id": "ASSET-36AQRXIR",
+      "filename": "1777323576713_VIRU_CROPPED.jpeg",
+      "file_path": "uploads\\69efce3c94a2180671aaa75b_1777323576713_VIRU_CROPPED.jpeg",
+      "upload_timestamp": "2026-04-28 02:29:42.416385",
+      "type": "image",
+      "ahash": "0c0a3b2b0306ffff",
+      "phash": "b559da12e2cb16e4",
+      "dhash": "b89a724b4eb4da85",
+      "colorhash": "0b0c0201000",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "03fcfc60fc707bff",
+          "phash": "ca55a92d352b56aa",
+          "dhash": "abc9a8888181cb9b",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "ff6f07270304befe",
+          "phash": "b621dd59e48f3238",
+          "dhash": "56dece6eae6d6464",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "e0e0e09d1c1c3c7c",
+          "phash": "db61e218bb8f4067",
+          "dhash": "838b813a38b870f8",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "ffffffffff000000",
+          "phash": "a9ab5656aa1a56d4",
+          "dhash": "d38b8b8b8b829591",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "ffff878780000016",
+          "phash": "f6f5814bd626064b",
+          "dhash": "54142e2c292ddba4",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "1c1e1e0f1f3ff1e1",
+          "phash": "9c1de7db2878071a",
+          "dhash": "f8787cb2f1e187c7",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "00007fffffffffff",
+          "phash": "803f7f7f62c08685",
+          "dhash": "81fff6a1acac9aa8",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "0002ffffffffffff",
+          "phash": "8404044c6cfefefe",
+          "dhash": "b4f66c0143b19092",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "3139ff3e39efff00",
+          "phash": "8c4c6d6c64e4f2f1",
+          "dhash": "e37318f4631b9140",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "007f7f7f7f00007f",
+          "phash": "802b7e7f500f5fc0",
+          "dhash": "a4adba9294a0a0b0",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "ffffffc0c080c0c0",
+          "phash": "fc8c8d3672621a5b",
+          "dhash": "36b697950b018992",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "fbdbcb0703632300",
+          "phash": "a4d9cce31f47610e",
+          "dhash": "96969a2e4fcec665",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "dedcdc9efcf0d0c0",
+          "phash": "dc917ccab32d2554",
+          "dhash": "3030b43c29212124",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "01030200c0f6fefc",
+          "phash": "e43b82e47b94703b",
+          "dhash": "8b96867123c6c4c1",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "0000107f7f7f1b01",
+          "phash": "80567fa1729d435e",
+          "dhash": "86a0a1b2a4d2b2af",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "00001e1f1f1f1f1f",
+          "phash": "9c636a63a89d9d0d",
+          "dhash": "931cb2b2b6bcbc34",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "02007ffb7373d39b",
+          "phash": "a4133d672de9a18e",
+          "dhash": "f6d4cfb6e6963636",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "0001c1a3a79fd7d3",
+          "phash": "ae6358154661dd7a",
+          "dhash": "0697134f6d363525",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "70f0f0f0f0f8f8fe",
+          "phash": "cc6e934b2e2d1695",
+          "dhash": "e10024250491d0e0",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "ffffff7fffff0000",
+          "phash": "80807f90b77f883f",
+          "dhash": "a480a18891b4a882",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "9f1f1f1e9e1c0000",
+          "phash": "949c6bce9423f594",
+          "dhash": "b03c3cb4b0204936",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "ef27676766240000",
+          "phash": "a7a77958d4e9e088",
+          "dhash": "5ececfcecccd424d",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "f3c1c0c00003073f",
+          "phash": "aa788e299cb4e9d2",
+          "dhash": "a7071996991f6e69",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "7c7c5e00fcfbf0e1",
+          "phash": "d014cacf6939ad96",
+          "dhash": "d8c0dc8680030103",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "000000000000ffff",
+          "phash": "807f803fd8b47fc0",
+          "dhash": "8484cb8682febeb1",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "000103010000ffff",
+          "phash": "a929d6525a9555d5",
+          "dhash": "350b0a0b255af7b9",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "005f337f1137ffff",
+          "phash": "8e6cd11a5a85276f",
+          "dhash": "39b567b521e7dc21",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "1f1f1f070383ff0d",
+          "phash": "bf9edc68239b0c0c",
+          "dhash": "f0743f4f8f222699",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "cf0f87c3c3e3fdff",
+          "phash": "f93a8ae168cce643",
+          "dhash": "171b2d3786cec1e2",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "5f6f7f407f7f7f00",
+          "phash": "808657a17f7ec9e0",
+          "dhash": "aba8a19d8b9b9898",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "045ef700ffff6000",
+          "phash": "81d9589b31662fe6",
+          "dhash": "18b8268aea4b4686",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "00e0fc10ffff8000",
+          "phash": "fce160920f389bba",
+          "dhash": "8483003274103564",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "031f1001ffff0000",
+          "phash": "aaaa2aaa2b575555",
+          "dhash": "0beb24c58d18a843",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "f8f80002ffe10000",
+          "phash": "f8f8f8f9d8588c08",
+          "dhash": "1215ae96c81791a4",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "69efce8194a2180671aaa78c",
+      "public_id": "ASSET-NI69D2P3",
+      "filename": "1777323645860_CHAKKA_VIRU.jpeg",
+      "file_path": "uploads\\69efce8194a2180671aaa78c_1777323645860_CHAKKA_VIRU.jpeg",
+      "upload_timestamp": "2026-04-28 02:30:50.549068",
+      "type": "image",
+      "ahash": "000405000f0c3fff",
+      "phash": "92698c1ae557fc25",
+      "dhash": "3af975ca5d7de9b6",
+      "colorhash": "0a202000040",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "206000146cc73373",
+          "phash": "8243e5f23d3c3c1d",
+          "dhash": "ccc041e5dd9d67e6",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "04014d0c377f7e8e",
+          "phash": "823a5dc5171193fe",
+          "dhash": "6cb599e966c75478",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "0c0480808fbfdddf",
+          "phash": "fd07c086b55846bd",
+          "dhash": "145471567e65b1b2",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "70b79da3ae4e4050",
+          "phash": "b2cf4483456dd996",
+          "dhash": "e92d396f2c9c95a5",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "54c1e12561513f9b",
+          "phash": "aa729d40969675cb",
+          "dhash": "ac93c7cdefa76a2a",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "83803c1c90c7dfd3",
+          "phash": "fc17a03e5991e2a5",
+          "dhash": "3e2ccc715515b796",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "0000120000bbffff",
+          "phash": "ad32d2db73c4cd10",
+          "dhash": "0b2d66667a62e2dd",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "0313000701feffff",
+          "phash": "a42d8dda3eb4526a",
+          "dhash": "36f6c68c4dd0d225",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "c0c0c0c080ffffff",
+          "phash": "f87880cb7983cb5a",
+          "dhash": "93861d16334aca34",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "0038381b000e163f",
+          "phash": "8dcd227223359b4f",
+          "dhash": "367272727a7864f5",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "0000010703c96cef",
+          "phash": "a00ed25db60ff847",
+          "dhash": "a9aba3afae9bd99d",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "02038082971f71f1",
+          "phash": "a61d6297fc59d2a0",
+          "dhash": "c66662366e6ceba7",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "1e026231f070b0f1",
+          "phash": "ce319c1ccb0ec373",
+          "dhash": "34b4ceebe9a06667",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "7c5c686800202e3f",
+          "phash": "d349964b94da6713",
+          "dhash": "d090d292d9c9cc6c",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "6040090e342c7c6c",
+          "phash": "d364c1c6269b2dcb",
+          "dhash": "87821a6ce54858d9",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "4168441c1c5201ed",
+          "phash": "9260e3cc9e3ee34a",
+          "dhash": "9b9ad975b5aa1b59",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "e0d9cb4806179100",
+          "phash": "e8e96aa6466e152e",
+          "dhash": "87939392dc642591",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "79f9089c9c8c5430",
+          "phash": "d8e965b4ce441f4c",
+          "dhash": "d3d31931393da5e5",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "5fc5e07b52160b08",
+          "phash": "c0e23b9c89a5f665",
+          "dhash": "a9a98596b434565b",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "c687bdcd49c96130",
+          "phash": "fab474f051f19c44",
+          "dhash": "9c2d69d99991cbee",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "efcc0c60f0e1616d",
+          "phash": "e396b3e302239f07",
+          "dhash": "49a9e9c98993cbc9",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "48c0e343e2e04837",
+          "phash": "e1799a4b9c19e269",
+          "dhash": "911a9b965646d2ad",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "3063633070fe7c7c",
+          "phash": "c52799cc4b5ab98a",
+          "dhash": "42ce8ae0e4b4b8f8",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "0c9cf8d868c00d5b",
+          "phash": "d9569d328158e4cf",
+          "dhash": "39346291db89bb92",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "e0e677f080c48f0e",
+          "phash": "f6c6157f4c690a85",
+          "dhash": "2ccccd212b0d1cdc",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "686687838679793b",
+          "phash": "8736c3c93c499c3e",
+          "dhash": "d8cc2c2e1ed3d353",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "3c3c011938f9f001",
+          "phash": "8a92b2d79e6e2153",
+          "dhash": "6969d9357193255b",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "08ccfcfcccdc5c98",
+          "phash": "da330d282d05ff63",
+          "dhash": "599948581919b031",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "7b4b6101001f1b49",
+          "phash": "a1a1919562cfc77c",
+          "dhash": "9696c7ed3cba32d3",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "000000cfffffffff",
+          "phash": "b83a47d5b03c8e87",
+          "dhash": "3441b1349cba646a",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "0100003fbfffffff",
+          "phash": "8f0770888f39787b",
+          "dhash": "576e6f617131ca22",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "030200ffffff01ff",
+          "phash": "b52524beba2e8a69",
+          "dhash": "86c6d23918b463a1",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "98b8381fffdf08ff",
+          "phash": "df4f59b0be1f0840",
+          "dhash": "226262662e9c5041",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "000000ffffffffff",
+          "phash": "c160719f9d386b47",
+          "dhash": "9b898b366644bc51",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "69efd229311727a1a671bc40",
+      "public_id": "ASSET-KG15TW2T",
+      "filename": "1777324576530_PratyushGulvady.jpeg",
+      "file_path": "uploads\\69efd229311727a1a671bc40_1777324576530_PratyushGulvady.jpeg",
+      "upload_timestamp": "2026-04-28 02:46:28.552676",
+      "type": "image",
+      "ahash": "004291bdbfcb7e3c",
+      "phash": "9d2c50938bca6f8e",
+      "dhash": "cc9e33716912a8e8",
+      "colorhash": "01400000082",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "01070e1c3c7878f8",
+          "phash": "c1b7684f4c595356",
+          "dhash": "1b2658b0604893b1",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "ffc30000000030ff",
+          "phash": "8cbbccc3d586d314",
+          "dhash": "d0131c3cbacde6b6",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "80c07038181c1e1e",
+          "phash": "9eeb341b0d06c3f1",
+          "dhash": "6010c8e47229b434",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "c0c081878781c4c2",
+          "phash": "fe69404ab452eb4b",
+          "dhash": "b3332b55563b3da6",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "38183cffffef0000",
+          "phash": "c94f49e1c161475f",
+          "dhash": "f271d496929693f0",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "0a8b93ebeb1b3b7a",
+          "phash": "bd3e1419c1c7c63c",
+          "dhash": "76322a42126a4ad6",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "4f7f3f371f0f0300",
+          "phash": "81c170b85ea657ed",
+          "dhash": "be90c666b3582613",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "2401c3ffff7f81c2",
+          "phash": "a9075f87c13ad570",
+          "dhash": "cc6b179296dc3b8e",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "fef6ecf8f0e0c000",
+          "phash": "d69634e40df9033e",
+          "dhash": "3414091224cc1060",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "000000000103060d",
+          "phash": "b24d93ad5a54a972",
+          "dhash": "000003040b162c59",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "031f7cf0f0e0e0c0",
+          "phash": "e498332f68434e5f",
+          "dhash": "473ce0802044ca90",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "ffff000000000000",
+          "phash": "b8dcc3878711555d",
+          "dhash": "c033319d3e3f79bd",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "80f03c0e07070301",
+          "phash": "a5d76837351e0a8d",
+          "dhash": "1886f13c5e6d0e9f",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "0000000000c0c0e0",
+          "phash": "f11ee17c03f0ff00",
+          "dhash": "00000080402090c8",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "18183020606040c0",
+          "phash": "c00fb83133b3b3b3",
+          "dhash": "52b56448d69292a6",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "c080808307071f9f",
+          "phash": "bf73ccb08449b649",
+          "dhash": "27254d5f5e1f3336",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "0000203098f8fcff",
+          "phash": "cb2691780ec761de",
+          "dhash": "3e97cb652392d8e0",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "030100e0e0c0d0f8",
+          "phash": "ea1ba83ec314cf34",
+          "dhash": "b3d3594949232783",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "3010182c6c547676",
+          "phash": "d64d646663732363",
+          "dhash": "64b452daa9ad84b4",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "c0c0c08080c0c0c0",
+          "phash": "fc5000cf807fe0bf",
+          "dhash": "a3212425222b272e",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "00084f6f2f2f0703",
+          "phash": "b3587c1f23a2b2aa",
+          "dhash": "38329bdf4f6f2f9f",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "1818dbdbdfffc900",
+          "phash": "998445c61fe35fc2",
+          "dhash": "f2b2333333311313",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "1050f3f6f4e4e0e0",
+          "phash": "e40d295a56d725c7",
+          "dhash": "a3b34604050d0986",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "0602020202020206",
+          "phash": "b532566252a716cf",
+          "dhash": "d61616160606d616",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "c040606123371f1b",
+          "phash": "807018ae3bdc77ad",
+          "dhash": "a79d94d34f6cb4b3",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "030130f8fcfef7f7",
+          "phash": "e46ba5b5d28b01f4",
+          "dhash": "4e6fe3e1845636c6",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "18bdffe37e0001ff",
+          "phash": "9dd99e04912f459d",
+          "dhash": "b071324ee8e827f0",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "c0c00010387efeff",
+          "phash": "f33af0c20efcf041",
+          "dhash": "8c881860c8c8c880",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "d6f6f4ecac5818b0",
+          "phash": "d6b66499639ce30c",
+          "dhash": "14540d291952b464",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "0f07030100000000",
+          "phash": "b2b293534ba9a955",
+          "dhash": "592c160b04020000",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "079f1f8fe43a0f01",
+          "phash": "acec2ac562bf45b0",
+          "dhash": "b73f3f3f8ce23ccf",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "bfffffff7f0000ff",
+          "phash": "beaa7f07807f80a8",
+          "dhash": "7d2d391bdef80f0c",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "f0f8fdfbee78e080",
+          "phash": "f0b36ac037e80af6",
+          "dhash": "880809035cf18618",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "e0e0c08000000000",
+          "phash": "f3e1c103070f1f9e",
+          "dhash": "4890204080000000",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "69efd29a311727a1a671bc81",
+      "public_id": "ASSET-CQUETWE9",
+      "filename": "1777324687820_7 mahi.jpeg",
+      "file_path": "uploads\\69efd29a311727a1a671bc81_1777324687820_7 mahi.jpeg",
+      "upload_timestamp": "2026-04-28 02:48:22.181416",
+      "type": "image",
+      "ahash": "00183818183cadff",
+      "phash": "c92cb35b9c27c683",
+      "dhash": "b1b26376b0694bd4",
+      "colorhash": "03680008000",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "11000038389b6343",
+          "phash": "8c5621dd8ea33d4e",
+          "dhash": "63a1a4e171328f87",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "00070b3a384fc7fb",
+          "phash": "850efb10cf2ff118",
+          "dhash": "696a5a62e294970a",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "809e6c001e0d0c3f",
+          "phash": "937ce5192463659b",
+          "dhash": "2c344975789bd9ee",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "1b1381434b1a3a3d",
+          "phash": "ad38c695b165347a",
+          "dhash": "166725969a766245",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "c07078787c7c7e6f",
+          "phash": "c06d3576bd3170b1",
+          "dhash": "04e1e0f0c888d898",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "3b1b1a78d808e2e0",
+          "phash": "ed8da70bc2c607e4",
+          "dhash": "e23276e1331a0a07",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "00010101efffffff",
+          "phash": "aa2ac6d4753991b3",
+          "dhash": "47c75d938b2c656c",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "ce86060607ffffff",
+          "phash": "b535cacb2d25c8c9",
+          "dhash": "9c0c0c1e4ea92e69",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "00020202c7ffffff",
+          "phash": "b535cbcb1036ca5a",
+          "dhash": "56162e8e9c638a00",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "868724000c6d0f8f",
+          "phash": "936cbe583d14ca95",
+          "dhash": "3c6dc9ce99d97c3c",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "1c9cc00626aece8c",
+          "phash": "d74cd8870b30fab4",
+          "dhash": "7870084c4e4c0c19",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "0000070e1cf87c3c",
+          "phash": "c235cfe01ec3780f",
+          "dhash": "ccce8cfcb989c1e1",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "6010f8fbc3c08080",
+          "phash": "fc800e37a1e1cade",
+          "dhash": "c1a1a09616071323",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "000c7e7c0000487c",
+          "phash": "c136c93cc8f7e033",
+          "dhash": "3678c8e9d3d7dad1",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "af83397c00c3b30f",
+          "phash": "a792b7b49285d22e",
+          "dhash": "4c4743c8c4066659",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "0001090f1f3f370b",
+          "phash": "ad4b69a618f55255",
+          "dhash": "4b63d3befceef6b2",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "879b01a4fc84f0f8",
+          "phash": "f838c9b2d72736c0",
+          "dhash": "3f33374c082dc390",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "c0e0e0e0c3878300",
+          "phash": "f0f31f3e5805170e",
+          "dhash": "09898e8e0d3f3791",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "703030388ec77777",
+          "phash": "854f60f959c9c5c3",
+          "dhash": "e266e6623c1ec6e6",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "c0c0c06077430f1f",
+          "phash": "b1769d2b9a196895",
+          "dhash": "980404c7cf9b1a36",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "0f01113f97133333",
+          "phash": "af5261f196c138ea",
+          "dhash": "dbebf3632727e7e7",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "f878307efefefecf",
+          "phash": "d54869eda956524b",
+          "dhash": "90a0e0fc0c244c1a",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "189003cffeb880bd",
+          "phash": "dd204e59fb2d8b22",
+          "dhash": "3336161610703269",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "e7e6e0e0e0422026",
+          "phash": "e5f296a0f529286e",
+          "dhash": "8c8c0b0286d6c64c",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "1d081df87c3d10d3",
+          "phash": "dd1a2c9bc5e69815",
+          "dhash": "7539352158d9a6b6",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "030347270f0f0f0f",
+          "phash": "b32d693f06e6d430",
+          "dhash": "2fdb8feded68b9b8",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "ffffcf8707030303",
+          "phash": "b4dac9343bddc920",
+          "dhash": "9818381c0c0e163e",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "fdfcf0f0c0c0c0c0",
+          "phash": "fc87989a3f4c6464",
+          "dhash": "6109060604303131",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "87870107070f0f0f",
+          "phash": "b76f9bb596491204",
+          "dhash": "4c2ddb9c8c9c5a7c",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "0000e1ffffffffff",
+          "phash": "ee6e641414e3e3e2",
+          "dhash": "2724c95b6c840c69",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "000cffffffffffff",
+          "phash": "9919113525a5eded",
+          "dhash": "9a3831ceb893296a",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "0101ffffffffffff",
+          "phash": "a929292995d5d4fa",
+          "dhash": "3f8b0ad62b4e1ccc",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "c0c0fe7fffffffff",
+          "phash": "f07878788a8a8cfd",
+          "dhash": "39188acd0ea8c840",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "0400dfffffffffff",
+          "phash": "92121217b7f3f272",
+          "dhash": "7cbc95762a6523a0",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "69efd2d1311727a1a671bcb4",
+      "public_id": "ASSET-52L4ANXG",
+      "filename": "1777324742535_7_mahi_cropped.jpeg",
+      "file_path": "uploads\\69efd2d1311727a1a671bcb4_1777324742535_7_mahi_cropped.jpeg",
+      "upload_timestamp": "2026-04-28 02:49:16.275607",
+      "type": "image",
+      "ahash": "0030d0607078d0db",
+      "phash": "c4373c43b338d87c",
+      "dhash": "f2c6b6cdc4e1a333",
+      "colorhash": "03c00008000",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "00000107070ddd7f",
+          "phash": "a276c839855acb6d",
+          "dhash": "8c4c6d6cce1b99f2",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "007cd890d0f078d8",
+          "phash": "cc3499673c037c3b",
+          "dhash": "8cb03121246353b3",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "043e98003c381a18",
+          "phash": "9c323c80332c7bdf",
+          "dhash": "9c6c310be9f13232",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "3c1e0f0f0f0f1f1f",
+          "phash": "9847cec74393a3b8",
+          "dhash": "e0a2bc5d9f3d323d",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "d02080c0c0f2e0e0",
+          "phash": "f40cc2e8e8fc9c78",
+          "dhash": "2745160407868ccd",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "e7f73776f0700012",
+          "phash": "e5b13cebf2178409",
+          "dhash": "8e26e6c4c1c26626",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "1f1f3838386060ff",
+          "phash": "cb9ebc3098638cd3",
+          "dhash": "b1716140c1c1ccb5",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "fefcf070703030ff",
+          "phash": "c4f2bb4db02626d6",
+          "dhash": "8800a1e4c4c6e299",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "c000020707070fff",
+          "phash": "b66cc932e835b44b",
+          "dhash": "8c0d6e4eacbc5c40",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "78f0000c9e9e9e18",
+          "phash": "dc60cbd6043b49bd",
+          "dhash": "e4e4303c3c303070",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "000001070ff4fe7e",
+          "phash": "803bc6f01fe37c0b",
+          "dhash": "c6878fdebe88c0f4",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "00c3ffbc38307070",
+          "phash": "cfb861401adac69f",
+          "dhash": "1b16727161e0c0c7",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "40c087bf39010103",
+          "phash": "af743151cd96a456",
+          "dhash": "981f276363737977",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "003cfcf8000030f8",
+          "phash": "cf19c631e030fd1e",
+          "dhash": "d3613093d34e6465",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "000101223f3f5fef",
+          "phash": "a76e798857586a83",
+          "dhash": "67274fe6ecfbb8d8",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "1f8d8c00ffffc700",
+          "phash": "f8199ca50f38d19e",
+          "dhash": "333b189b66822629",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "20f8fcfc1c383060",
+          "phash": "ced3670f1e36101b",
+          "dhash": "44c099b0706067c7",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "03010031003e7f3f",
+          "phash": "8b28bd952a87336d",
+          "dhash": "bb9b89e3e1dcf8f3",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "f0c0c0e0e03e1f0f",
+          "phash": "f0608ecee3f4c6a1",
+          "dhash": "819c9c8c8c787c3c",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "6703130303c30707",
+          "phash": "a556b2d231d2d2ab",
+          "dhash": "cce636e68687979e",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "f8fcfcfc187fffff",
+          "phash": "d252da0b4dfda829",
+          "dhash": "89c89820fab74123",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "0000c18180f0fde7",
+          "phash": "ff00f04730e8e795",
+          "dhash": "937927236941010d",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "030303273fbfe7c1",
+          "phash": "b72d69924aa32d8d",
+          "dhash": "3b36766cec4c4e0f",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "cecf9e9c80808404",
+          "phash": "b291b364695adc6c",
+          "dhash": "9c1c3839272d0d4d",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "07c70707070f1f1f",
+          "phash": "b466d9f126b91b0a",
+          "dhash": "8e1f9d2e6e1a3234",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "ffffefcfc7870301",
+          "phash": "b5d22ddc2cf98321",
+          "dhash": "274b5b1c1e1e1f0f",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "c0c0e0fffefcf0f0",
+          "phash": "f6386c198eab8666",
+          "dhash": "07868c4840004024",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "0141f9fcfc1020a0",
+          "phash": "eae82f24f0df0ce0",
+          "dhash": "6393911990634343",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "848c8e1f1f070f1f",
+          "phash": "9b77936792661036",
+          "dhash": "4c183c30b3777858",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "1e1d1b303038ffff",
+          "phash": "8e1cbd4c16a14db7",
+          "dhash": "b021e2e465e1c83d",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "838181000000ffff",
+          "phash": "aa2aa9251dfd62ca",
+          "dhash": "070f0d370f8616c9",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "f0f0f0f0f0f8ffcf",
+          "phash": "cc6eb7403e76423c",
+          "dhash": "242323e3b393b038",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "0000000080f0ffff",
+          "phash": "ff7b8564f1844291",
+          "dhash": "4e06191919266699",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "0c00081e1e3effff",
+          "phash": "9d1cf21199d962f4",
+          "dhash": "f87a7872f2f8d2dc",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
+    },
+    {
+      "id": "69efd300311727a1a671bce5",
+      "public_id": "ASSET-AUKBB5IB",
+      "filename": "1777324790644_cropped_pg.jpeg",
+      "file_path": "uploads\\69efd300311727a1a671bce5_1777324790644_cropped_pg.jpeg",
+      "upload_timestamp": "2026-04-28 02:50:02.209947",
+      "type": "image",
+      "ahash": "81183c3e18c3ff7e",
+      "phash": "9a7a786a35a67138",
+      "dhash": "333171e83355adf8",
+      "colorhash": "01c00000003",
+      "frame_hashes": [],
+      "tile_hashes": [
+        {
+          "ahash": "78f8f8f0f0f9f9fd",
+          "phash": "e9508041b757b7ab",
+          "dhash": "90b233515353b3ab",
+          "position": "g3_0,0"
+        },
+        {
+          "ahash": "000008e97cfebeff",
+          "phash": "996c2556e373a817",
+          "dhash": "66b7d38bf8b878ea",
+          "position": "g3_0,1"
+        },
+        {
+          "ahash": "0707070707c7efff",
+          "phash": "b30ec9339d41fc07",
+          "dhash": "5f2d2d0c1d0dccd3",
+          "position": "g3_0,2"
+        },
+        {
+          "ahash": "070703020480828f",
+          "phash": "bea0bf528a7d884a",
+          "dhash": "add4363a3954461e",
+          "position": "g3_1,0"
+        },
+        {
+          "ahash": "ffffffff40000800",
+          "phash": "83fb0f7867855c11",
+          "dhash": "cbcbd9cb8bb9d8e6",
+          "position": "g3_1,1"
+        },
+        {
+          "ahash": "f8f0d0c080800000",
+          "phash": "fcf8c11d311f8139",
+          "dhash": "1424282a343068d0",
+          "position": "g3_1,2"
+        },
+        {
+          "ahash": "df597e27371b0d07",
+          "phash": "80e0389c37d9f4db",
+          "dhash": "3ca392ce6bb35b2c",
+          "position": "g3_2,0"
+        },
+        {
+          "ahash": "140041ffffff7f1f",
+          "phash": "a0781f879f8395a3",
+          "dhash": "64318f99dfd9cf66",
+          "position": "g3_2,1"
+        },
+        {
+          "ahash": "40c1f1f2f6fcf8f0",
+          "phash": "fea04a12645966fd",
+          "dhash": "a1252302242912a4",
+          "position": "g3_2,2"
+        },
+        {
+          "ahash": "30606040c0c08080",
+          "phash": "e3030ffe0cfc0c5c",
+          "dhash": "6acad19aac2e224a",
+          "position": "g5_0,0"
+        },
+        {
+          "ahash": "808080010747070f",
+          "phash": "bf5fd8a4592241a6",
+          "dhash": "264e4e5f5e9e9f3d",
+          "position": "g5_0,1"
+        },
+        {
+          "ahash": "00001018dcecfeff",
+          "phash": "de6ca67398760964",
+          "dhash": "cbe56531b9d84c6c",
+          "position": "g5_0,2"
+        },
+        {
+          "ahash": "0000487868e0f4a4",
+          "phash": "c3283ee318cff318",
+          "dhash": "369292c2d1c9484c",
+          "position": "g5_0,3"
+        },
+        {
+          "ahash": "3f1f1f1f1f1f1f1f",
+          "phash": "8ea78555555456d6",
+          "dhash": "ea6b75357075f6f0",
+          "position": "g5_0,4"
+        },
+        {
+          "ahash": "828607010107030f",
+          "phash": "ffffff7f40000000",
+          "dhash": "564e4c93694dcbc9",
+          "position": "g5_1,0"
+        },
+        {
+          "ahash": "000316189ddf6f6f",
+          "phash": "b81ca7684b5b5a5a",
+          "dhash": "33363c32b199dfcf",
+          "position": "g5_1,1"
+        },
+        {
+          "ahash": "1e1e0c4c6ceefeee",
+          "phash": "921dddee800017ff",
+          "dhash": "fc78f899899c9c1c",
+          "position": "g5_1,2"
+        },
+        {
+          "ahash": "10180496eefefcfc",
+          "phash": "d41d4ac5666e3c33",
+          "dhash": "60703c2c1c80c081",
+          "position": "g5_1,3"
+        },
+        {
+          "ahash": "1f1f1f3f7fffdfdf",
+          "phash": "88073ef00359fff0",
+          "dhash": "f4fce9d991953120",
+          "position": "g5_1,4"
+        },
+        {
+          "ahash": "01010100038383a8",
+          "phash": "ff00ff00ff07f001",
+          "dhash": "959797469d4e5a58",
+          "position": "g5_2,0"
+        },
+        {
+          "ahash": "2f2f270703030101",
+          "phash": "a797c73158ce4331",
+          "dhash": "4f4f6f2f9fcfefe7",
+          "position": "g5_2,1"
+        },
+        {
+          "ahash": "ffffeee4c4000000",
+          "phash": "f2f08d3fe0411d72",
+          "dhash": "9c9c8c8d0d7cd8bc",
+          "position": "g5_2,2"
+        },
+        {
+          "ahash": "fcfcf9f8f8301000",
+          "phash": "cad2ad17f5ab2a40",
+          "dhash": "81818181e06163a3",
+          "position": "g5_2,3"
+        },
+        {
+          "ahash": "b8bc3f5f584011f2",
+          "phash": "9ffffffe00003800",
+          "dhash": "6140c8aca2814022",
+          "position": "g5_2,4"
+        },
+        {
+          "ahash": "8080c1c3676e3f31",
+          "phash": "e0785fd33ca75902",
+          "dhash": "2c2da3969cd84e63",
+          "position": "g5_3,0"
+        },
+        {
+          "ahash": "1078f8fcfa0ff3f3",
+          "phash": "cd4a2a29e5743aea",
+          "dhash": "e3c12190d67696d6",
+          "position": "g5_3,1"
+        },
+        {
+          "ahash": "ff60777f2100c0ff",
+          "phash": "80c0fa7b93f09d27",
+          "dhash": "9887a6f4d230037c",
+          "position": "g5_3,2"
+        },
+        {
+          "ahash": "c08084881f3fffff",
+          "phash": "9974e40ddcf9030f",
+          "dhash": "070f083a72f2f2f0",
+          "position": "g5_3,3"
+        },
+        {
+          "ahash": "0000000081c1c3c2",
+          "phash": "ad5ad5aa5425b22d",
+          "dhash": "80102041012b0a96",
+          "position": "g5_3,4"
+        },
+        {
+          "ahash": "1e1f0d0703030100",
+          "phash": "b89948acf456ab55",
+          "dhash": "b4b3592c160b0502",
+          "position": "g5_4,0"
+        },
+        {
+          "ahash": "0303030b0f83c262",
+          "phash": "ad2ec13f01fc03f4",
+          "dhash": "f72f3b3b3b7f1ece",
+          "position": "g5_4,1"
+        },
+        {
+          "ahash": "84c1c7ffefe77303",
+          "phash": "b0fc0ef317e11ec0",
+          "dhash": "3c37969a9c0dc7ff",
+          "position": "g5_4,2"
+        },
+        {
+          "ahash": "7878f8f8f0f0e081",
+          "phash": "c8c13ac73cd33ce2",
+          "dhash": "e1c1c2c2c2848133",
+          "position": "g5_4,3"
+        },
+        {
+          "ahash": "f6fcfcf8f0e0c080",
+          "phash": "d69236e60cf801fe",
+          "dhash": "8429193264c89020",
+          "position": "g5_4,4"
+        }
+      ],
+      "frame_count": 0,
+      "duration_seconds": 0
     }
   ]
 }

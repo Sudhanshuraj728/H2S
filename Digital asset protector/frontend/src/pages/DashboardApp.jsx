@@ -237,9 +237,12 @@ function UploadPage({setPage}) {
   const [description,setDescription] = useState('')
   const [error,setError] = useState('')
   const [createdAsset,setCreatedAsset] = useState(null)
+  const [dupResult,setDupResult] = useState(null)
+
+  const resetAll = () => { setStep(0);setProgress(0);setFile(null);setTitle('');setDescription('');setCreatedAsset(null);setDupResult(null);setError('') }
 
   const startUpload = async () => {
-    if(!file) return; setError(''); setStep(1)
+    if(!file) return; setError(''); setDupResult(null); setStep(1)
     let p=0
     const iv=setInterval(()=>{p+=Math.random()*8+2;if(p>=100){clearInterval(iv);setProgress(100)}else setProgress(Math.min(p,99))},180)
     try {
@@ -263,14 +266,21 @@ function UploadPage({setPage}) {
       clearInterval(iv); setProgress(100); 
       setCreatedAsset(data);
       
-      if (data.isDuplicate || data.status === "match" || data.status === "duplicate") {
+      const isDup = data.isDuplicate || data.status === "match" || data.status === "duplicate" ||
+        ['identical','strong','partial'].includes(data?.best_match?.match_status);
+
+      if (isDup) {
         const matchedName = data?.matchedFilename || data?.best_match?.matched_filename || 'existing protected asset';
         const confidence = Number(data?.confidence ?? data?.best_match?.combined_similarity_percentage ?? 0);
-        const matchType = data?.matchType || (data?.isCropDetected ? 'Cropped' : data?.isContrastDetected ? 'Transformed' : data?.transformedMatchDetected ? 'Transformed' : 'Original');
+        let matchType = data?.matchType || (data?.isCropDetected ? 'Cropped' : data?.isContrastDetected ? 'Transformed' : data?.transformedMatchDetected ? 'Transformed' : 'Original');
         
+        if (matchType === 'Original' && confidence < 95 && data?.best_match?.match_status === 'partial') {
+           matchType = 'Partial';
+        }
+
         // Build specific alert message based on matchType
-        const typeLabel = matchType === 'Original' ? 'Exact Copy' : matchType === 'Cropped' ? 'Cropped Copy' : 'Transformed Copy';
-        const typeEmoji = matchType === 'Original' ? '🔴' : matchType === 'Cropped' ? '✂️' : '🔄';
+        const typeLabel = matchType === 'Original' ? 'Exact Copy' : matchType === 'Cropped' ? 'Cropped Copy' : matchType === 'Partial' ? 'Partial Match' : 'Transformed Copy';
+        const typeEmoji = matchType === 'Original' ? '🔴' : matchType === 'Cropped' ? '✂️' : matchType === 'Partial' ? '⚠️' : '🔄';
         
         setError({
           isMatch: true,
@@ -280,6 +290,8 @@ function UploadPage({setPage}) {
           confidence: confidence.toFixed(1),
           matchType
         });
+        
+        setDupResult({ matchedName, confidence, matchStatus: data?.best_match?.match_status || (confidence >= 95 ? 'identical' : 'partial'), isTransformed: !!data?.transformedMatchDetected });
         setStep(0);
       } else {
         setError('');
@@ -296,10 +308,12 @@ function UploadPage({setPage}) {
     if(['pdf','doc','docx','txt','xls','xlsx'].includes(ext)) return 'document'
     return 'image'
   }
-  const onFileSelected = (f) => { setError(''); setFile(f); setFileType(guessFileType(f)); if(!title) setTitle(f.name.replace(/\.[^.]+$/,'')) }
+  const onFileSelected = (f) => { setError(''); setDupResult(null); setFile(f); setFileType(guessFileType(f)); if(!title) setTitle(f.name.replace(/\.[^.]+$/,'')) }
 
   const steps=['Upload Asset','Fingerprinting','Registering','Registered']
   const fingerSteps=[{label:'Analyzing file structure',done:progress>20},{label:'Generating cryptographic hash',done:progress>40},{label:'Creating digital fingerprint',done:progress>60},{label:'Registering asset in database',done:progress>80},{label:'Protection activated',done:progress>=100}]
+
+  const statusColor = dupResult?.matchStatus === 'identical' ? 'var(--r)' : '#ff9f1c'
 
   return (
     <div style={{padding:'28px 32px',maxWidth:900}} className="fu">
@@ -368,23 +382,30 @@ function UploadPage({setPage}) {
               </div>
             )}
           </div>
+          
+          <div style={{display:'flex',gap:12,justifyContent:'center', marginTop: 12}}>
+            <button className="btn-g" onClick={resetAll}><Plus size={14}/> Upload Different File</button>
+            <button className="btn-p" onClick={()=>setPage('alerts')}><Bell size={14}/> View Alerts</button>
+          </div>
         </div>
       )}
 
-      {/* Step indicator */}
-      <div className="fu1" style={{display:'flex',alignItems:'center',gap:0,marginBottom:36}}>
-        {steps.map((s,i)=>(
-          <div key={i} style={{display:'flex',alignItems:'center',flex:i<steps.length-1?1:'auto'}}>
-            <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6}}>
-              <div style={{width:32,height:32,borderRadius:'50%',background:i<=step?'linear-gradient(135deg,var(--c),#b8a9e8)':'var(--bg3)',border:i===step?'2px solid var(--c)':'2px solid var(--bdr)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,fontFamily:'Space Mono',color:i<=step?'#020c18':'var(--t3)',transition:'all .4s',boxShadow:i===step?'0 0 14px rgba(184,169,232,.4)':'none'}}>
-                {i<step?<CheckCircle size={14} color="#020c18"/>:i+1}
+      {/* Step indicator - hidden when showing dup result */}
+      {!dupResult && (
+        <div className="fu1" style={{display:'flex',alignItems:'center',gap:0,marginBottom:36}}>
+          {steps.map((s,i)=>(
+            <div key={i} style={{display:'flex',alignItems:'center',flex:i<steps.length-1?1:'auto'}}>
+              <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6}}>
+                <div style={{width:32,height:32,borderRadius:'50%',background:i<=step?'linear-gradient(135deg,var(--c),#b8a9e8)':'var(--bg3)',border:i===step?'2px solid var(--c)':'2px solid var(--bdr)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,fontFamily:'Space Mono',color:i<=step?'#020c18':'var(--t3)',transition:'all .4s',boxShadow:i===step?'0 0 14px rgba(184,169,232,.4)':'none'}}>
+                  {i<step?<CheckCircle size={14} color="#020c18"/>:i+1}
+                </div>
+                <span style={{fontSize:11,color:i<=step?'var(--c)':'var(--t3)',whiteSpace:'nowrap',fontFamily:'Space Mono'}}>{s}</span>
               </div>
-              <span style={{fontSize:11,color:i<=step?'var(--c)':'var(--t3)',whiteSpace:'nowrap',fontFamily:'Space Mono'}}>{s}</span>
+              {i<steps.length-1&&<div style={{flex:1,height:2,margin:'0 8px',marginTop:-18,background:i<step?'linear-gradient(90deg,var(--c),var(--v))':'var(--bdr)',transition:'all .4s',borderRadius:1}}/>}
             </div>
-            {i<steps.length-1&&<div style={{flex:1,height:2,margin:'0 8px',marginTop:-18,background:i<step?'linear-gradient(90deg,var(--c),var(--v))':'var(--bdr)',transition:'all .4s',borderRadius:1}}/>}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {step===0&&(
         <div className="fu2">
@@ -455,14 +476,14 @@ function UploadPage({setPage}) {
         </div>
       )}
 
-      {step>=2&&(
+      {!dupResult && step>=2&&(
         <div className="fu2">
           <div className="card" style={{textAlign:'center',padding:'48px 40px'}}>
             <div style={{width:80,height:80,background:'var(--gv)',border:'2px solid var(--gb)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 24px',animation:'glow 2s ease-in-out infinite'}}><CheckCircle size={40} color="var(--g)"/></div>
             <h2 style={{fontFamily:'Poppins',fontWeight:800,fontSize:26,marginBottom:10}}>Asset Successfully Protected!</h2>
             <p style={{color:'var(--t2)',fontSize:15,marginBottom:32}}>Your asset has been fingerprinted and registered.</p>
             <div style={{display:'flex',gap:12,justifyContent:'center'}}>
-              <button className="btn-p" onClick={()=>{setStep(0);setProgress(0);setFile(null);setTitle('');setDescription('');setCreatedAsset(null)}}><Plus size={14}/> Protect Another</button>
+              <button className="btn-p" onClick={resetAll}><Plus size={14}/> Protect Another</button>
               <button className="btn-s" onClick={()=>setPage('library')}><Eye size={14}/> View in Library</button>
             </div>
           </div>

@@ -1,12 +1,14 @@
 import fs from "fs";
+import path from "path";
 import runPython from "../utils/runpython.js";
+import registerAsset from "../utils/registerAsset.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Asset } from "../models/asset.model.js";
 import { Detection } from "../models/detection.model.js";
 import { Alert } from "../models/alert.model.js";
 
-const ALERT_THRESHOLD = 10;
+const ALERT_THRESHOLD = 12;
 
 const toNumber = (value, fallback = 0) => {
     const numeric = Number(value);
@@ -47,9 +49,23 @@ const buildMatchMetrics = (bestMatch) => ({
  * FIXED: No longer requires ALL core metrics to be present — uses score-based logic instead.
  */
 const shouldGenerateAlertFromMetrics = (metrics) => {
+    const hasRequiredCoreMetrics = [
+        metrics?.globalHashSimilarity,
+        metrics?.colourSimilarity,
+        metrics?.cropSimilarity,
+        metrics?.orbSimilarity,
+        metrics?.ahashSimilarity,
+        metrics?.phashSimilarity,
+        metrics?.dhashSimilarity,
+        metrics?.combinedSimilarityPercentage,
+    ].every(isFiniteNumber);
+
+    if (!hasRequiredCoreMetrics) {
+        return false;
+    }
+
     const normalizedStatus = String(metrics?.matchStatus || "no_match").toLowerCase();
 
-    // Direct match status check: identical, strong, or partial → always alert
     if (["identical", "strong", "partial"].includes(normalizedStatus)) {
         return true;
     }
@@ -59,45 +75,27 @@ const shouldGenerateAlertFromMetrics = (metrics) => {
     const scenarioCropMatch = toNumber(metrics?.scenarioCropMatch, 0);
     const scenarioRegionMatch = toNumber(metrics?.scenarioRegionMatch, 0);
     const scenarioHeavyTransformMatch = toNumber(metrics?.scenarioHeavyTransformMatch, 0);
-    const scenarioStructuralMatch = toNumber(metrics?.scenarioStructuralMatch, 0);
-    const orbSimilarity = toNumber(metrics?.orbSimilarity, 0);
 
-    // Score >= threshold → alert
+    // Score >= 10 out of 20 covers partial/crop matches
     if (similarityScoreOutOf20 >= ALERT_THRESHOLD) {
         return true;
     }
 
-    // Crop scenario >= 35% = tile + ORB signal (increased to avoid false positives)
-    if (scenarioCropMatch >= 35) {
+    // Crop scenario >= 30% = tile + ORB signal
+    if (scenarioCropMatch >= 30) {
         return true;
     }
 
-    // Region match >= 40%: the crop's hash matches a sub-tile of the original (increased to avoid false positives)
-    if (scenarioRegionMatch >= 40) {
+    // Region match >= 35%: the crop's hash matches a sub-tile of the original
+    if (scenarioRegionMatch >= 35) {
         return true;
     }
 
-    // Structural match >= 30% (contrast/filter changes)
-    if (scenarioStructuralMatch >= 30) {
+    if (combinedSimilarityPercentage >= 45) {
         return true;
     }
 
-    // Combined similarity >= 40%
-    if (combinedSimilarityPercentage >= 40) {
-        return true;
-    }
-
-    // ORB feature matching fallback
-    if (orbSimilarity >= 0.4 && scenarioHeavyTransformMatch >= 35) {
-        return true;
-    }
-
-    // Transformation type flags from Python engine
-    if (metrics?.isCrop || metrics?.isContrast) {
-        return true;
-    }
-
-    return false;
+    return toNumber(metrics?.orbSimilarity, 0) >= 0.5 && scenarioHeavyTransformMatch >= 40;
 };
 
 /**
@@ -107,33 +105,27 @@ const isTransformedExistingMatch = (metrics) => {
     const cropScenario = toNumber(metrics?.scenarioCropMatch, 0);
     const regionScenario = toNumber(metrics?.scenarioRegionMatch, 0);
     const structuralScenario = toNumber(metrics?.scenarioStructuralMatch, 0);
-    const heavyTransformScenario = toNumber(metrics?.scenarioHeavyTransformMatch, 0);
     const orbSimilarity = toNumber(metrics?.orbSimilarity, 0);
     const regionSimilarity = toNumber(metrics?.regionSimilarity, 0);
     const cropSimilarity = toNumber(metrics?.cropSimilarity, 0);
     const globalSimilarity = toNumber(metrics?.globalHashSimilarity, 0);
     const combinedSimilarity = toNumber(metrics?.combinedSimilarityPercentage, 0);
 
-    // Python engine explicitly flagged as crop or contrast
-    if (metrics?.isCrop || metrics?.isContrast) {
-        return true;
-    }
+    // Require MULTIPLE strong signals to agree — prevents false positives.
+    // A random unrelated image will have low scores on ALL of these.
+    // A true crop/transform will have at least 2-3 elevated signals.
+    let signals = 0;
+    if (cropScenario >= 45)    signals++;  // tile-based crop match
+    if (regionScenario >= 50)  signals++;  // global hash matches a tile region
+    if (regionSimilarity >= 0.55) signals++; // direct tile hash overlap
+    if (cropSimilarity >= 0.45)  signals++; // tile similarity
+    if (globalSimilarity >= 0.35) signals++; // some global hash overlap
+    if (orbSimilarity >= 0.40)   signals++; // feature matching
+    if (combined >= 50)          signals++; // overall combined
+    if (structuralScenario >= 45) signals++; // structural match
 
-    const hasScenarioSignal =
-        cropScenario >= 25 ||           // tile+ORB crop match
-        regionScenario >= 30 ||         // query hash matches an asset tile (the crop region)
-        structuralScenario >= 30 ||
-        heavyTransformScenario >= 30 ||
-        (orbSimilarity >= 0.20 && (cropScenario >= 20 || regionScenario >= 25));
-
-    const hasSupportSignal =
-        regionSimilarity >= 0.40 ||     // query's hash matches one of the asset's tile hashes
-        cropSimilarity >= 0.10 ||
-        globalSimilarity >= 0.18 ||
-        orbSimilarity >= 0.20 ||
-        combinedSimilarity >= 30;
-
-    return hasScenarioSignal && hasSupportSignal;
+    // Need at least 2 independent signals to confirm a transformed match
+    return signals >= 2;
 };
 
 const buildSourceAssetHash = ({ userId, sourceHashes, sourceFileName, fileSize }) => {
@@ -352,7 +344,14 @@ export const uploadFile = asyncHandler(async (req, res) => {
     const filePath = req.file.path;
 
     try {
-        const comparisonResult = await runPython(filePath);
+        // Fetch all MongoDB assets that have hashes so Python can compare against them.
+        // This makes MongoDB the single source of truth — assets.json is never used.
+        const mongoAssets = await Asset.find(
+            { ahash: { $exists: true, $ne: null } },
+            "_id filename title ahash phash dhash colorhash tileHashes fileType fileSize"
+        ).lean();
+
+        const comparisonResult = await runPython(filePath, mongoAssets);
 
         if (comparisonResult?.error) {
             throw new ApiError(500, comparisonResult.error);
@@ -460,7 +459,17 @@ export const uploadFile = asyncHandler(async (req, res) => {
                 phash: sourceHashes?.phash || null,
                 dhash: sourceHashes?.dhash || null,
                 colorhash: sourceHashes?.colorhash || null,
+                tileHashes: sourceHashes?.tile_hashes || [],
             });
+
+            // Register into Python detection DB so future uploads can find duplicates
+            // Register synchronously so assets.json is updated BEFORE the response.
+            // If we don't await, the next upload runs compare before registration finishes.
+            try {
+                await registerAsset(filePath, String(createdAsset._id), sourceFileName);
+            } catch (regErr) {
+                console.error("[registerAsset] failed:", regErr);
+            }
 
             return res.status(200).json({
                 status: "no_match",
@@ -527,26 +536,25 @@ export const uploadFile = asyncHandler(async (req, res) => {
 
                 createdUploadedAsset = await Asset.findOne({ fileHash: sourceAssetHash, owner: userId });
 
-                if (!createdUploadedAsset) {
-                    createdUploadedAsset = await Asset.create({
-                        title: sourceFileName,
-                        description: `Protected upload for ${sourceFileName}`,
-                        fileUrl: `upload://${sourceFileName}`,
-                        fileHash: sourceAssetHash,
-                        fileType: sourceType === "video" ? "video" : "image",
-                        fileSize: req.file?.size || 0,
-                        owner: userId,
-                        status: "active",
-                        isProtected: true,
-                        platforms: ["other"],
-                        filename: sourceFileName,
-                        source: "user-upload",
-                        ahash: sourceHashes?.ahash || null,
-                        phash: sourceHashes?.phash || null,
-                        dhash: sourceHashes?.dhash || null,
-                        colorhash: sourceHashes?.colorhash || null,
-                    });
-                }
+            if (!createdUploadedAsset) {
+                createdUploadedAsset = await Asset.create({
+                    title: sourceFileName,
+                    description: `Protected upload for ${sourceFileName}`,
+                    fileUrl: `upload://${sourceFileName}`,
+                    fileHash: sourceAssetHash,
+                    fileType: sourceType === "video" ? "video" : "image",
+                    fileSize: req.file?.size || 0,
+                    owner: userId,
+                    status: "active",
+                    isProtected: true,
+                    platforms: ["other"],
+                    filename: sourceFileName,
+                    source: "user-upload",
+                    ahash: sourceHashes?.ahash || null,
+                    phash: sourceHashes?.phash || null,
+                    dhash: sourceHashes?.dhash || null,
+                    colorhash: sourceHashes?.colorhash || null,
+                });
             }
         }
 
@@ -642,8 +650,9 @@ export const uploadFile = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new ApiError(500, error?.message || "Detection failed");
     } finally {
+        // File is safe to delete now - registerAsset() has already been awaited above.
         if (filePath && fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
+            try { fs.unlinkSync(filePath); } catch {}
         }
     }
 });

@@ -207,6 +207,21 @@ const assetSchema = new Schema(
             // color hash from detection engine
         },
 
+        tileHashes: {
+            type: [
+                {
+                    ahash: String,
+                    phash: String,
+                    dhash: String,
+                    row: Number,
+                    col: Number,
+                }
+            ],
+            default: [],
+            // spatial tile hashes for crop detection (5x5 grid = 34 tiles)
+            // when a cropped image is uploaded, its global hash matches one of these tiles
+        },
+
         uploadedAt: {
             type: Date,
             // kab ye asset upload hua - separate from uploadDate for clarity
