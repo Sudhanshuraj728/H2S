@@ -35,6 +35,15 @@ const userSchema = mongoose.Schema({
         // select false se ye field by default queries me nhi aata taaki password expose na ho
         // explicitly select("+password") karna padta h agar password chahiye
     },
+    authProvider: {
+        type: String,
+        enum: ["local", "google"],
+        default: "local"
+    },
+    googleId: {
+        type: String,
+        default: null
+    },
     
     // ========== OPTIONAL FIELDS ==========
     phone: {

@@ -2,6 +2,8 @@ import { User } from "../models/user.model.js";
 // User model ko directly import kr rhe h jisse database operations kr ske
 
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import { OAuth2Client } from "google-auth-library";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -23,6 +25,56 @@ const generateAccessAndRefreshTokens = async (userId) => {
     } catch (error) {
         throw new ApiError(500, "Something went wrong while generating refresh and access token");
     }
+};
+
+const getOAuthStateSecret = () => process.env.OAUTH_STATE_SECRET || process.env.ACCESS_TOKEN_SECRET;
+
+const getGoogleClient = () => {
+    const clientId = process.env.GOOGLE_CLIENT_ID;
+    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+    const redirectUri = process.env.GOOGLE_REDIRECT_URI;
+
+    if (!clientId || !clientSecret || !redirectUri) {
+        throw new ApiError(500, "Google OAuth is not configured");
+    }
+
+    return new OAuth2Client(clientId, clientSecret, redirectUri);
+};
+
+const normalizeRedirectPath = (value) => {
+    if (!value || typeof value !== "string") return "/dashboard";
+    if (!value.startsWith("/") || value.startsWith("//")) return "/dashboard";
+    return value;
+};
+
+const parseOAuthState = (state) => {
+    if (!state) return null;
+    try {
+        return jwt.verify(state, getOAuthStateSecret());
+    } catch {
+        return null;
+    }
+};
+
+const getFrontendOAuthRedirectBase = () => {
+    if (process.env.FRONTEND_OAUTH_REDIRECT_URL) {
+        return process.env.FRONTEND_OAUTH_REDIRECT_URL;
+    }
+
+    const clientBase = process.env.CLIENT_URL || process.env.CORS_ORIGIN || "http://localhost:5173";
+    return `${clientBase.replace(/\/$/, "")}/oauth/google`;
+};
+
+const buildOAuthRedirectUrl = ({ accessToken, refreshToken, redirectPath }) => {
+    const url = new URL(getFrontendOAuthRedirectBase());
+    const params = new URLSearchParams();
+
+    if (accessToken) params.set("accessToken", accessToken);
+    if (refreshToken) params.set("refreshToken", refreshToken);
+    if (redirectPath) params.set("redirect", redirectPath);
+
+    url.hash = params.toString();
+    return url.toString();
 };
 
 export const registerUser = asyncHandler(async (req, res) => {
@@ -58,6 +110,7 @@ export const registerUser = asyncHandler(async (req, res) => {
         lastName,
         email,
         password,
+        authProvider: "local",
         phone: phone || null,
         company: company || null
     });
@@ -124,6 +177,10 @@ export const loginUser = asyncHandler(async (req, res) => {
     // .select("+password") - password field exclude hota h by default schema mein (select: false), isliye explicitly select krna padta h
     if (!user) {
         throw new ApiError(401, "User does not exist");
+    }
+
+    if (user.authProvider === "google") {
+        throw new ApiError(401, "This account uses Google sign-in");
     }
     
     // agr user nhi mila to error throw kr do kyuki login karne ke liye user exist krna zaroori h
@@ -249,21 +306,126 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
     }
 });
 
+export const googleAuthStart = asyncHandler(async (req, res) => {
+    const redirectPath = normalizeRedirectPath(req.query.redirect);
+    const state = jwt.sign({ redirect: redirectPath }, getOAuthStateSecret(), { expiresIn: "10m" });
+
+    const client = getGoogleClient();
+    const url = client.generateAuthUrl({
+        access_type: "offline",
+        scope: ["email", "profile"],
+        prompt: "select_account",
+        state
+    });
+
+    return res.redirect(url);
+});
+
+export const googleAuthCallback = asyncHandler(async (req, res) => {
+    const { code, state } = req.query;
+
+    if (!code) {
+        throw new ApiError(400, "Missing authorization code");
+    }
+
+    const client = getGoogleClient();
+    const { tokens } = await client.getToken(code);
+
+    if (!tokens?.id_token) {
+        throw new ApiError(400, "Missing Google ID token");
+    }
+
+    const ticket = await client.verifyIdToken({
+        idToken: tokens.id_token,
+        audience: process.env.GOOGLE_CLIENT_ID
+    });
+    const payload = ticket.getPayload();
+
+    if (!payload?.email) {
+        throw new ApiError(400, "Google account email not available");
+    }
+
+    if (payload.email_verified === false) {
+        throw new ApiError(401, "Google email is not verified");
+    }
+
+    const email = payload.email.toLowerCase();
+    let user = await User.findOne({ email }).select("-password");
+
+    if (!user) {
+        const fullName = payload.name || "";
+        const nameParts = fullName.trim().split(" ").filter(Boolean);
+        const firstName = payload.given_name || nameParts[0] || "Google";
+        const lastName = payload.family_name || nameParts.slice(1).join(" ") || "User";
+        const randomPassword = crypto.randomBytes(32).toString("hex");
+
+        const createdUser = await User.create({
+            firstName,
+            lastName,
+            email,
+            password: randomPassword,
+            authProvider: "google",
+            googleId: payload.sub,
+            profileImage: payload.picture || null
+        });
+
+        user = await User.findById(createdUser._id).select("-password");
+    } else {
+        const updates = {};
+
+        if (!user.googleId && payload.sub) updates.googleId = payload.sub;
+        if (!user.profileImage && payload.picture) updates.profileImage = payload.picture;
+
+        if (Object.keys(updates).length) {
+            user = await User.findByIdAndUpdate(
+                user._id,
+                { $set: { ...updates, updatedAt: Date.now() } },
+                { new: true }
+            ).select("-password");
+        }
+    }
+
+    if (!user) {
+        throw new ApiError(500, "Failed to resolve user after Google sign-in");
+    }
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id);
+    const options = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production"
+    };
+
+    const decodedState = parseOAuthState(state);
+    const redirectPath = normalizeRedirectPath(decodedState?.redirect);
+    const redirectUrl = buildOAuthRedirectUrl({ accessToken, refreshToken, redirectPath });
+
+    return res
+        .status(302)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .redirect(redirectUrl);
+});
+
 export const getCurrentUser = asyncHandler(async (req, res) => {
     // req.user se user data get
     // return user
-    
+    const user = await User.findById(req.user?._id).select("-password");
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
     return res
         .status(200)
         .json(
             new ApiResponse(
                 200,
-                req.user,
+                { user },
                 "Current user fetched successfully"
             )
         );
     
-    // req.user auth middleware se aa rha h jisme user ko database se fetch krke store kiya gaya h to simply req.user ko response me bhej diya taaki frontend me logged in user ki complete details mil jaye aur uske basis pe UI customize ho ske
+    // req.user auth middleware se aa rha h jisme user id aa rha h, isliye db se user fetch krke response bhej rhe h
 });
 
 export const updateUserProfile = asyncHandler(async (req, res) => {

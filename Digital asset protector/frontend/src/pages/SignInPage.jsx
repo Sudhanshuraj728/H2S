@@ -14,6 +14,10 @@ export default function SignInPage({ onLogin }) {
   const [error, setError] = useState("")
   const [touched, setTouched] = useState({})
 
+  const handleGoogle = () => {
+    window.location.href = authAPI.googleAuthUrl("/dashboard")
+  }
+
   const validate = () => {
     if (!email.trim()) return "Email is required"
     if (!/\S+@\S+\.\S+/.test(email)) return "Enter a valid email address"
@@ -81,6 +85,19 @@ export default function SignInPage({ onLogin }) {
               marginBottom: 20, fontSize: 13, color: "#e87e7e",
             }}><AlertTriangle size={16} /> {error}</div>
           )}
+
+          <button type="button" onClick={handleGoogle} className="cta-secondary" style={{ width: "100%", justifyContent: "center", marginBottom: 14 }}>
+            <span style={{ display: "inline-flex", alignItems: "center" }}>
+              <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+                <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 31.4 29.2 34 24 34c-5.5 0-10.2-3.7-11.7-8.8-.3-.9-.4-1.9-.4-3 0-1 .1-2 .4-3 1.5-5.1 6.2-8.8 11.7-8.8 3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.2 4.1 29.4 2 24 2 14.8 2 7.2 7.6 4.5 15.7c-.8 2.3-1.3 4.8-1.3 7.3 0 2.5.5 5 1.3 7.3C7.2 40.4 14.8 46 24 46c9.4 0 17.2-6.2 19.6-14.7.5-1.8.8-3.7.8-5.8 0-1-.1-2-.3-3z"/>
+                <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15 19 12 24 12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.2 4.1 29.4 2 24 2 16 2 9.1 6.5 6.3 14.7z"/>
+                <path fill="#4CAF50" d="M24 46c5.1 0 9.8-2 13.3-5.2l-6.2-5.1C29.1 37.1 26.7 38 24 38c-5.2 0-9.7-3.3-11.4-8.1l-6.5 5C9 41.5 16 46 24 46z"/>
+                <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.1-3.3 5.4-6.2 6.7l6.2 5.1c3.6-3.3 5.7-8.1 5.7-13.3 0-2.1-.3-4.1-.7-6z"/>
+              </svg>
+            </span>
+            Continue with Google
+          </button>
+          <div style={{ textAlign: "center", color: "#6a6a80", fontSize: 12, marginBottom: 14 }}>or</div>
 
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: 20 }}>

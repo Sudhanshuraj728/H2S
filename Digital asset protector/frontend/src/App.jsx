@@ -4,6 +4,7 @@ import Layout from "./components/Layout"
 import LandingPage from "./pages/LandingPage"
 import SignInPage from "./pages/SignInPage"
 import SignUpPage from "./pages/SignUpPage"
+import OAuthGoogleCallback from "./pages/OAuthGoogleCallback"
 import DashboardApp from "./pages/DashboardApp"
 import { getToken, getSavedUser, clearTokens, authAPI, saveUser } from "./api.js"
 
@@ -62,6 +63,7 @@ export default function App() {
           <Route path="/" element={user ? <Navigate to="/dashboard" /> : <LandingPage />} />
           <Route path="/signin" element={user ? <Navigate to="/dashboard" /> : <SignInPage onLogin={handleLogin} />} />
           <Route path="/signup" element={user ? <Navigate to="/dashboard" /> : <SignUpPage onLogin={handleLogin} />} />
+          <Route path="/oauth/google" element={<OAuthGoogleCallback onLogin={handleLogin} />} />
         </Route>
 
         {/* Protected dashboard */}

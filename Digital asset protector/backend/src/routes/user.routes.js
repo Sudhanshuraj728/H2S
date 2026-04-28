@@ -5,7 +5,9 @@ import {
     logoutUser,
     getCurrentUser,
     refreshAccessToken,
-    updateUserProfile
+    updateUserProfile,
+    googleAuthStart,
+    googleAuthCallback
 } from "../controllers/auth.controller.js";
 import { verifyJWT, verifyAdmin } from "../middleware/auth.middleware.js";
 
@@ -24,6 +26,12 @@ router.route("/login").post(loginUser);
 // body: {email, password}
 // response: {user: {...}, accessToken, refreshToken}
 // cookies: set hote h accessToken aur refreshToken
+
+router.route("/auth/google").get(googleAuthStart);
+// GET /api/users/auth/google - Google OAuth start
+
+router.route("/auth/google/callback").get(googleAuthCallback);
+// GET /api/users/auth/google/callback - Google OAuth callback
 
 router.route("/refresh-token").post(refreshAccessToken);
 // POST /api/users/refresh-token - expired access token ko refresh krne ke liye

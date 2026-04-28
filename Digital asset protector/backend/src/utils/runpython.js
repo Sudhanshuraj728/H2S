@@ -30,12 +30,31 @@ const runPython = (filePath, mongoAssets = []) => {
 
     let data = "";
     let stderrData = "";
+    let stdinError = null;
 
     // Send MongoDB assets via stdin so Python has the live database
-    if (mongoAssets && mongoAssets.length > 0) {
-      child.stdin.write(JSON.stringify(mongoAssets));
+    child.stdin.on("error", (err) => {
+      // Prevent unhandled EPIPE when the child closes stdin early
+      stdinError = err;
+      if (err.code !== "EPIPE") {
+        console.error("[runPython] stdin error:", err.message);
+      }
+    });
+
+    if (mongoAssets && mongoAssets.length > 0 && child.stdin.writable) {
+      try {
+        child.stdin.write(JSON.stringify(mongoAssets));
+      } catch (err) {
+        stdinError = err;
+      }
     }
-    child.stdin.end();
+    if (child.stdin.writable) {
+      try {
+        child.stdin.end();
+      } catch (err) {
+        stdinError = err;
+      }
+    }
 
     child.on("error", (err) => {
       reject(new Error(`Python process failed to start: ${err.message}`));
@@ -45,6 +64,10 @@ const runPython = (filePath, mongoAssets = []) => {
     child.stderr.on("data", (err) => { stderrData += err.toString(); });
 
     child.on("close", (code) => {
+      if (stdinError && code === 0 && !data && !stderrData) {
+        reject(new Error("Python input pipe closed unexpectedly"));
+        return;
+      }
       if (code !== 0) {
         const trimmed = data.trim();
         try {

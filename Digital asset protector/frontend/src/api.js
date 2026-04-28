@@ -142,6 +142,13 @@ export const authAPI = {
       throw err
     }
   },
+
+  googleAuthUrl: (redirectPath = "/dashboard") => {
+    const params = new URLSearchParams()
+    if (redirectPath) params.set("redirect", redirectPath)
+    const query = params.toString()
+    return `${BASE_URL}/users/auth/google${query ? `?${query}` : ""}`
+  },
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
